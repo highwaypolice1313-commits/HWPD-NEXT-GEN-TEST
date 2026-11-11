@@ -5,137 +5,177 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ระบบรายงานประจำวัน</title>
 <style>
-  :root { --c:#1d5f8a; --bg:#eef3f8; --card:#fff; --line:#d7e0ea; --txt:#1c2b39; --warn:#ffd54a; }
+  :root {
+    --c: #0f4c75; --c2: #3282b8; --bg: #f0f4f8; --line: #dbe4ee;
+    --txt: #1b2a3a; --muted: #64748b; --warn: #ffd166; --ok: #2e9e6a;
+    --radius: 14px; --shadow: 0 6px 24px rgba(15,76,117,.08);
+  }
   * { box-sizing: border-box; }
-  body { margin:0; font-family: "Sarabun","Noto Sans Thai",system-ui,sans-serif; background:var(--bg); color:var(--txt); }
-  .banner { background:var(--warn); text-align:center; padding:8px; font-weight:600; }
-  header { display:flex; align-items:center; justify-content:space-between; background:var(--c); color:#fff; padding:12px 18px; }
-  header .who { font-size:14px; opacity:.9; }
-  nav { display:flex; flex-wrap:wrap; gap:6px; padding:10px 18px; background:#fff; border-bottom:1px solid var(--line); }
-  nav a { padding:6px 10px; border-radius:6px; text-decoration:none; color:var(--c); font-size:14px; }
-  nav a.on { background:var(--c); color:#fff; }
-  main { max-width:920px; margin:20px auto; padding:0 14px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:16px; }
-  h2 { margin:0 0 14px; font-size:20px; color:var(--c); }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
-  label { display:block; font-size:13px; color:#4a5b6b; margin-bottom:4px; }
-  input, select, textarea { width:100%; padding:9px 10px; border:1px solid var(--line); border-radius:6px; font:inherit; background:#fff; }
-  textarea { min-height:80px; }
-  button { background:var(--c); color:#fff; border:0; border-radius:6px; padding:10px 16px; font:inherit; cursor:pointer; }
-  button.ghost { background:#fff; color:var(--c); border:1px solid var(--c); }
-  button.ok { background:#2e7d4f; }
-  table { width:100%; border-collapse:collapse; font-size:14px; }
-  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--line); vertical-align:top; }
-  th { color:#4a5b6b; font-weight:600; background:#f6f9fc; }
-  .tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:12px; }
-  .pending { background:#fff3cd; } .approved { background:#d4edda; }
-  .err { color:#b00020; margin-top:10px; min-height:20px; }
-  .row { display:flex; gap:10px; align-items:end; flex-wrap:wrap; margin-bottom:14px; }
-  .row > div { flex:1; min-width:160px; }
-  .center { max-width:360px; margin:60px auto; }
+  body { margin: 0; min-height: 100vh; color: var(--txt); background: var(--bg);
+    font-family: "Sarabun","Noto Sans Thai",system-ui,sans-serif; }
+  .banner { background: linear-gradient(90deg, var(--warn), #ffe08a, var(--warn));
+    background-size: 200% 100%; animation: shimmer 6s linear infinite;
+    text-align: center; padding: 8px; font-weight: 600; font-size: 14px; }
+  .banner[hidden], nav[hidden], #logout[hidden] { display: none; }
+  header { display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(120deg, var(--c), var(--c2)); color: #fff;
+    padding: 14px 22px; position: sticky; top: 0; z-index: 10;
+    box-shadow: 0 4px 18px rgba(15,76,117,.25); animation: slideDown .5s ease both; }
+  header .who { font-size: 14px; display: flex; align-items: center; gap: 10px; }
+  nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 18px;
+    background: rgba(255,255,255,.75); border-bottom: 1px solid var(--line);
+    animation: fadeIn .6s ease .1s both; }
+  nav a { padding: 7px 12px; border-radius: 999px; text-decoration: none;
+    color: var(--c); font-size: 14px; transition: background .2s, transform .15s; }
+  nav a:hover { background: #e4f0f9; transform: translateY(-1px); }
+  nav a.on { background: var(--c); color: #fff; }
+  main { max-width: 980px; margin: 24px auto; padding: 0 16px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px; margin-bottom: 18px; box-shadow: var(--shadow);
+    animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+  .center { max-width: 380px; margin: 70px auto; }
+  h2 { margin: 0 0 14px; font-size: 20px; color: var(--c); }
+  .sub { font-size: 13px; color: var(--muted); margin: -6px 0 14px; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .tabs button { background: #fff; color: var(--c); border: 1px solid var(--c2); box-shadow: none; }
+  .tabs button.on { background: var(--c); color: #fff; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin-bottom: 14px; }
+  .row > div { flex: 1; min-width: 160px; }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+  input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line);
+    border-radius: 10px; font: inherit; background: #fff; color: var(--txt);
+    transition: border-color .2s, box-shadow .2s; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--c2);
+    box-shadow: 0 0 0 4px rgba(50,130,184,.15); }
+  textarea { min-height: 84px; resize: vertical; }
+  button { background: linear-gradient(135deg, var(--c), var(--c2)); color: #fff; border: 0;
+    border-radius: 10px; padding: 10px 18px; font: inherit; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(15,76,117,.2); transition: transform .15s, box-shadow .2s; }
+  button:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(15,76,117,.25); }
+  button:active { transform: scale(.98); }
+  button:disabled { opacity: .6; cursor: wait; }
+  button.ghost { background: #fff; color: var(--c); border: 1px solid var(--c2); box-shadow: none; }
+  button.ok { background: linear-gradient(135deg, var(--ok), #4cc38a); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; background: #f7fafd; }
+  tr:hover td { background: #f3f9fd; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; }
+  .pending { background: #fff3cd; color: #7a5a00; }
+  .approved { background: #d4f3e3; color: #14663e; }
+  .stat-num { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--c); }
+  .err { color: #b00020; margin-top: 10px; min-height: 20px; font-size: 14px; }
+  .actions { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+  @keyframes shimmer { from { background-position: 0 0; } to { background-position: 200% 0; } }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  @media (max-width: 600px) { header { padding: 12px 14px; } .card { padding: 16px; } }
 </style>
 </head>
 <body>
 
 <div id="banner" class="banner" hidden>โหมดทดลอง: ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ไม่กระทบข้อมูลจริง</div>
 <header>
-  <span><strong>ระบบรายงานประจำวัน</strong></span>
-  <span class="who"><span id="who"></span> <button id="logout" class="ghost" hidden style="margin-left:8px;background:#fff">ออกจากระบบ</button></span>
+  <strong>ระบบรายงานประจำวัน</strong>
+  <span class="who">
+    <span id="who"></span>
+    <button id="logout" class="ghost" hidden>ออกจากระบบ</button>
+  </span>
 </header>
 <nav id="nav" hidden></nav>
 <main id="app"></main>
 
 <script>
-// ===== ตั้งค่า =====
 const API_URL = 'https://script.google.com/macros/s/AKfycbxssyQml6dXj92np0pSwDfFNEGtDqu4O3kAUxueMViNDk-yhJHb0UCf6Lj9mwKofM8sYA/exec';
 
-// ===== นิยามโมดูล ต้องตรงกับ MODULES ใน Code.gs =====
 const MODULES = {
-  daily: { label:'รายงานประจำวัน', perm:'daily', fields:[
-    {name:'report_time',label:'วันเวลาที่รายงาน',type:'datetime-local'},
-    {name:'shift',label:'เวร',type:'select',options:['เวรผลัด','เวรสืบเวร']},
-    {name:'type',label:'ประเภท',type:'select',options:['ว.43','ว.42','ว.20','บริการ']},
-    {name:'count',label:'จำนวน',type:'number'},
-    {name:'note',label:'หมายเหตุ',type:'textarea'}],
-    cols:['report_time','shift','type','count'] },
-  checkpoint: { label:'รายงานด่าน', perm:'checkpoint', fields:[
-    {name:'checkpoint_name',label:'ชื่อด่าน',type:'text'},
-    {name:'start_time',label:'เวลาเริ่ม',type:'datetime-local'},
-    {name:'end_time',label:'เวลาสิ้นสุด',type:'datetime-local'},
-    {name:'lat',label:'ละติจูด',type:'text'},
-    {name:'lng',label:'ลองจิจูด',type:'text'},
-    {name:'result',label:'ผลการตรวจ',type:'text'},
-    {name:'note',label:'หมายเหตุ',type:'textarea'}],
-    cols:['checkpoint_name','start_time','result'] },
-  arrest: { label:'รายงานการจับกุม', perm:'arrest', fields:[
-    {name:'arrest_time',label:'เวลาจับกุม',type:'datetime-local'},
-    {name:'charge',label:'ข้อหา',type:'text'},
-    {name:'suspect_name',label:'ชื่อผู้ต้องหา',type:'text'},
-    {name:'place',label:'สถานที่',type:'text'},
-    {name:'note',label:'หมายเหตุ',type:'textarea'}],
-    cols:['arrest_time','charge','suspect_name','place'] },
-  accident: { label:'รายงานอุบัติเหตุ', perm:'accident', fields:[
-    {name:'accident_time',label:'วันเวลาเกิดเหตุ',type:'datetime-local'},
-    {name:'road',label:'ทางหลวง',type:'text'},
-    {name:'km',label:'กม.',type:'text'},
-    {name:'direction',label:'ทิศทาง',type:'select',options:['ขาเข้า','ขาออก']},
-    {name:'deaths',label:'เสียชีวิต (ราย)',type:'number'},
-    {name:'injuries',label:'บาดเจ็บ (ราย)',type:'number'},
-    {name:'summary',label:'สรุปเหตุ',type:'textarea'}],
-    cols:['accident_time','road','km','deaths','injuries'] },
-  task: { label:'แจ้งภารกิจ', perm:'task', fields:[
-    {name:'start',label:'เริ่มภารกิจ',type:'datetime-local'},
-    {name:'end',label:'สิ้นสุดภารกิจ',type:'datetime-local'},
-    {name:'units',label:'หน่วยที่เกี่ยวข้อง',type:'text'},
-    {name:'details',label:'รายละเอียด',type:'textarea'},
-    {name:'place',label:'สถานที่',type:'text'}],
-    cols:['start','end','units','place'] },
-  fuel: { label:'น้ำมัน/น้ำมันเครื่อง', perm:'fuel', fields:[
-    {name:'time',label:'วันเวลา',type:'datetime-local'},
-    {name:'plate',label:'หมายเลขทะเบียนรถ',type:'text'},
-    {name:'fuel_type',label:'ประเภทน้ำมัน',type:'select',options:['เบนซิน','ดีเซล','น้ำมันเครื่อง']},
-    {name:'liters',label:'จำนวน (ลิตร)',type:'number'},
-    {name:'price',label:'ราคา (บาท)',type:'number'},
-    {name:'receipt_no',label:'เลขที่ใบเสร็จ',type:'text'}],
-    cols:['time','plate','fuel_type','liters','price'] },
-  news: { label:'ส่งข่าวประชาสัมพันธ์', perm:'news', fields:[
-    {name:'news_time',label:'วันเวลาของข่าว',type:'datetime-local'},
-    {name:'news_type',label:'ประเภทข่าว',type:'select',options:['อุบัติเหตุ','จับกุม','ประชาสัมพันธ์','อื่นๆ']},
-    {name:'headline',label:'พาดหัวข่าว',type:'text'},
-    {name:'body',label:'เนื้อหาข่าว',type:'textarea'}],
-    cols:['news_time','news_type','headline'] },
-  weight: { label:'ตรวจรถบรรทุกน้ำหนักเกิน', perm:'weight', fields:[
-    {name:'check_time',label:'วันเวลาที่ตรวจ',type:'datetime-local'},
-    {name:'inspector',label:'ผู้ตรวจ',type:'text'},
-    {name:'plate',label:'ทะเบียน',type:'text'},
-    {name:'max_weight',label:'น้ำหนักที่กฎหมายกำหนด (กก.)',type:'number'},
-    {name:'actual_weight',label:'น้ำหนักที่ชั่งได้ (กก.)',type:'number'},
-    {name:'result',label:'ผลการตรวจ',type:'text'}],
-    cols:['check_time','plate','actual_weight','result'] },
-  royal: { label:'รายงานรับเสด็จ', perm:'royal', fields:[
-    {name:'mission',label:'ชื่อภารกิจ',type:'text'},
-    {name:'time',label:'วันเวลา',type:'datetime-local'},
-    {name:'place',label:'สถานที่',type:'text'},
-    {name:'officers',label:'เจ้าหน้าที่ปฏิบัติ',type:'text'},
-    {name:'note',label:'หมายเหตุ',type:'textarea'}],
-    cols:['mission','time','place'] },
-  other: { label:'รายงาน อื่นๆ', perm:'other', fields:[
-    {name:'report_time',label:'วันเวลาที่รายงาน',type:'datetime-local'},
-    {name:'activity',label:'การปฏิบัติ',type:'text'},
-    {name:'details',label:'รายละเอียด',type:'textarea'},
-    {name:'place',label:'สถานที่',type:'text'},
-    {name:'note',label:'หมายเหตุ',type:'textarea'}],
-    cols:['report_time','activity','place'] }
+  daily: { label: 'รายงานประจำวัน', perm: 'daily',
+    tabs: ['เวรผลัด', 'ผลปฏิบัติ', 'เวรสืบเวร', 'ว.4 อื่นๆ'],
+    fields: [
+      { name: 'report_time', label: 'วันเวลาที่รายงาน', type: 'datetime-local' },
+      { name: 'count', label: 'จำนวน', type: 'number' },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+    cols: ['report_time', 'type', 'count', 'note'] },
+  checkpoint: { label: 'รายงานด่าน', perm: 'checkpoint', fields: [
+      { name: 'checkpoint_name', label: 'ชื่อด่าน', type: 'text' },
+      { name: 'start_time', label: 'เวลาเริ่ม', type: 'datetime-local' },
+      { name: 'end_time', label: 'เวลาสิ้นสุด', type: 'datetime-local' },
+      { name: 'lat', label: 'ละติจูด', type: 'text' },
+      { name: 'lng', label: 'ลองจิจูด', type: 'text' },
+      { name: 'result', label: 'ผลการตรวจ', type: 'text' },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+    cols: ['checkpoint_name', 'start_time', 'result'] },
+  arrest: { label: 'รายงานการจับกุม', perm: 'arrest', fields: [
+      { name: 'arrest_time', label: 'เวลาจับกุม', type: 'datetime-local' },
+      { name: 'charge', label: 'ข้อหา', type: 'text' },
+      { name: 'suspect_name', label: 'ชื่อผู้ต้องหา', type: 'text' },
+      { name: 'place', label: 'สถานที่', type: 'text' },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+    cols: ['arrest_time', 'charge', 'suspect_name', 'place'] },
+  accident: { label: 'รายงานอุบัติเหตุ', perm: 'accident', fields: [
+      { name: 'accident_time', label: 'วันเวลาเกิดเหตุ', type: 'datetime-local' },
+      { name: 'road', label: 'ทางหลวง', type: 'text' },
+      { name: 'km', label: 'กม.', type: 'text' },
+      { name: 'direction', label: 'ทิศทาง', type: 'select', options: ['ขาเข้า', 'ขาออก'] },
+      { name: 'deaths', label: 'เสียชีวิต (ราย)', type: 'number' },
+      { name: 'injuries', label: 'บาดเจ็บ (ราย)', type: 'number' },
+      { name: 'summary', label: 'สรุปเหตุ', type: 'textarea' }],
+    cols: ['accident_time', 'road', 'km', 'deaths', 'injuries'] },
+  task: { label: 'แจ้งภารกิจ', perm: 'task', fields: [
+      { name: 'start', label: 'เริ่มภารกิจ', type: 'datetime-local' },
+      { name: 'end', label: 'สิ้นสุดภารกิจ', type: 'datetime-local' },
+      { name: 'units', label: 'หน่วยที่เกี่ยวข้อง', type: 'text' },
+      { name: 'details', label: 'รายละเอียด', type: 'textarea' },
+      { name: 'place', label: 'สถานที่', type: 'text' }],
+    cols: ['start', 'end', 'units', 'place'] },
+  fuel: { label: 'น้ำมัน/น้ำมันเครื่อง', perm: 'fuel', fields: [
+      { name: 'time', label: 'วันเวลา', type: 'datetime-local' },
+      { name: 'plate', label: 'หมายเลขทะเบียนรถ', type: 'text' },
+      { name: 'fuel_type', label: 'ประเภทน้ำมัน', type: 'select', options: ['เบนซิน', 'ดีเซล', 'น้ำมันเครื่อง'] },
+      { name: 'liters', label: 'จำนวน (ลิตร)', type: 'number' },
+      { name: 'price', label: 'ราคา (บาท)', type: 'number' },
+      { name: 'receipt_no', label: 'เลขที่ใบเสร็จ', type: 'text' }],
+    cols: ['time', 'plate', 'fuel_type', 'liters', 'price'] },
+  news: { label: 'ส่งข่าวประชาสัมพันธ์', perm: 'news', fields: [
+      { name: 'news_time', label: 'วันเวลาของข่าว', type: 'datetime-local' },
+      { name: 'news_type', label: 'ประเภทข่าว', type: 'select', options: ['อุบัติเหตุ', 'จับกุม', 'ประชาสัมพันธ์', 'อื่นๆ'] },
+      { name: 'headline', label: 'พาดหัวข่าว', type: 'text' },
+      { name: 'body', label: 'เนื้อหาข่าว', type: 'textarea' }],
+    cols: ['news_time', 'news_type', 'headline'] },
+  weight: { label: 'ตรวจรถบรรทุกน้ำหนักเกิน', perm: 'weight', fields: [
+      { name: 'check_time', label: 'วันเวลาที่ตรวจ', type: 'datetime-local' },
+      { name: 'inspector', label: 'ผู้ตรวจ', type: 'text' },
+      { name: 'plate', label: 'ทะเบียน', type: 'text' },
+      { name: 'max_weight', label: 'น้ำหนักที่กฎหมายกำหนด (กก.)', type: 'number' },
+      { name: 'actual_weight', label: 'น้ำหนักที่ชั่งได้ (กก.)', type: 'number' },
+      { name: 'result', label: 'ผลการตรวจ', type: 'text' }],
+    cols: ['check_time', 'plate', 'actual_weight', 'result'] },
+  royal: { label: 'รายงานรับเสด็จ', perm: 'royal', fields: [
+      { name: 'mission', label: 'ชื่อภารกิจ', type: 'text' },
+      { name: 'time', label: 'วันเวลา', type: 'datetime-local' },
+      { name: 'place', label: 'สถานที่', type: 'text' },
+      { name: 'officers', label: 'เจ้าหน้าที่ปฏิบัติ', type: 'text' },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+    cols: ['mission', 'time', 'place'] },
+  other: { label: 'รายงาน อื่นๆ', perm: 'other', fields: [
+      { name: 'report_time', label: 'วันเวลาที่รายงาน', type: 'datetime-local' },
+      { name: 'activity', label: 'การปฏิบัติ', type: 'text' },
+      { name: 'details', label: 'รายละเอียด', type: 'textarea' },
+      { name: 'place', label: 'สถานที่', type: 'text' },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+    cols: ['report_time', 'activity', 'place'] }
 };
 
-// ===== State และ helper =====
 let session = JSON.parse(sessionStorage.getItem('session') || 'null');
 let ENV = 'demo';
 const $ = s => document.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = v => v ? new Date(v).toLocaleString('th-TH') : '';
-const perms = () => session ? session.user.perms : [];
-const has = p => perms().includes('all') || perms().includes(p);
+const has = p => session && (session.user.perms.includes('all') || session.user.perms.includes(p));
+const today = () => new Date().toISOString().slice(0, 10);
 
 async function api(action, body = {}) {
   const res = await fetch(API_URL, {
@@ -149,7 +189,16 @@ async function api(action, body = {}) {
   return j.data;
 }
 
-// ===== Render หลัก =====
+function countUp(el, to) {
+  const start = performance.now(), dur = 700;
+  const step = t => {
+    const p = Math.min((t - start) / dur, 1);
+    el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 function render() {
   $('#banner').hidden = ENV !== 'demo';
   if (!session) return renderLogin();
@@ -161,12 +210,11 @@ function render() {
 }
 
 function buildNav() {
-  const items = [['#home','ภาพรวม', has('dashboard') || true]];
-  Object.keys(MODULES).forEach(k => {
-    if (has(MODULES[k].perm)) items.push(['#form/' + k, MODULES[k].label]);
-  });
+  const items = [['#home', 'ภาพรวม']];
+  Object.keys(MODULES).forEach(k => { if (has(MODULES[k].perm)) items.push(['#form/' + k, MODULES[k].label]); });
+  const cur = location.hash || '#home';
   $('#nav').innerHTML = items.map(([h, t]) =>
-    `<a href="${h}" class="${location.hash === h || (h === '#home' && !location.hash) ? 'on' : ''}">${esc(t)}</a>`).join('');
+    `<a href="${h}" class="${cur.startsWith(h) ? 'on' : ''}">${esc(t)}</a>`).join('');
 }
 
 function route() {
@@ -175,10 +223,8 @@ function route() {
   if (a === 'form' && MODULES[b]) return renderForm(b);
   return renderHome();
 }
-
 window.addEventListener('hashchange', () => { if (session) { buildNav(); route(); } });
 
-// ===== หน้าเข้าสู่ระบบ =====
 function renderLogin() {
   $('#nav').hidden = true; $('#logout').hidden = true; $('#who').textContent = '';
   $('#app').innerHTML = `
@@ -192,8 +238,7 @@ function renderLogin() {
   const submit = async () => {
     $('#err').textContent = '';
     try {
-      const data = await api('login', { username: $('#u').value.trim(), password: $('#p').value });
-      session = data;
+      session = await api('login', { username: $('#u').value.trim(), password: $('#p').value });
       sessionStorage.setItem('session', JSON.stringify(session));
       location.hash = '#home';
       render();
@@ -209,21 +254,18 @@ $('#logout').onclick = async () => {
   location.hash = ''; render();
 };
 
-// ===== ภาพรวม =====
-async function renderHome() {
+function renderHome() {
   if (!has('dashboard')) {
     $('#app').innerHTML = `<div class="card"><h2>ยินดีต้อนรับ ${esc(session.user.display_name)}</h2>
       <p>เลือกเมนูด้านบนเพื่อบันทึกหรือดูรายการ</p></div>`;
     return;
   }
-  const today = new Date().toISOString().slice(0, 10);
-  const monthStart = today.slice(0, 8) + '01';
   $('#app').innerHTML = `
     <div class="card">
       <h2>ภาพรวม</h2>
       <div class="row">
-        <div><label>จากวันที่</label><input type="date" id="from" value="${monthStart}"></div>
-        <div><label>ถึงวันที่</label><input type="date" id="to" value="${today}"></div>
+        <div><label>จากวันที่</label><input type="date" id="from" value="${today().slice(0, 8) + '01'}"></div>
+        <div><label>ถึงวันที่</label><input type="date" id="to" value="${today()}"></div>
         <div style="flex:0"><button id="refresh">ดูผล</button></div>
       </div>
       <div id="sum"></div>
@@ -231,20 +273,23 @@ async function renderHome() {
   const load = async () => {
     const d = await api('summary', { from: $('#from').value, to: $('#to').value });
     $('#sum').innerHTML = `<table><tr><th>โมดูล</th><th>ทั้งหมด</th><th>รอตรวจ</th></tr>` +
-      Object.keys(d).map(k => {
-        const label = (Object.values(MODULES).find((m, i) => Object.keys(MODULES)[i] === k) || {}).label || k;
-        const label2 = MODULES[k] ? MODULES[k].label : k;
-        return `<tr><td>${esc(label2)}</td><td>${d[k].total}</td><td>${d[k].pending}</td></tr>`;
-      }).join('') + `</table>`;
+      Object.keys(d).map(k => `<tr><td>${esc(MODULES[k].label)}</td>
+        <td class="stat-num" data-to="${d[k].total}">0</td>
+        <td class="stat-num" data-to="${d[k].pending}">0</td></tr>`).join('') + '</table>';
+    document.querySelectorAll('#sum [data-to]').forEach(el => countUp(el, +el.dataset.to));
   };
   $('#refresh').onclick = () => load().catch(e => alert(e.message));
   load().catch(e => $('#sum').innerHTML = `<div class="err">${esc(e.message)}</div>`);
 }
 
-// ===== ฟอร์มบันทึก =====
-function renderForm(mod) {
+function renderForm(mod, tabIdx = 0) {
   const m = MODULES[mod];
   if (!has(m.perm)) return $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>';
+
+  const tabs = m.tabs
+    ? `<div class="tabs">${m.tabs.map((t, i) =>
+        `<button class="${i === tabIdx ? 'on' : ''}" data-tab="${i}">${i + 1}. ${esc(t)}</button>`).join('')}</div>`
+    : '';
   const inputs = m.fields.map(f => {
     let el;
     if (f.type === 'select') el = `<select name="${f.name}">${f.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
@@ -252,17 +297,24 @@ function renderForm(mod) {
     else el = `<input name="${f.name}" type="${f.type}" ${f.type === 'number' ? 'step="any"' : ''}>`;
     return `<div><label>${esc(f.label)}</label>${el}</div>`;
   }).join('');
+
   $('#app').innerHTML = `
     <div class="card">
       <h2>${esc(m.label)}</h2>
-      <p style="font-size:13px;color:#4a5b6b">หน่วย: ${esc(session.user.unit)}</p>
+      <p class="sub">หน่วย: ${esc(session.user.unit)}</p>
+      ${tabs}
       <div class="grid">${inputs}</div>
-      <div style="margin-top:16px;display:flex;gap:8px">
-        <button id="save">ส่งรายงาน</button>
+      <div class="actions">
+        <button id="save">ตรวจสอบข้อมูลก่อนส่ง</button>
         <button class="ghost" onclick="location.hash='#list/${mod}'">ดูรายการ</button>
       </div>
       <div class="err" id="err"></div>
     </div>`;
+
+  document.querySelectorAll('[data-tab]').forEach(btn => {
+    btn.onclick = () => renderForm(mod, +btn.dataset.tab);
+  });
+
   $('#save').onclick = async () => {
     $('#err').textContent = '';
     const payload = {};
@@ -270,6 +322,13 @@ function renderForm(mod) {
       const el = document.querySelector(`[name="${f.name}"]`);
       payload[f.name] = el ? el.value : '';
     });
+    if (m.tabs) payload.type = m.tabs[tabIdx];
+
+    const summary = Object.entries(payload).filter(([k, v]) => v !== '' && k !== 'type')
+      .map(([k, v]) => `${(m.fields.find(f => f.name === k) || {}).label}: ${v}`).join('\n');
+    const tabLine = m.tabs ? `ประเภท: ${m.tabs[tabIdx]}\n` : '';
+    if (!confirm(`ตรวจสอบข้อมูลก่อนส่ง\n\n${tabLine}${summary || '(ไม่มีข้อมูล)'}\n\nยืนยันการส่ง?`)) return;
+
     try {
       await api('submit', { module: mod, payload });
       alert('บันทึกเรียบร้อย');
@@ -278,31 +337,33 @@ function renderForm(mod) {
   };
 }
 
-// ===== รายการ + อนุมัติ =====
 function renderList(mod) {
   const m = MODULES[mod];
   if (!has(m.perm)) return $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>';
-  const today = new Date().toISOString().slice(0, 10);
+  const label = name => name === 'type' ? 'ประเภท' : (m.fields.find(f => f.name === name) || { label: name }).label;
+  const isTime = c => /time$|^start$|^end$/.test(c);
+
   $('#app').innerHTML = `
     <div class="card">
       <h2>${esc(m.label)} · รายการ</h2>
       <div class="row">
-        <div><label>จากวันที่</label><input type="date" id="from" value="${today.slice(0,8)+'01'}"></div>
-        <div><label>ถึงวันที่</label><input type="date" id="to" value="${today}"></div>
+        <div><label>จากวันที่</label><input type="date" id="from" value="${today().slice(0, 8) + '01'}"></div>
+        <div><label>ถึงวันที่</label><input type="date" id="to" value="${today()}"></div>
         <div style="flex:0"><button id="refresh">ค้นหา</button></div>
       </div>
       <div id="tbl"></div>
       <div class="err" id="err"></div>
     </div>`;
+
   const load = async () => {
     $('#err').textContent = '';
     const rows = await api('list', { module: mod, filter: { from: $('#from').value, to: $('#to').value } });
     if (!rows.length) { $('#tbl').innerHTML = '<p>ไม่มีรายการ</p>'; return; }
-    const cols = m.cols;
-    $('#tbl').innerHTML = `<table><tr>${cols.map(c => `<th>${esc(fieldLabel(mod, c))}</th>`).join('')}
+    const cols = m.tabs ? ['type', ...m.cols.filter(c => c !== 'type')] : m.cols;
+    $('#tbl').innerHTML = `<table><tr>${cols.map(c => `<th>${esc(label(c))}</th>`).join('')}
       <th>หน่วย</th><th>สถานะ</th><th></th></tr>` +
       rows.map(r => `<tr>
-        ${cols.map(c => `<td>${esc(c.includes('time') || c === 'start' || c === 'end' ? fmt(r[c]) : r[c])}</td>`).join('')}
+        ${cols.map(c => `<td>${esc(isTime(c) ? fmt(r[c]) : r[c])}</td>`).join('')}
         <td>${esc(r.unit)}</td>
         <td><span class="tag ${esc(r.status)}">${r.status === 'approved' ? 'อนุมัติแล้ว' : 'รอตรวจ'}</span></td>
         <td>${has('approve') && r.status === 'pending'
@@ -319,22 +380,12 @@ function renderList(mod) {
   load().catch(e => $('#err').textContent = e.message);
 }
 
-function fieldLabel(mod, name) {
-  const f = MODULES[mod].fields.find(x => x.name === name);
-  return f ? f.label : name;
-}
-
-// ===== เริ่มต้น =====
 (async () => {
-  try {
-    if (session) {
-      try { session.user = await api('me'); sessionStorage.setItem('session', JSON.stringify(session)); }
-      catch (e) { session = null; sessionStorage.removeItem('session'); }
-    }
-    render();
-  } catch (e) {
-    $('#app').innerHTML = `<div class="card err">เชื่อมต่อไม่ได้: ${esc(e.message)}</div>`;
+  if (session) {
+    try { session.user = await api('me'); sessionStorage.setItem('session', JSON.stringify(session)); }
+    catch (e) { session = null; sessionStorage.removeItem('session'); }
   }
+  render();
 })();
 </script>
 </body>
