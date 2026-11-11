@@ -1,151 +1,255 @@
 <!doctype html>
-<html lang="th">
+<html lang="th" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ระบบรายงานประจำวัน</title>
+
+<!-- ฟอนต์ Sarabun + ไอคอน Font Awesome (โหลดจาก CDN) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
+  /* ===== ตัวแปรสี (โหมดสว่าง) ===== */
   :root {
-    --c: #0f4c75; --c2: #3282b8; --bg: #f0f4f8; --line: #dbe4ee;
-    --txt: #1b2a3a; --muted: #64748b; --warn: #ffd166; --ok: #2e9e6a;
-    --radius: 14px; --shadow: 0 6px 24px rgba(15,76,117,.08);
+    --c: #1565a8;            /* สีหลัก (น้ำเงิน) */
+    --c2: #2f86c9;           /* สีหลักอ่อน */
+    --title: #0f7391;        /* สีหัวข้อหน้า (เขียวน้ำเงิน) */
+    --txt: #16283a;          /* สีตัวอักษร */
+    --muted: #64748b;        /* สีตัวอักษรรอง */
+    --line: #d3deea;         /* สีเส้นขอบ */
+    --card: rgba(255,255,255,.82);  /* พื้นการ์ดแบบโปร่ง */
+    --field: #ffffff;        /* พื้นช่องกรอก */
+    --warn-bg: #fff4e0; --warn-tx: #b45309;
+    --ok: #2e9e6a;
+    --bg1: #b7defa; --bg2: #eaf2fb; --bg3: #c9efec;   /* พื้นหลังไล่สี */
+    --radius: 18px;
+    --shadow: 0 8px 28px rgba(21,101,168,.10);
   }
+  /* ===== ตัวแปรสี (โหมดมืด) ===== */
+  [data-theme="dark"] {
+    --c: #4aa3e8; --c2: #2f86c9; --title: #5fd0e8;
+    --txt: #e6eef7; --muted: #93a4b8; --line: #2a3a4d;
+    --card: rgba(22,34,48,.88); --field: #101c2a;
+    --warn-bg: #3a2c12; --warn-tx: #fbbf24;
+    --bg1: #0b1622; --bg2: #0f1e2e; --bg3: #0e2a2e;
+    --shadow: 0 8px 28px rgba(0,0,0,.35);
+  }
+
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; color: var(--txt); background: var(--bg);
-    font-family: "Sarabun","Noto Sans Thai",system-ui,sans-serif; }
-  .banner { background: linear-gradient(90deg, var(--warn), #ffe08a, var(--warn));
-    background-size: 200% 100%; animation: shimmer 6s linear infinite;
-    text-align: center; padding: 8px; font-weight: 600; font-size: 14px; }
-  .banner[hidden], nav[hidden], #logout[hidden] { display: none; }
-  header { display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(120deg, var(--c), var(--c2)); color: #fff;
-    padding: 14px 22px; position: sticky; top: 0; z-index: 10;
-    box-shadow: 0 4px 18px rgba(15,76,117,.25); animation: slideDown .5s ease both; }
-  header .who { font-size: 14px; display: flex; align-items: center; gap: 10px; }
-  nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 18px;
-    background: rgba(255,255,255,.75); border-bottom: 1px solid var(--line);
-    animation: fadeIn .6s ease .1s both; }
-  nav a { padding: 7px 12px; border-radius: 999px; text-decoration: none;
-    color: var(--c); font-size: 14px; transition: background .2s, transform .15s; }
-  nav a:hover { background: #e4f0f9; transform: translateY(-1px); }
-  nav a.on { background: var(--c); color: #fff; }
-  main { max-width: 980px; margin: 24px auto; padding: 0 16px; }
-  .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 22px; margin-bottom: 18px; box-shadow: var(--shadow);
-    animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
-  .center { max-width: 380px; margin: 70px auto; }
-  h2 { margin: 0 0 14px; font-size: 20px; color: var(--c); }
-  .sub { font-size: 13px; color: var(--muted); margin: -6px 0 14px; }
-  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-  .tabs button { background: #fff; color: var(--c); border: 1px solid var(--c2); box-shadow: none; }
-  .tabs button.on { background: var(--c); color: #fff; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-  .row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin-bottom: 14px; }
-  .row > div { flex: 1; min-width: 160px; }
-  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
-  input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line);
-    border-radius: 10px; font: inherit; background: #fff; color: var(--txt);
-    transition: border-color .2s, box-shadow .2s; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--c2);
-    box-shadow: 0 0 0 4px rgba(50,130,184,.15); }
+  html { min-height: 100%; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--txt);
+    font-family: "Sarabun", "Noto Sans Thai", system-ui, sans-serif;
+    /* พื้นหลังไล่สีฟ้า -> ขาว -> เขียวมิ้นต์ ตามภาพตัวอย่าง */
+    background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%) fixed;
+  }
+  [hidden] { display: none !important; }
+
+  /* ===== แถบโหมดทดลอง ===== */
+  .banner { background: #ffd166; text-align: center; padding: 7px 10px; font-weight: 600; font-size: 14px; color: #3b2f00; }
+
+  /* ===== โครงหน้า ===== */
+  main { max-width: 1080px; margin: 0 auto; padding: 26px 18px 120px; }
+  main.narrow { max-width: 620px; }     /* หน้าฟอร์มแคบตรงกลาง */
+  .card {
+    background: var(--card); border: 1px solid rgba(255,255,255,.6);
+    border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+  }
+  [data-theme="dark"] .card { border-color: var(--line); }
+
+  /* ===== หน้าเข้าสู่ระบบ ===== */
+  .login { max-width: 380px; margin: 70px auto; }
+  .login h2 { margin: 0 0 16px; color: var(--title); font-size: 22px; text-align: center; }
+
+  /* ===== หัวหน้าหลัก (ชื่อผู้ใช้ + ปุ่มไอคอน) ===== */
+  .hero { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .hero small { color: var(--muted); font-size: 14px; }
+  .hero h1 { margin: 2px 0 8px; font-size: 28px; line-height: 1.2; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px; font-size: 13px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--field); color: var(--muted); }
+  .chip i { color: var(--c); font-size: 12px; }
+  .tools { display: flex; gap: 8px; align-items: center; }
+  .sq { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; cursor: pointer;
+    background: var(--field); border: 1px solid var(--line); color: var(--c); font-size: 16px; box-shadow: none; padding: 0; }
+  .sq.red { color: #d92d20; }
+  .pill-btn { height: 44px; padding: 0 14px; border-radius: 12px; background: var(--field); border: 1px solid var(--line);
+    color: #c2570c; cursor: pointer; font: inherit; font-size: 14px; display: inline-flex; align-items: center; gap: 7px; }
+
+  /* ===== หัวข้อกลุ่ม ===== */
+  .sec { display: flex; align-items: center; gap: 8px; margin: 26px 4px 10px; font-weight: 600; font-size: 16px; }
+  .sec i { color: var(--c); }
+
+  /* ===== การ์ด "ต้องทำตอนนี้" ===== */
+  .todo { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .todo .ico { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-size: 22px;
+    background: #d9f1e7; color: #1f8f62; border: 1px solid #bfe6d3; }
+  .todo.warn .ico { background: #fff1d6; color: #c2570c; border-color: #fbd9a0; }
+  .todo b { display: block; font-size: 17px; }
+  .todo span { font-size: 13px; color: var(--muted); }
+
+  /* ===== การ์ดงานที่ทำบ่อย (4 ใบ) ===== */
+  .quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .qcard { cursor: pointer; padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid rgba(255,255,255,.6);
+    box-shadow: var(--shadow); transition: transform .15s; text-decoration: none; color: inherit; display: block; }
+  .qcard:hover { transform: translateY(-2px); }
+  .qcard b { display: block; margin-top: 14px; font-size: 17px; }
+  .qcard span { font-size: 12.5px; color: var(--muted); }
+
+  /* ไอคอนสี่เหลี่ยมมน (ใช้ทั้งการ์ดใหญ่และรายการเมนู) */
+  .ibox { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; border: 1px solid transparent; }
+  .ibox.sm { width: 36px; height: 36px; font-size: 15px; border-radius: 10px; flex: none; }
+  .t-blue   { background: #dbeefb; color: #1565a8; border-color: #bcdcf3; }
+  .t-orange { background: #fde8d6; color: #c2570c; border-color: #f7cfae; }
+  .t-red    { background: #fde0e0; color: #d92d20; border-color: #f6bcbc; }
+  .t-purple { background: #ece0fb; color: #7e3fd0; border-color: #d9c4f3; }
+  .t-green  { background: #d9f1e7; color: #1f8f62; border-color: #bfe6d3; }
+  .t-brown  { background: #f6e9d6; color: #a9690b; border-color: #ead2ad; }
+
+  /* ===== กลุ่มเมนู 3 คอลัมน์ ===== */
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; align-items: start; }
+  .group h4 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--muted); display: flex; gap: 7px; align-items: center; }
+  .item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; margin-bottom: 8px; border-radius: 12px;
+    background: var(--field); border: 1px solid var(--line); cursor: pointer; text-decoration: none; color: inherit; }
+  .item:hover { border-color: var(--c2); }
+  .item span { flex: 1; font-size: 15px; }
+  .item .chev { color: var(--muted); font-size: 12px; }
+
+  /* ===== แถบบนของหน้าฟอร์ม ===== */
+  .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-bottom: 12px; }
+  .topbar h2 { margin: 0; font-size: 18px; color: var(--title); text-align: center; }
+  .back { justify-self: start; display: inline-flex; gap: 6px; align-items: center; padding: 4px 10px; font-size: 12px; cursor: pointer;
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 6px; box-shadow: none; font-family: inherit; }
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tabs button { background: transparent; color: var(--muted); border: 0; box-shadow: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; }
+  .tabs button.on { background: #cfe5f7; color: var(--c); font-weight: 600; }
+  [data-theme="dark"] .tabs button.on { background: #1d3a56; }
+
+  /* ===== ฟอร์ม ===== */
+  .form-title { text-align: center; color: var(--title); font-size: 16px; font-weight: 600; margin: 0 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
+  .grid .full { grid-column: 1 / -1; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  input, select, textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px;
+    font: inherit; font-size: 14px; background: var(--field); color: var(--txt); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--c2); box-shadow: 0 0 0 3px rgba(47,134,201,.18); }
   textarea { min-height: 84px; resize: vertical; }
-  button { background: linear-gradient(135deg, var(--c), var(--c2)); color: #fff; border: 0;
-    border-radius: 10px; padding: 10px 18px; font: inherit; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(15,76,117,.2); transition: transform .15s, box-shadow .2s; }
-  button:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(15,76,117,.25); }
-  button:active { transform: scale(.98); }
-  button:disabled { opacity: .6; cursor: wait; }
-  button.ghost { background: #fff; color: var(--c); border: 1px solid var(--c2); box-shadow: none; }
-  button.ok { background: linear-gradient(135deg, var(--ok), #4cc38a); }
+  .divider { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+
+  /* ===== ปุ่ม ===== */
+  button { font: inherit; cursor: pointer; }
+  .btn { width: 100%; background: linear-gradient(180deg, var(--c2), var(--c)); color: #fff; border: 0; border-radius: 8px;
+    padding: 11px 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(21,101,168,.25); }
+  .btn:disabled { opacity: .6; cursor: wait; }
+  .btn.ghost { background: var(--field); color: var(--c); border: 1px solid var(--c2); box-shadow: none; }
+  .btn.ok { width: auto; background: linear-gradient(180deg, #4cc38a, var(--ok)); padding: 6px 12px; font-size: 13px; }
+  .actions { margin-top: 18px; display: grid; gap: 10px; }
+
+  /* ===== ตาราง/รายการ ===== */
+  .tbl-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { color: var(--muted); font-weight: 600; background: #f7fafd; }
-  tr:hover td { background: #f3f9fd; }
+  th { color: var(--muted); font-weight: 600; }
   .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; }
   .pending { background: #fff3cd; color: #7a5a00; }
   .approved { background: #d4f3e3; color: #14663e; }
   .stat-num { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--c); }
-  .err { color: #b00020; margin-top: 10px; min-height: 20px; font-size: 14px; }
-  .actions { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
-  @keyframes shimmer { from { background-position: 0 0; } to { background-position: 200% 0; } }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
-  @media (max-width: 600px) { header { padding: 12px 14px; } .card { padding: 16px; } }
+  .row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin-bottom: 14px; }
+  .row > div { flex: 1; min-width: 150px; }
+  .err { color: #b00020; margin-top: 10px; min-height: 18px; font-size: 14px; }
+  .hint { background: var(--warn-bg); color: var(--warn-tx); border: 1px solid #f5d9a8; border-radius: 8px; padding: 8px 12px; font-size: 12.5px; margin-bottom: 14px; }
+
+  /* ===== ปุ่มลอย "ผู้ช่วยกฎหมาย" (มุมขวาล่าง) ===== */
+  .fab { position: fixed; right: 18px; bottom: 18px; z-index: 20; display: inline-flex; gap: 9px; align-items: center;
+    padding: 12px 20px; border-radius: 999px; border: 0; color: #fff; font-weight: 600;
+    background: linear-gradient(180deg, #1f6fb5, #14558f); box-shadow: 0 8px 22px rgba(20,85,143,.4); }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 23px; }
+    main { padding: 16px 12px 110px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
 
 <div id="banner" class="banner" hidden>โหมดทดลอง: ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ไม่กระทบข้อมูลจริง</div>
-<header>
-  <strong>ระบบรายงานประจำวัน</strong>
-  <span class="who">
-    <span id="who"></span>
-    <button id="logout" class="ghost" hidden>ออกจากระบบ</button>
-  </span>
-</header>
-<nav id="nav" hidden></nav>
 <main id="app"></main>
 
+<!-- ปุ่มลอยผู้ช่วยกฎหมาย: แสดงเฉพาะตอนล็อกอิน -->
+<button id="fab" class="fab" hidden><i class="fa-solid fa-scale-balanced"></i> ผู้ช่วยกฎหมาย</button>
+
 <script>
+/* ============================================================
+   ตั้งค่าหลัก
+   ============================================================ */
+// 🔧 PLACEHOLDER: ใส่ URL เว็บแอป Apps Script ของคุณที่นี่ (ค่าเดิมคงไว้ได้ถ้าไม่เปลี่ยน)
 const API_URL = 'https://script.google.com/macros/s/AKfycbxssyQml6dXj92np0pSwDfFNEGtDqu4O3kAUxueMViNDk-yhJHb0UCf6Lj9mwKofM8sYA/exec';
 
+/* ============================================================
+   นิยามโมดูล (ฟิลด์/คอลัมน์เหมือนโค้ดเดิมทุกอย่าง)
+   เพิ่มคีย์ใหม่: icon = ไอคอน FA, tone = สีไอคอน, desc = คำอธิบายใต้ชื่อ, group = กลุ่มเมนู
+   full:true = ช่องกว้างเต็มแถว
+   ============================================================ */
 const MODULES = {
-  daily: { label: 'รายงานประจำวัน', perm: 'daily',
+  daily: { label: 'รายงานประจำวัน', desc: 'ยอดผลการปฏิบัติประจำผลัด', icon: 'fa-clipboard-list', tone: 't-blue', perm: 'daily',
+    title: 'หมวดรายงานประจำวัน',
     tabs: ['เวรผลัด', 'ผลปฏิบัติ', 'เวรสืบเวร', 'ว.4 อื่นๆ'],
     fields: [
-      { name: 'report_time', label: 'วันเวลาที่รายงาน', type: 'datetime-local' },
+      { name: 'report_time', label: 'วันที่เวลาที่รายงาน', type: 'datetime-local' },
       { name: 'count', label: 'จำนวน', type: 'number' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
     cols: ['report_time', 'type', 'count', 'note'] },
-  checkpoint: { label: 'รายงานด่าน', perm: 'checkpoint', fields: [
-      { name: 'checkpoint_name', label: 'ชื่อด่าน', type: 'text' },
-      { name: 'start_time', label: 'เวลาเริ่ม', type: 'datetime-local' },
-      { name: 'end_time', label: 'เวลาสิ้นสุด', type: 'datetime-local' },
-      { name: 'lat', label: 'ละติจูด', type: 'text' },
-      { name: 'lng', label: 'ลองจิจูด', type: 'text' },
-      { name: 'result', label: 'ผลการตรวจ', type: 'text' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+  checkpoint: { label: 'รายงานตั้งด่าน', desc: 'จุดตรวจ ผลการตรวจ', icon: 'fa-road-barrier', tone: 't-orange', perm: 'checkpoint',
+    title: 'รายงานด่าน จุดตรวจ จุดสกัด', fields: [
+      { name: 'checkpoint_name', label: 'ชื่อด่าน', type: 'text', full: true },
+      { name: 'start_time', label: 'เริ่มตั้งด่าน', type: 'datetime-local' },
+      { name: 'end_time', label: 'เลิกด่าน', type: 'datetime-local' },
+      { name: 'lat', label: 'ละติจูด', type: 'text', ph: 'เช่น 16.8765' },
+      { name: 'lng', label: 'ลองจิจูด', type: 'text', ph: 'เช่น 98.5432' },
+      { name: 'result', label: 'ผลการตรวจ', type: 'text', full: true },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
     cols: ['checkpoint_name', 'start_time', 'result'] },
-  arrest: { label: 'รายงานการจับกุม', perm: 'arrest', fields: [
+  arrest: { label: 'รายงานจับกุม', desc: 'ผู้ต้องหา ข้อหา ของกลาง', icon: 'fa-handcuffs', tone: 't-red', perm: 'arrest',
+    title: 'รายงานการจับกุม', fields: [
       { name: 'arrest_time', label: 'เวลาจับกุม', type: 'datetime-local' },
       { name: 'charge', label: 'ข้อหา', type: 'text' },
-      { name: 'suspect_name', label: 'ชื่อผู้ต้องหา', type: 'text' },
+      { name: 'suspect_name', label: 'ชื่อผู้ต้องหา', type: 'text', ph: 'ชื่อ-สกุล' },
       { name: 'place', label: 'สถานที่', type: 'text' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
     cols: ['arrest_time', 'charge', 'suspect_name', 'place'] },
-  accident: { label: 'รายงานอุบัติเหตุ', perm: 'accident', fields: [
-      { name: 'accident_time', label: 'วันเวลาเกิดเหตุ', type: 'datetime-local' },
-      { name: 'road', label: 'ทางหลวง', type: 'text' },
-      { name: 'km', label: 'กม.', type: 'text' },
+  accident: { label: 'รายงานอุบัติเหตุ', desc: 'เหตุบนทางหลวง', icon: 'fa-car-burst', tone: 't-purple', perm: 'accident',
+    title: 'รายงานอุบัติเหตุ', fields: [
+      { name: 'accident_time', label: 'วันที่เวลาที่เกิดเหตุ', type: 'datetime-local' },
+      { name: 'road', label: 'ทล.', type: 'text', ph: 'เช่น 1' },
+      { name: 'km', label: 'กม.', type: 'text', ph: 'เช่น 580+400' },
       { name: 'direction', label: 'ทิศทาง', type: 'select', options: ['ขาเข้า', 'ขาออก'] },
-      { name: 'deaths', label: 'เสียชีวิต (ราย)', type: 'number' },
-      { name: 'injuries', label: 'บาดเจ็บ (ราย)', type: 'number' },
-      { name: 'summary', label: 'สรุปเหตุ', type: 'textarea' }],
+      { name: 'deaths', label: 'เสียชีวิต (ราย)', type: 'number', ph: 'ระบุจำนวน หรือใส่ 0' },
+      { name: 'injuries', label: 'ได้รับบาดเจ็บ (ราย)', type: 'number', ph: 'ระบุจำนวน หรือใส่ 0' },
+      { name: 'summary', label: 'สรุปเหตุ', type: 'textarea', full: true }],
     cols: ['accident_time', 'road', 'km', 'deaths', 'injuries'] },
-  task: { label: 'แจ้งภารกิจ', perm: 'task', fields: [
+  task: { label: 'แจ้งภารกิจ', icon: 'fa-bullseye', tone: 't-red', perm: 'task', group: 'mission',
+    title: 'แจ้งภารกิจ', fields: [
       { name: 'start', label: 'เริ่มภารกิจ', type: 'datetime-local' },
       { name: 'end', label: 'สิ้นสุดภารกิจ', type: 'datetime-local' },
       { name: 'units', label: 'หน่วยที่เกี่ยวข้อง', type: 'text' },
-      { name: 'details', label: 'รายละเอียด', type: 'textarea' },
-      { name: 'place', label: 'สถานที่', type: 'text' }],
+      { name: 'place', label: 'สถานที่', type: 'text' },
+      { name: 'details', label: 'รายละเอียด', type: 'textarea', full: true }],
     cols: ['start', 'end', 'units', 'place'] },
-  fuel: { label: 'น้ำมัน/น้ำมันเครื่อง', perm: 'fuel', fields: [
+  royal: { label: 'รายงานรับเสด็จ', icon: 'fa-shield-halved', tone: 't-brown', perm: 'royal', group: 'mission',
+    title: 'รายงานรับเสด็จ', fields: [
+      { name: 'mission', label: 'ชื่อภารกิจ', type: 'text', full: true },
       { name: 'time', label: 'วันเวลา', type: 'datetime-local' },
-      { name: 'plate', label: 'หมายเลขทะเบียนรถ', type: 'text' },
-      { name: 'fuel_type', label: 'ประเภทน้ำมัน', type: 'select', options: ['เบนซิน', 'ดีเซล', 'น้ำมันเครื่อง'] },
-      { name: 'liters', label: 'จำนวน (ลิตร)', type: 'number' },
-      { name: 'price', label: 'ราคา (บาท)', type: 'number' },
-      { name: 'receipt_no', label: 'เลขที่ใบเสร็จ', type: 'text' }],
-    cols: ['time', 'plate', 'fuel_type', 'liters', 'price'] },
-  news: { label: 'ส่งข่าวประชาสัมพันธ์', perm: 'news', fields: [
-      { name: 'news_time', label: 'วันเวลาของข่าว', type: 'datetime-local' },
-      { name: 'news_type', label: 'ประเภทข่าว', type: 'select', options: ['อุบัติเหตุ', 'จับกุม', 'ประชาสัมพันธ์', 'อื่นๆ'] },
-      { name: 'headline', label: 'พาดหัวข่าว', type: 'text' },
-      { name: 'body', label: 'เนื้อหาข่าว', type: 'textarea' }],
-    cols: ['news_time', 'news_type', 'headline'] },
-  weight: { label: 'ตรวจรถบรรทุกน้ำหนักเกิน', perm: 'weight', fields: [
+      { name: 'place', label: 'สถานที่', type: 'text' },
+      { name: 'officers', label: 'เจ้าหน้าที่ปฏิบัติ', type: 'text', full: true },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
+    cols: ['mission', 'time', 'place'] },
+  weight: { label: 'ตรวจรถบรรทุกน้ำหนักเกิน', icon: 'fa-truck-ramp-box', tone: 't-orange', perm: 'weight', group: 'check',
+    title: 'ตรวจรถบรรทุกน้ำหนักเกิน', fields: [
       { name: 'check_time', label: 'วันเวลาที่ตรวจ', type: 'datetime-local' },
       { name: 'inspector', label: 'ผู้ตรวจ', type: 'text' },
       { name: 'plate', label: 'ทะเบียน', type: 'text' },
@@ -153,29 +257,62 @@ const MODULES = {
       { name: 'actual_weight', label: 'น้ำหนักที่ชั่งได้ (กก.)', type: 'number' },
       { name: 'result', label: 'ผลการตรวจ', type: 'text' }],
     cols: ['check_time', 'plate', 'actual_weight', 'result'] },
-  royal: { label: 'รายงานรับเสด็จ', perm: 'royal', fields: [
-      { name: 'mission', label: 'ชื่อภารกิจ', type: 'text' },
+  news: { label: 'การประชาสัมพันธ์', icon: 'fa-bullhorn', tone: 't-purple', perm: 'news', group: 'check',
+    title: 'ส่งข่าวประชาสัมพันธ์', fields: [
+      { name: 'news_time', label: 'วันเวลาของข่าว', type: 'datetime-local' },
+      { name: 'news_type', label: 'ประเภทข่าว', type: 'select', options: ['อุบัติเหตุ', 'จับกุม', 'ประชาสัมพันธ์', 'อื่นๆ'] },
+      { name: 'headline', label: 'พาดหัวข่าว', type: 'text', full: true },
+      { name: 'body', label: 'เนื้อหาข่าว', type: 'textarea', full: true }],
+    cols: ['news_time', 'news_type', 'headline'] },
+  fuel: { label: 'น้ำมัน/น้ำมันเครื่อง', icon: 'fa-gas-pump', tone: 't-green', perm: 'fuel', group: 'check',
+    title: 'น้ำมัน/น้ำมันเครื่อง', fields: [
       { name: 'time', label: 'วันเวลา', type: 'datetime-local' },
-      { name: 'place', label: 'สถานที่', type: 'text' },
-      { name: 'officers', label: 'เจ้าหน้าที่ปฏิบัติ', type: 'text' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
-    cols: ['mission', 'time', 'place'] },
-  other: { label: 'รายงาน อื่นๆ', perm: 'other', fields: [
-      { name: 'report_time', label: 'วันเวลาที่รายงาน', type: 'datetime-local' },
+      { name: 'plate', label: 'หมายเลขทะเบียนรถ', type: 'text' },
+      { name: 'fuel_type', label: 'ประเภทน้ำมัน', type: 'select', options: ['เบนซิน', 'ดีเซล', 'น้ำมันเครื่อง'] },
+      { name: 'liters', label: 'จำนวน (ลิตร)', type: 'number' },
+      { name: 'price', label: 'ราคา (บาท)', type: 'number' },
+      { name: 'receipt_no', label: 'เลขที่ใบเสร็จ', type: 'text' }],
+    cols: ['time', 'plate', 'fuel_type', 'liters', 'price'] },
+  other: { label: 'รายงาน อื่นๆ', icon: 'fa-file-lines', tone: 't-blue', perm: 'other', group: 'mission',
+    title: 'รายงาน อื่นๆ', fields: [
+      { name: 'report_time', label: 'วันที่เวลาที่รายงาน', type: 'datetime-local' },
       { name: 'activity', label: 'การปฏิบัติ', type: 'text' },
-      { name: 'details', label: 'รายละเอียด', type: 'textarea' },
-      { name: 'place', label: 'สถานที่', type: 'text' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea' }],
+      { name: 'place', label: 'สถานที่', type: 'text', full: true },
+      { name: 'details', label: 'รายละเอียด', type: 'textarea', full: true },
+      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
     cols: ['report_time', 'activity', 'place'] }
 };
 
+// กลุ่มเมนูหน้าหลัก (3 กล่องด้านล่าง) — เรียงตามภาพตัวอย่าง
+const QUICK = ['daily', 'checkpoint', 'arrest', 'accident'];            // งานที่ทำบ่อย 4 ใบ
+const GROUPS = [
+  { key: 'mission', title: 'ภารกิจ', icon: 'fa-bullseye', items: ['task', 'LIST_TASK', 'royal', 'other'] },
+  { key: 'check', title: 'ตรวจ ประชาสัมพันธ์ และยานพาหนะ', icon: 'fa-truck-field', items: ['weight', 'news', 'fuel'] }
+];
+
+/* ============================================================
+   ตัวแปรและฟังก์ชันช่วย
+   ============================================================ */
 let session = JSON.parse(sessionStorage.getItem('session') || 'null');
 let ENV = 'demo';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// แสดงวันเวลาแบบ พ.ศ. (th-TH ใช้ปี พ.ศ. อยู่แล้ว)
 const fmt = v => v ? new Date(v).toLocaleString('th-TH') : '';
 const has = p => session && (session.user.perms.includes('all') || session.user.perms.includes(p));
-const today = () => new Date().toISOString().slice(0, 10);
+// วันที่ท้องถิ่น yyyy-mm-dd (แก้ปัญหา toISOString เป็นเวลา UTC ทำให้วันคลาดเคลื่อน)
+const pad = n => String(n).padStart(2, '0');
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+// เวลาปัจจุบันสำหรับ input datetime-local
+const nowLocal = () => { const d = new Date(); return `${today()}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'สวัสดีตอนเช้า' : h < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น'; };
+
+// โหมดมืด: จำค่าใน sessionStorage (ใช้ try/catch กันกรณีเบราว์เซอร์บล็อก)
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { sessionStorage.setItem('theme', t); } catch (e) {}
+}
+setTheme((() => { try { return sessionStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; } })());
 
 async function api(action, body = {}) {
   const res = await fetch(API_URL, {
@@ -189,50 +326,44 @@ async function api(action, body = {}) {
   return j.data;
 }
 
-function countUp(el, to) {
-  const start = performance.now(), dur = 700;
-  const step = t => {
-    const p = Math.min((t - start) / dur, 1);
-    el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
-    if (p < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
-
+/* ============================================================
+   เรนเดอร์หลัก + เราท์ (hash)
+   ============================================================ */
 function render() {
   $('#banner').hidden = ENV !== 'demo';
+  $('#fab').hidden = !session;
   if (!session) return renderLogin();
-  $('#who').textContent = session.user.display_name + ' · ' + session.user.unit;
-  $('#logout').hidden = false;
-  $('#nav').hidden = false;
-  buildNav();
   route();
-}
-
-function buildNav() {
-  const items = [['#home', 'ภาพรวม']];
-  Object.keys(MODULES).forEach(k => { if (has(MODULES[k].perm)) items.push(['#form/' + k, MODULES[k].label]); });
-  const cur = location.hash || '#home';
-  $('#nav').innerHTML = items.map(([h, t]) =>
-    `<a href="${h}" class="${cur.startsWith(h) ? 'on' : ''}">${esc(t)}</a>`).join('');
 }
 
 function route() {
   const [a, b] = (location.hash || '#home').slice(1).split('/');
+  $('#app').className = (a === 'form' || a === 'list') ? 'narrow' : '';
   if (a === 'list' && MODULES[b]) return renderList(b);
   if (a === 'form' && MODULES[b]) return renderForm(b);
+  if (a === 'dash') return renderDash();
+  if (a === 'history') return renderHistory();
   return renderHome();
 }
-window.addEventListener('hashchange', () => { if (session) { buildNav(); route(); } });
+window.addEventListener('hashchange', () => { if (session) route(); });
 
+// ปุ่มลอยผู้ช่วยกฎหมาย
+$('#fab').onclick = () => {
+  // 🔧 PLACEHOLDER: เปลี่ยนเป็นเปิดหน้า/แชตผู้ช่วยกฎหมายของคุณ
+  alert('ผู้ช่วยกฎหมาย: (ตัวอย่างสำหรับทดลองใช้)');
+};
+
+/* ============================================================
+   หน้าเข้าสู่ระบบ
+   ============================================================ */
 function renderLogin() {
-  $('#nav').hidden = true; $('#logout').hidden = true; $('#who').textContent = '';
+  $('#app').className = '';
   $('#app').innerHTML = `
-    <div class="card center">
+    <div class="card login">
       <h2>เข้าสู่ระบบ</h2>
-      <div class="row"><div><label>ชื่อผู้ใช้</label><input id="u" autocomplete="username"></div></div>
-      <div class="row"><div><label>รหัสผ่าน</label><input id="p" type="password" autocomplete="current-password"></div></div>
-      <button id="go" style="width:100%">เข้าสู่ระบบ</button>
+      <div style="margin-bottom:12px"><label>ชื่อผู้ใช้</label><input id="u" autocomplete="username"></div>
+      <div style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="p" type="password" autocomplete="current-password"></div>
+      <button class="btn" id="go">เข้าสู่ระบบ</button>
       <div class="err" id="err"></div>
     </div>`;
   const submit = async () => {
@@ -248,72 +379,189 @@ function renderLogin() {
   $('#p').onkeydown = e => { if (e.key === 'Enter') submit(); };
 }
 
-$('#logout').onclick = async () => {
+async function doLogout() {
   try { await api('logout'); } catch (e) {}
   session = null; sessionStorage.removeItem('session');
   location.hash = ''; render();
-};
+}
 
+/* ============================================================
+   หน้าหลัก (ตามภาพตัวอย่างที่ 1)
+   ============================================================ */
 function renderHome() {
-  if (!has('dashboard')) {
-    $('#app').innerHTML = `<div class="card"><h2>ยินดีต้อนรับ ${esc(session.user.display_name)}</h2>
-      <p>เลือกเมนูด้านบนเพื่อบันทึกหรือดูรายการ</p></div>`;
-    return;
-  }
+  const u = session.user;
+  // การ์ดเมนูใหญ่ 4 ใบ
+  const quick = QUICK.filter(k => has(MODULES[k].perm)).map(k => {
+    const m = MODULES[k];
+    return `<a class="qcard" href="#form/${k}">
+      <div class="ibox ${m.tone}"><i class="fa-solid ${m.icon}"></i></div>
+      <b>${esc(m.label)}</b><span>${esc(m.desc || '')}</span></a>`;
+  }).join('');
+
+  // รายการเมนูในแต่ละกลุ่ม
+  const itemHtml = (icon, tone, text, href) => `
+    <a class="item" href="${href}"><div class="ibox sm ${tone}"><i class="fa-solid ${icon}"></i></div>
+    <span>${esc(text)}</span><i class="fa-solid fa-chevron-right chev"></i></a>`;
+  const groups = GROUPS.map(g => {
+    const rows = g.items.map(k => {
+      if (k === 'LIST_TASK') return has('task') ? itemHtml('fa-list-check', 't-blue', 'เรียกดูภารกิจ', '#list/task') : '';
+      const m = MODULES[k];
+      return has(m.perm) ? itemHtml(m.icon, m.tone, m.label, '#form/' + k) : '';
+    }).join('');
+    return rows ? `<div class="card group"><h4><i class="fa-solid ${g.icon}"></i> ${esc(g.title)}</h4>${rows}</div>` : '';
+  }).join('');
+
+  // กลุ่ม "ของฉัน"
+  const mine = `<div class="card group"><h4><i class="fa-solid fa-user"></i> ของฉัน</h4>
+    ${itemHtml('fa-clock-rotate-left', 't-blue', 'ประวัติของฉัน', '#history')}
+    <a class="item" id="toolsBtn"><div class="ibox sm t-blue"><i class="fa-solid fa-toolbox"></i></div>
+      <span>เครื่องมือการทำงาน</span><i class="fa-solid fa-chevron-right chev"></i></a></div>`;
+
   $('#app').innerHTML = `
+    <div class="card hero">
+      <div>
+        <small>${greeting()}</small>
+        <h1>${esc(u.display_name)}</h1>
+        <div class="chips">
+          <span class="chip"><i class="fa-solid fa-location-dot"></i> ${esc(u.unit || '-')}</span>
+          <!-- 🔧 PLACEHOLDER: ถ้า API ส่งจังหวัด/สิทธิ์มา ให้แก้ 2 ชิปด้านล่างให้ตรงชื่อฟิลด์จริง -->
+          <span class="chip"><i class="fa-solid fa-users"></i> ${esc(u.province || 'จังหวัด')}</span>
+          <span class="chip"><i class="fa-solid fa-id-badge"></i> ${esc(u.role || (has('all') ? 'แอดมินสถานี' : 'เจ้าหน้าที่'))}</span>
+        </div>
+      </div>
+      <div class="tools">
+        ${has('dashboard') ? `<button class="pill-btn" onclick="location.hash='#dash'"><i class="fa-solid fa-chart-pie"></i> กลับแผงควบคุมสถานี</button>` : ''}
+        <button class="sq" id="themeBtn" title="โหมดมืด/สว่าง"><i class="fa-solid fa-moon"></i></button>
+        <button class="sq" id="keyBtn" title="เปลี่ยนรหัสผ่าน"><i class="fa-solid fa-key"></i></button>
+        <button class="sq red" id="outBtn" title="ออกจากระบบ"><i class="fa-solid fa-power-off"></i></button>
+      </div>
+    </div>
+
+    <div class="sec"><i class="fa-solid fa-bolt"></i> ต้องทำตอนนี้</div>
+    <div id="todo" class="card todo">
+      <div class="ico"><i class="fa-solid fa-check"></i></div>
+      <div><b>ไม่มีภารกิจหรือใบค้างวันนี้</b><span>เลือกงานที่จะทำจากด้านล่างได้เลย</span></div>
+    </div>
+
+    ${quick ? `<div class="sec"><i class="fa-solid fa-star"></i> งานที่ทำบ่อย</div><div class="quick">${quick}</div>` : ''}
+
+    <div class="groups" style="margin-top:16px">${groups}${mine}</div>`;
+
+  // ปุ่มต่างๆ
+  $('#themeBtn').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  $('#outBtn').onclick = doLogout;
+  // 🔧 PLACEHOLDER: ต่อกับ action เปลี่ยนรหัสผ่านของ API (เช่น api('change_password', {...}))
+  $('#keyBtn').onclick = () => alert('เปลี่ยนรหัสผ่าน: (ตัวอย่างสำหรับทดลองใช้)');
+  // 🔧 PLACEHOLDER: เปลี่ยนเป็นหน้าเครื่องมือการทำงานจริง
+  $('#toolsBtn').onclick = () => alert('เครื่องมือการทำงาน: (ตัวอย่างสำหรับทดลองใช้)');
+
+  loadTodo();
+}
+
+// อัปเดตการ์ด "ต้องทำตอนนี้" — ถ้ามีสิทธิ์ดูภาพรวมและมีรายการรอตรวจ ให้เตือน
+async function loadTodo() {
+  if (!has('dashboard')) return;
+  try {
+    const d = await api('summary', { from: today(), to: today() });
+    const pending = Object.values(d).reduce((s, x) => s + (x.pending || 0), 0);
+    const el = $('#todo');
+    if (el && pending > 0) {
+      el.classList.add('warn');
+      el.innerHTML = `<div class="ico"><i class="fa-solid fa-bell"></i></div>
+        <div><b>มีรายงานรอตรวจ ${pending} รายการ</b><span>เปิดแผงควบคุมสถานีเพื่อตรวจสอบ</span></div>`;
+    }
+  } catch (e) { /* ไม่ต้องแจ้ง error ถ้าโหลดไม่ได้ */ }
+}
+
+/* ============================================================
+   แผงควบคุมสถานี (สรุปยอด) — สำหรับผู้มีสิทธิ์ dashboard
+   ============================================================ */
+function renderDash() {
+  if (!has('dashboard')) { location.hash = '#home'; return; }
+  $('#app').innerHTML = `
+    ${topbar('แผงควบคุมสถานี')}
     <div class="card">
-      <h2>ภาพรวม</h2>
       <div class="row">
         <div><label>จากวันที่</label><input type="date" id="from" value="${today().slice(0, 8) + '01'}"></div>
         <div><label>ถึงวันที่</label><input type="date" id="to" value="${today()}"></div>
-        <div style="flex:0"><button id="refresh">ดูผล</button></div>
+        <div style="flex:0"><button class="btn" id="refresh" style="width:auto">ดูผล</button></div>
       </div>
-      <div id="sum"></div>
+      <div id="sum" class="tbl-wrap"></div>
     </div>`;
+  bindBack();
   const load = async () => {
     const d = await api('summary', { from: $('#from').value, to: $('#to').value });
     $('#sum').innerHTML = `<table><tr><th>โมดูล</th><th>ทั้งหมด</th><th>รอตรวจ</th></tr>` +
-      Object.keys(d).map(k => `<tr><td>${esc(MODULES[k].label)}</td>
-        <td class="stat-num" data-to="${d[k].total}">0</td>
-        <td class="stat-num" data-to="${d[k].pending}">0</td></tr>`).join('') + '</table>';
-    document.querySelectorAll('#sum [data-to]').forEach(el => countUp(el, +el.dataset.to));
+      Object.keys(d).filter(k => MODULES[k]).map(k => `<tr><td>${esc(MODULES[k].label)}</td>
+        <td class="stat-num">${d[k].total}</td><td class="stat-num">${d[k].pending}</td></tr>`).join('') + '</table>';
   };
   $('#refresh').onclick = () => load().catch(e => alert(e.message));
   load().catch(e => $('#sum').innerHTML = `<div class="err">${esc(e.message)}</div>`);
 }
 
+/* ============================================================
+   หน้า "ประวัติของฉัน" — เลือกโมดูลเพื่อดูรายการ
+   ============================================================ */
+function renderHistory() {
+  const rows = Object.keys(MODULES).filter(k => has(MODULES[k].perm)).map(k =>
+    `<a class="item" href="#list/${k}"><div class="ibox sm ${MODULES[k].tone}"><i class="fa-solid ${MODULES[k].icon}"></i></div>
+     <span>${esc(MODULES[k].label)}</span><i class="fa-solid fa-chevron-right chev"></i></a>`).join('');
+  $('#app').className = 'narrow';
+  $('#app').innerHTML = `${topbar('ประวัติของฉัน')}<div class="card">${rows || 'ไม่มีรายการ'}</div>`;
+  bindBack();
+}
+
+/* ============================================================
+   แถบบน (ปุ่มกลับ + ชื่อหน้า) — ไม่มีโลโก้
+   ============================================================ */
+function topbar(title) {
+  return `<div class="topbar">
+    <button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> กลับเมนูหลัก</button>
+    <h2>${esc(title)}</h2><span></span></div>`;
+}
+function bindBack() { $('#backBtn').onclick = () => { location.hash = '#home'; }; }
+
+/* ============================================================
+   หน้าฟอร์มบันทึกรายงาน (ตามภาพตัวอย่างที่ 2-10)
+   ============================================================ */
 function renderForm(mod, tabIdx = 0) {
   const m = MODULES[mod];
-  if (!has(m.perm)) return $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>';
+  if (!has(m.perm)) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
 
   const tabs = m.tabs
     ? `<div class="tabs">${m.tabs.map((t, i) =>
-        `<button class="${i === tabIdx ? 'on' : ''}" data-tab="${i}">${i + 1}. ${esc(t)}</button>`).join('')}</div>`
-    : '';
+        `<button class="${i === tabIdx ? 'on' : ''}" data-tab="${i}">${i + 1}. ${esc(t)}</button>`).join('')}</div>` : '';
+
   const inputs = m.fields.map(f => {
     let el;
-    if (f.type === 'select') el = `<select name="${f.name}">${f.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
-    else if (f.type === 'textarea') el = `<textarea name="${f.name}"></textarea>`;
-    else el = `<input name="${f.name}" type="${f.type}" ${f.type === 'number' ? 'step="any"' : ''}>`;
-    return `<div><label>${esc(f.label)}</label>${el}</div>`;
+    if (f.type === 'select') {
+      el = `<select name="${f.name}">${f.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+    } else if (f.type === 'textarea') {
+      el = `<textarea name="${f.name}" placeholder="${esc(f.ph || '')}"></textarea>`;
+    } else {
+      // datetime-local ใส่เวลาปัจจุบันให้อัตโนมัติ
+      const val = f.type === 'datetime-local' ? nowLocal() : '';
+      el = `<input name="${f.name}" type="${f.type}" value="${val}" placeholder="${esc(f.ph || '')}" ${f.type === 'number' ? 'step="any"' : ''}>`;
+    }
+    return `<div class="${f.full ? 'full' : ''}"><label>${esc(f.label)}</label>${el}</div>`;
   }).join('');
 
   $('#app').innerHTML = `
+    ${topbar(m.title || m.label)}
+    ${tabs}
     <div class="card">
-      <h2>${esc(m.label)}</h2>
-      <p class="sub">หน่วย: ${esc(session.user.unit)}</p>
-      ${tabs}
+      <p class="form-title">${m.tabs ? `${tabIdx + 1}. ${esc(m.tabs[tabIdx])}` : esc(m.label)}</p>
       <div class="grid">${inputs}</div>
       <div class="actions">
-        <button id="save">ตรวจสอบข้อมูลก่อนส่ง</button>
-        <button class="ghost" onclick="location.hash='#list/${mod}'">ดูรายการ</button>
+        <button class="btn" id="save"><i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง</button>
+        <button class="btn ghost" id="toList">ดูรายการ</button>
       </div>
       <div class="err" id="err"></div>
     </div>`;
 
-  document.querySelectorAll('[data-tab]').forEach(btn => {
-    btn.onclick = () => renderForm(mod, +btn.dataset.tab);
-  });
+  bindBack();
+  $('#toList').onclick = () => { location.hash = '#list/' + mod; };
+  document.querySelectorAll('[data-tab]').forEach(btn => { btn.onclick = () => renderForm(mod, +btn.dataset.tab); });
 
   $('#save').onclick = async () => {
     $('#err').textContent = '';
@@ -324,36 +572,43 @@ function renderForm(mod, tabIdx = 0) {
     });
     if (m.tabs) payload.type = m.tabs[tabIdx];
 
+    // สรุปข้อมูลให้ตรวจก่อนส่ง
     const summary = Object.entries(payload).filter(([k, v]) => v !== '' && k !== 'type')
       .map(([k, v]) => `${(m.fields.find(f => f.name === k) || {}).label}: ${v}`).join('\n');
     const tabLine = m.tabs ? `ประเภท: ${m.tabs[tabIdx]}\n` : '';
     if (!confirm(`ตรวจสอบข้อมูลก่อนส่ง\n\n${tabLine}${summary || '(ไม่มีข้อมูล)'}\n\nยืนยันการส่ง?`)) return;
 
+    const btn = $('#save'); btn.disabled = true;
     try {
       await api('submit', { module: mod, payload });
       alert('บันทึกเรียบร้อย');
       location.hash = '#list/' + mod;
-    } catch (e) { $('#err').textContent = e.message; }
+    } catch (e) { $('#err').textContent = e.message; btn.disabled = false; }
   };
 }
 
+/* ============================================================
+   หน้ารายการ + อนุมัติ
+   ============================================================ */
 function renderList(mod) {
   const m = MODULES[mod];
-  if (!has(m.perm)) return $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>';
+  if (!has(m.perm)) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
   const label = name => name === 'type' ? 'ประเภท' : (m.fields.find(f => f.name === name) || { label: name }).label;
   const isTime = c => /time$|^start$|^end$/.test(c);
 
+  $('#app').className = '';   // ตารางกว้างกว่าฟอร์ม
   $('#app').innerHTML = `
+    ${topbar(m.label + ' · รายการ')}
     <div class="card">
-      <h2>${esc(m.label)} · รายการ</h2>
       <div class="row">
         <div><label>จากวันที่</label><input type="date" id="from" value="${today().slice(0, 8) + '01'}"></div>
         <div><label>ถึงวันที่</label><input type="date" id="to" value="${today()}"></div>
-        <div style="flex:0"><button id="refresh">ค้นหา</button></div>
+        <div style="flex:0"><button class="btn" id="refresh" style="width:auto">ค้นหา</button></div>
       </div>
-      <div id="tbl"></div>
+      <div id="tbl" class="tbl-wrap"></div>
       <div class="err" id="err"></div>
     </div>`;
+  bindBack();
 
   const load = async () => {
     $('#err').textContent = '';
@@ -367,7 +622,7 @@ function renderList(mod) {
         <td>${esc(r.unit)}</td>
         <td><span class="tag ${esc(r.status)}">${r.status === 'approved' ? 'อนุมัติแล้ว' : 'รอตรวจ'}</span></td>
         <td>${has('approve') && r.status === 'pending'
-          ? `<button class="ok" data-id="${esc(r.id)}">อนุมัติ</button>` : ''}</td>
+          ? `<button class="btn ok" data-id="${esc(r.id)}">อนุมัติ</button>` : ''}</td>
       </tr>`).join('') + '</table>';
     document.querySelectorAll('button[data-id]').forEach(btn => {
       btn.onclick = async () => {
@@ -380,6 +635,9 @@ function renderList(mod) {
   load().catch(e => $('#err').textContent = e.message);
 }
 
+/* ============================================================
+   เริ่มต้นระบบ: ตรวจ session เดิมก่อนแสดงหน้า
+   ============================================================ */
 (async () => {
   if (session) {
     try { session.user = await api('me'); sessionStorage.setItem('session', JSON.stringify(session)); }
