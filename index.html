@@ -15,17 +15,16 @@
   :root {
     --c: #1565a8; --c2: #2f86c9; --title: #0f7391;
     --txt: #16283a; --muted: #64748b; --line: #d3deea;
-    --card: rgba(255,255,255,.82); --field: #ffffff;
+    --card: rgba(255,255,255,.85); --field: #ffffff;
     --warn-bg: #fff4e0; --warn-tx: #b45309; --warn-line: #f5d9a8;
     --ok: #2e9e6a;
     --bg1: #b7defa; --bg2: #eaf2fb; --bg3: #c9efec;
     --radius: 18px; --shadow: 0 8px 28px rgba(21,101,168,.10);
   }
-  /* ===== ตัวแปรสี (โหมดมืด) ===== */
   [data-theme="dark"] {
     --c: #4aa3e8; --c2: #2f86c9; --title: #5fd0e8;
     --txt: #e6eef7; --muted: #93a4b8; --line: #2a3a4d;
-    --card: rgba(22,34,48,.88); --field: #101c2a;
+    --card: rgba(22,34,48,.9); --field: #101c2a;
     --warn-bg: #3a2c12; --warn-tx: #fbbf24; --warn-line: #5a4519;
     --bg1: #0b1622; --bg2: #0f1e2e; --bg3: #0e2a2e;
     --shadow: 0 8px 28px rgba(0,0,0,.35);
@@ -33,18 +32,18 @@
 
   * { box-sizing: border-box; }
   html { min-height: 100%; }
-  body { margin: 0; min-height: 100vh; color: var(--txt);
+  body { margin: 0; min-height: 100vh; color: var(--txt); font-size: 14px;
     font-family: "Sarabun", "Noto Sans Thai", system-ui, sans-serif;
     background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%) fixed; }
   [hidden] { display: none !important; }
-
   .banner { background: #ffd166; text-align: center; padding: 7px 10px; font-weight: 600; font-size: 14px; color: #3b2f00; }
 
   main { max-width: 1080px; margin: 0 auto; padding: 26px 18px 120px; }
-  main.narrow { max-width: 620px; }
-  .card { background: var(--card); border: 1px solid rgba(255,255,255,.6); border-radius: var(--radius);
-    padding: 22px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
+  main.narrow { max-width: 620px; padding-top: 14px; }
+  .card { background: var(--card); border: 1px solid rgba(255,255,255,.7); border-radius: var(--radius);
+    padding: 20px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
   [data-theme="dark"] .card { border-color: var(--line); }
+  .card.acc { border-top: 3px solid var(--acc); }   /* เส้นสีบนการ์ด (จับกุม=แดง, อุบัติเหตุ=เหลือง) */
 
   /* ===== เข้าสู่ระบบ ===== */
   .login { max-width: 380px; margin: 70px auto; }
@@ -52,17 +51,18 @@
 
   /* ===== หน้าหลัก ===== */
   .hero { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .hero small { color: var(--muted); font-size: 14px; }
+  .hero small { color: var(--muted); font-size: 13px; }
   .hero h1 { margin: 2px 0 8px; font-size: 28px; line-height: 1.2; }
   .chips { display: flex; gap: 8px; flex-wrap: wrap; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px; font-size: 13px;
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px; font-size: 12.5px;
     border: 1px solid var(--line); border-radius: 999px; background: var(--field); color: var(--muted); }
   .chip i { color: var(--c); font-size: 12px; }
   .tools { display: flex; gap: 8px; align-items: center; }
   .sq { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; cursor: pointer;
     background: var(--field); border: 1px solid var(--line); color: var(--c); font-size: 16px; padding: 0; }
-  .sq.sm { width: 36px; height: 36px; font-size: 14px; border-radius: 8px; flex: none; }
+  .sq.sm { width: 32px; height: 32px; font-size: 13px; border-radius: 7px; flex: none; }
   .sq.red { color: #d92d20; }
+  .sq.hist { color: var(--acc, var(--c)); border-color: var(--acc, var(--c2)); }   /* ปุ่มนาฬิกาตั้งเวลาปัจจุบัน */
   .pill-btn { height: 44px; padding: 0 14px; border-radius: 12px; background: var(--field); border: 1px solid var(--line);
     color: #c2570c; cursor: pointer; font: inherit; font-size: 14px; display: inline-flex; align-items: center; gap: 7px; }
   .sec { display: flex; align-items: center; gap: 8px; margin: 26px 4px 10px; font-weight: 600; font-size: 16px; }
@@ -74,7 +74,7 @@
   .todo b { display: block; font-size: 17px; }
   .todo span { font-size: 13px; color: var(--muted); }
   .quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-  .qcard { cursor: pointer; padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid rgba(255,255,255,.6);
+  .qcard { cursor: pointer; padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid rgba(255,255,255,.7);
     box-shadow: var(--shadow); transition: transform .15s; text-decoration: none; color: inherit; display: block; }
   .qcard:hover { transform: translateY(-2px); }
   .qcard b { display: block; margin-top: 14px; font-size: 17px; }
@@ -96,70 +96,113 @@
   .item .chev { color: var(--muted); font-size: 12px; }
 
   /* ===== แถบบน + แท็บ ===== */
-  .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-bottom: 12px; }
-  .topbar h2 { margin: 0; font-size: 18px; color: var(--title); text-align: center; }
-  .back { justify-self: start; display: inline-flex; gap: 6px; align-items: center; padding: 4px 10px; font-size: 12px; cursor: pointer;
-    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 6px; font-family: inherit; }
-  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tabs button { background: transparent; color: var(--muted); border: 0; font-size: 13px; padding: 6px 12px; border-radius: 8px; font-family: inherit; cursor: pointer; }
+  .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-bottom: 10px; }
+  .topbar h2 { margin: 0; font-size: 17px; color: var(--title); text-align: center; }
+  .back { justify-self: start; display: inline-flex; gap: 6px; align-items: center; padding: 3px 9px; font-size: 11.5px; cursor: pointer;
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 5px; font-family: inherit; }
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .tabs button { background: transparent; color: var(--muted); border: 0; font-size: 12.5px; padding: 6px 11px; border-radius: 7px; font-family: inherit; cursor: pointer; }
   .tabs button.on { background: #cfe5f7; color: var(--c); font-weight: 600; }
   [data-theme="dark"] .tabs button.on { background: #1d3a56; }
 
-  /* ===== ฟอร์ม ===== */
-  .form-title { text-align: center; color: var(--title); font-size: 16px; font-weight: 600; margin: 0 0 14px; }
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
+  /* ===== ฟอร์ม (ขนาดกะทัดรัดตามภาพตัวอย่าง) ===== */
+  .form-title { text-align: center; color: var(--title); font-size: 15px; font-weight: 600; margin: 4px 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 14px; }
   .grid .full { grid-column: 1 / -1; }
-  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 14px; }
-  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 14px; }
-  .stack { display: grid; gap: 8px; align-content: start; }
-  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  input, select, textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px;
-    font: inherit; font-size: 14px; background: var(--field); color: var(--txt); }
+  .g3, .g4, .g-susp { display: grid; gap: 10px 12px; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .g-susp { grid-template-columns: 1.3fr 1.5fr 1fr .8fr; margin-top: 8px; }
+  .g-susp2 { display: grid; grid-template-columns: 2fr 1fr; gap: 10px 12px; margin-top: 8px; }
+  .stack { display: grid; gap: 6px; align-content: start; }
+  label { display: block; font-size: 11.5px; color: var(--muted); margin-bottom: 3px; }
+  .rq { color: #d92d20; margin-left: 2px; }
+  input, select, textarea { width: 100%; padding: 6px 10px; min-height: 31px; border: 1px solid var(--line); border-radius: 6px;
+    font: inherit; font-size: 13px; background: var(--field); color: var(--txt); }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--c2); box-shadow: 0 0 0 3px rgba(47,134,201,.18); }
   input[type=number] { text-align: center; }
-  input[readonly] { background: #fdf0d8; border-color: #e9a24a; color: #8a4b08; font-weight: 600; }
-  textarea { min-height: 84px; resize: vertical; }
-  .divider { grid-column: 1 / -1; border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
-  .with-btn { display: flex; gap: 8px; }
-  .with-btn input { flex: 1; }
-  .note-s { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  input.ctr { text-align: center; }
+  input[readonly]:not(.disp) { background: #fdf0d8; border-color: #e9a24a; color: #8a4b08; font-weight: 600; }
+  textarea { min-height: 62px; resize: vertical; }
+  input[type=file] { padding: 3px; }
+  .divider { grid-column: 1 / -1; border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+  .with-btn { display: flex; gap: 8px; align-items: stretch; }
+  .with-btn .dt { flex: 1; }
+  .note-s { font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+  .need-red { border-color: #e5484d !important; }
+  .need-orange { border-color: #f08a24 !important; }
+  .sec-h { grid-column: 1 / -1; font-size: 12px; font-weight: 700; color: #c2570c; margin-top: 2px; }
+
+  /* ช่องวันที่/เวลาแสดงแบบ พ.ศ. (ช่อง native โปร่งใสซ้อนทับเพื่อให้กดแล้วเปิดปฏิทิน) */
+  .dt { position: relative; }
+  .dt .disp { cursor: pointer; background: var(--field); }
+  .dt .nat { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; padding: 0; border: 0; min-height: 0; }
+  .dt .nat::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  .dt:focus-within .disp { border-color: var(--c2); box-shadow: 0 0 0 3px rgba(47,134,201,.18); }
+
+  /* ช่องพิมพ์ค้นหา/กดเลือกจากรายการ (combobox) */
+  .cb { position: relative; }
+  .cb input { padding-right: 30px; }
+  .cb > i { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--c); font-size: 12px; cursor: pointer; }
+  #cbList { position: fixed; z-index: 90; max-height: 230px; overflow-y: auto; background: var(--field); border: 1px solid var(--c2);
+    border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.2); padding: 4px; }
+  #cbList div { padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  #cbList div.on, #cbList div:hover { background: #dbeefb; color: #0b4f86; }
+  #cbList .empty { color: var(--muted); cursor: default; }
 
   /* กล่องย่อย / ป้าย / แถวไดนามิก */
-  .subbox { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--field); }
+  .subbox { border: 1px solid var(--line); border-radius: 9px; padding: 11px; background: var(--field); }
   .subbox.beige { background: #fff8e6; border: 1px dashed #f0c96a; }
   [data-theme="dark"] .subbox.beige { background: #2a2312; }
-  .sb-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 13px; }
-  .sb-sub { font-size: 12px; color: var(--muted); margin: 2px 0; }
+  .sb-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; font-size: 12.5px; }
+  .sb-sub { font-size: 11.5px; color: var(--muted); margin: 2px 0; }
   .sb-sub.sum { color: #c2570c; font-weight: 600; }
   .sb-sub.bad { color: #d92d20; font-weight: 600; }
-  .badge { display: inline-block; padding: 2px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+  .warn-t { font-size: 10.5px; color: #c2570c; margin-top: 3px; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 5px; font-size: 11px; font-weight: 700; }
   .badge.cyan { background: #19c4e6; color: #fff; }
   .badge.yellow { background: #ffc107; color: #3b2f00; }
-  .mini { padding: 4px 10px; font-size: 12px; border-radius: 6px; cursor: pointer; font-family: inherit;
-    background: var(--field); color: var(--c); border: 1px solid var(--c2); display: inline-flex; gap: 6px; align-items: center; }
+  .mini { padding: 4px 10px; font-size: 11.5px; border-radius: 5px; cursor: pointer; font-family: inherit;
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
   .mini.yellow { background: #ffc107; color: #3b2f00; border-color: #ffc107; font-weight: 600; }
+  .mini.dark { background: #0f5a8f; color: #fff; border-color: #0f5a8f; font-weight: 600; }
+  .mini.green { color: #1f8f62; border-color: #1f8f62; }
   .mini.warn { background: transparent; color: #c2570c; border-color: #e9a24a; }
   .mini.on { background: var(--c); color: #fff; }
-  .rowx { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
-  .rowx > input, .rowx > select { flex: 1; min-width: 0; }
+  .mini:disabled { opacity: .6; }
+  .rowx { display: flex; gap: 8px; margin-top: 7px; align-items: center; }
+  .rowx > input, .rowx > select, .rowx > .cb { flex: 1; min-width: 0; }
   .rowx > input[type=number] { flex: 0 0 84px; }
-  .grp { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--c); display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 3px; }
+  .rowx > .sq.red { border-color: #e5484d; }
+  .grp { margin-top: 10px; font-size: 12.5px; font-weight: 600; color: var(--c); display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 3px; }
   .grp span { color: var(--muted); font-weight: 500; }
-  .tog { width: 100%; text-align: center; padding: 7px 10px; font-size: 12.5px; cursor: pointer; font-family: inherit;
-    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 6px; }
-  .panel { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--field); }
-  .hint { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: var(--warn-bg); color: var(--warn-tx);
-    border: 1px solid var(--warn-line); border-radius: 8px; padding: 8px 12px; font-size: 12.5px; }
+  .tog { width: 100%; text-align: center; padding: 6px 10px; font-size: 12px; cursor: pointer; font-family: inherit;
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 5px; }
+  .panel { border: 1px solid var(--line); border-radius: 9px; padding: 11px; background: var(--field); }
+  .hint { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: var(--warn-bg); color: var(--warn-tx);
+    border: 1px solid var(--warn-line); border-radius: 8px; padding: 7px 12px; font-size: 11.5px; margin-bottom: 12px; }
   .hint .grow { flex: 1; min-width: 200px; }
+  .coord { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+  .coord > div { flex: 1; min-width: 110px; }
+
+  /* ผู้ต้องหา + ช่องภาพถ่าย 4 มุม */
+  .susp { border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin-top: 8px; background: var(--card); }
+  .susp > label { margin-top: 8px; }
+  .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .ph { height: 58px; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; align-content: center;
+    gap: 2px; font-size: 10.5px; color: var(--muted); cursor: pointer; background: var(--field) center/cover no-repeat; }
+  .ph.has { color: transparent; border-color: var(--ok); }
+  .ph.has i { color: transparent; }
 
   /* ===== ปุ่มหลัก ===== */
   button { font: inherit; cursor: pointer; }
-  .btn { width: 100%; background: linear-gradient(180deg, var(--c2), var(--c)); color: #fff; border: 0; border-radius: 8px;
-    padding: 11px 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(21,101,168,.25); }
+  .btn { width: 100%; background: linear-gradient(180deg, var(--c2), var(--c)); color: #fff; border: 0; border-radius: 7px;
+    padding: 9px 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(21,101,168,.25); }
   .btn:disabled { opacity: .6; cursor: wait; }
   .btn.ghost { background: var(--field); color: var(--c); border: 1px solid var(--c2); box-shadow: none; }
   .btn.ok { width: auto; background: linear-gradient(180deg, #4cc38a, var(--ok)); padding: 6px 12px; font-size: 13px; }
-  .actions { margin-top: 18px; display: grid; gap: 10px; }
+  .actions { margin-top: 16px; display: grid; gap: 10px; }
+  .actions.two { grid-template-columns: 1fr 1.4fr; }
 
   /* ===== ตาราง ===== */
   .tbl-wrap { overflow-x: auto; }
@@ -174,15 +217,14 @@
   .row > div { flex: 1; min-width: 150px; }
   .err { color: #b00020; margin-top: 10px; min-height: 18px; font-size: 14px; }
 
-  /* ===== ปุ่มลอย ===== */
   .fab { position: fixed; right: 18px; bottom: 18px; z-index: 20; display: inline-flex; gap: 9px; align-items: center;
     padding: 12px 20px; border-radius: 999px; border: 0; color: #fff; font-weight: 600;
     background: linear-gradient(180deg, #1f6fb5, #14558f); box-shadow: 0 8px 22px rgba(20,85,143,.4); }
 
-  /* ===== Modal แจ้งเตือน ===== */
+  /* ===== Modal ===== */
   .overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px;
     background: rgba(10,25,40,.5); backdrop-filter: blur(3px); animation: fade .15s ease both; }
-  .modal { width: min(440px, 100%); max-height: 88vh; overflow: auto; background: var(--field); color: var(--txt);
+  .modal { width: min(440px, 100%); max-height: 90vh; overflow: auto; background: var(--field); color: var(--txt);
     border-radius: 18px; padding: 24px 22px 18px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.35); animation: pop .18s ease both; }
   .m-ico { width: 56px; height: 56px; margin: 0 auto 10px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; }
   .m-ico.info { background: #dbeefb; color: #1565a8; }
@@ -205,9 +247,12 @@
     .grid { grid-template-columns: 1fr; }
     .g4 { grid-template-columns: repeat(2, 1fr); }
     .g3 { grid-template-columns: 1fr; }
+    .g-susp { grid-template-columns: 1fr 1fr; }
+    .g-susp2 { grid-template-columns: 1fr; }
     .hero h1 { font-size: 23px; }
     main { padding: 16px 12px 110px; }
     .rowx { flex-wrap: wrap; }
+    .actions.two { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -226,43 +271,27 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxssyQml6dXj92np0pSwDfFNEGtDqu4O3kAUxueMViNDk-yhJHb0UCf6Lj9mwKofM8sYA/exec';
 
 /* ============================================================
-   นิยามโมดูล (daily ใช้ฟอร์มพิเศษ renderDailyForm ด้านล่าง)
+   นิยามโมดูล
+   daily / checkpoint / arrest / accident ใช้ฟอร์มเฉพาะ (ด้านล่าง) ที่เหลือใช้ฟอร์มทั่วไปจาก fields
    ============================================================ */
 const MODULES = {
   daily: { label: 'รายงานประจำวัน', desc: 'ยอดผลการปฏิบัติประจำผลัด', icon: 'fa-clipboard-list', tone: 't-blue', perm: 'daily',
     title: 'หมวดรายงานประจำวัน HWPD', fields: [],
-    // ชื่อคอลัมน์ในหน้ารายการ
     labels: { type: 'ประเภท', report_time: 'วันที่เวลา', service_unit: 'หน่วยบริการ', radio_car: 'รถวิทยุ' },
     cols: ['type', 'report_time', 'service_unit', 'radio_car'] },
   checkpoint: { label: 'รายงานตั้งด่าน', desc: 'จุดตรวจ ผลการตรวจ', icon: 'fa-road-barrier', tone: 't-orange', perm: 'checkpoint',
-    title: 'รายงานด่าน จุดตรวจ จุดสกัด', fields: [
-      { name: 'checkpoint_name', label: 'ชื่อด่าน', type: 'text', full: true },
-      { name: 'start_time', label: 'เริ่มตั้งด่าน', type: 'datetime-local' },
-      { name: 'end_time', label: 'เลิกด่าน', type: 'datetime-local' },
-      { name: 'lat', label: 'ละติจูด', type: 'text', ph: 'เช่น 16.8765' },
-      { name: 'lng', label: 'ลองจิจูด', type: 'text', ph: 'เช่น 98.5432' },
-      { name: 'result', label: 'ผลการตรวจ', type: 'text', full: true },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
-    cols: ['checkpoint_name', 'start_time', 'result'] },
+    title: 'รายงานด่าน จุดตรวจ จุดสกัด', fields: [],
+    labels: { checkpoint_name: 'สถานที่ตั้งด่าน', start_time: 'เริ่มตั้งด่าน', end_time: 'เลิกด่าน', radio_car: 'รถวิทยุ' },
+    cols: ['checkpoint_name', 'start_time', 'end_time', 'radio_car'] },
   arrest: { label: 'รายงานจับกุม', desc: 'ผู้ต้องหา ข้อหา ของกลาง', icon: 'fa-handcuffs', tone: 't-red', perm: 'arrest',
-    title: 'รายงานการจับกุม', fields: [
-      { name: 'arrest_time', label: 'เวลาจับกุม', type: 'datetime-local' },
-      { name: 'charge', label: 'ข้อหา', type: 'text' },
-      { name: 'suspect_name', label: 'ชื่อผู้ต้องหา', type: 'text', ph: 'ชื่อ-สกุล' },
-      { name: 'place', label: 'สถานที่', type: 'text' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
+    title: 'รายงานการจับกุม', fields: [],
+    labels: { arrest_time: 'เวลาเกิดเหตุ', charge: 'ข้อหาหลัก', suspect_name: 'ผู้ต้องหา', place: 'สถานที่' },
     cols: ['arrest_time', 'charge', 'suspect_name', 'place'] },
   accident: { label: 'รายงานอุบัติเหตุ', desc: 'เหตุบนทางหลวง', icon: 'fa-car-burst', tone: 't-purple', perm: 'accident',
-    title: 'รายงานอุบัติเหตุ', fields: [
-      { name: 'accident_time', label: 'วันที่เวลาที่เกิดเหตุ', type: 'datetime-local' },
-      { name: 'road', label: 'ทล.', type: 'text', ph: 'เช่น 1' },
-      { name: 'km', label: 'กม.', type: 'text', ph: 'เช่น 580+400' },
-      { name: 'direction', label: 'ทิศทาง', type: 'select', options: ['ขาเข้า', 'ขาออก'] },
-      { name: 'deaths', label: 'เสียชีวิต (ราย)', type: 'number', ph: 'ระบุจำนวน หรือใส่ 0' },
-      { name: 'injuries', label: 'ได้รับบาดเจ็บ (ราย)', type: 'number', ph: 'ระบุจำนวน หรือใส่ 0' },
-      { name: 'summary', label: 'สรุปเหตุ', type: 'textarea', full: true }],
+    title: 'รายงานอุบัติเหตุ', fields: [],
+    labels: { accident_time: 'วันเวลาเกิดเหตุ', road: 'ทล.', km: 'กม.', deaths: 'เสียชีวิต', injuries: 'บาดเจ็บ' },
     cols: ['accident_time', 'road', 'km', 'deaths', 'injuries'] },
-  task: { label: 'แจ้งภารกิจ', icon: 'fa-bullseye', tone: 't-red', perm: 'task', group: 'mission',
+  task: { label: 'แจ้งภารกิจ', icon: 'fa-bullseye', tone: 't-red', perm: 'task',
     title: 'แจ้งภารกิจ', fields: [
       { name: 'start', label: 'เริ่มภารกิจ', type: 'datetime-local' },
       { name: 'end', label: 'สิ้นสุดภารกิจ', type: 'datetime-local' },
@@ -270,7 +299,7 @@ const MODULES = {
       { name: 'place', label: 'สถานที่', type: 'text' },
       { name: 'details', label: 'รายละเอียด', type: 'textarea', full: true }],
     cols: ['start', 'end', 'units', 'place'] },
-  royal: { label: 'รายงานรับเสด็จ', icon: 'fa-shield-halved', tone: 't-brown', perm: 'royal', group: 'mission',
+  royal: { label: 'รายงานรับเสด็จ', icon: 'fa-shield-halved', tone: 't-brown', perm: 'royal',
     title: 'รายงานรับเสด็จ', fields: [
       { name: 'mission', label: 'ชื่อภารกิจ', type: 'text', full: true },
       { name: 'time', label: 'วันเวลา', type: 'datetime-local' },
@@ -278,7 +307,7 @@ const MODULES = {
       { name: 'officers', label: 'เจ้าหน้าที่ปฏิบัติ', type: 'text', full: true },
       { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
     cols: ['mission', 'time', 'place'] },
-  weight: { label: 'ตรวจรถบรรทุกน้ำหนักเกิน', icon: 'fa-truck-ramp-box', tone: 't-orange', perm: 'weight', group: 'check',
+  weight: { label: 'ตรวจรถบรรทุกน้ำหนักเกิน', icon: 'fa-truck-ramp-box', tone: 't-orange', perm: 'weight',
     title: 'ตรวจรถบรรทุกน้ำหนักเกิน', fields: [
       { name: 'check_time', label: 'วันเวลาที่ตรวจ', type: 'datetime-local' },
       { name: 'inspector', label: 'ผู้ตรวจ', type: 'text' },
@@ -287,14 +316,14 @@ const MODULES = {
       { name: 'actual_weight', label: 'น้ำหนักที่ชั่งได้ (กก.)', type: 'number' },
       { name: 'result', label: 'ผลการตรวจ', type: 'text' }],
     cols: ['check_time', 'plate', 'actual_weight', 'result'] },
-  news: { label: 'การประชาสัมพันธ์', icon: 'fa-bullhorn', tone: 't-purple', perm: 'news', group: 'check',
+  news: { label: 'การประชาสัมพันธ์', icon: 'fa-bullhorn', tone: 't-purple', perm: 'news',
     title: 'ส่งข่าวประชาสัมพันธ์', fields: [
       { name: 'news_time', label: 'วันเวลาของข่าว', type: 'datetime-local' },
       { name: 'news_type', label: 'ประเภทข่าว', type: 'select', options: ['อุบัติเหตุ', 'จับกุม', 'ประชาสัมพันธ์', 'อื่นๆ'] },
       { name: 'headline', label: 'พาดหัวข่าว', type: 'text', full: true },
       { name: 'body', label: 'เนื้อหาข่าว', type: 'textarea', full: true }],
     cols: ['news_time', 'news_type', 'headline'] },
-  fuel: { label: 'น้ำมัน/น้ำมันเครื่อง', icon: 'fa-gas-pump', tone: 't-green', perm: 'fuel', group: 'check',
+  fuel: { label: 'น้ำมัน/น้ำมันเครื่อง', icon: 'fa-gas-pump', tone: 't-green', perm: 'fuel',
     title: 'น้ำมัน/น้ำมันเครื่อง', fields: [
       { name: 'time', label: 'วันเวลา', type: 'datetime-local' },
       { name: 'plate', label: 'หมายเลขทะเบียนรถ', type: 'text' },
@@ -303,7 +332,8 @@ const MODULES = {
       { name: 'price', label: 'ราคา (บาท)', type: 'number' },
       { name: 'receipt_no', label: 'เลขที่ใบเสร็จ', type: 'text' }],
     cols: ['time', 'plate', 'fuel_type', 'liters', 'price'] },
-  other: { label: 'รายงาน อื่นๆ', icon: 'fa-file-lines', tone: 't-blue', perm: 'other', group: 'mission',
+  // โมดูลนี้ไม่แสดงในหน้าหลักตามภาพตัวอย่าง (ว.4 อื่นๆ อยู่ในแท็บที่ 4 ของรายงานประจำวันแล้ว) แต่ยังคงไว้เพื่อสิทธิ์/สรุปยอดเดิม
+  other: { label: 'รายงาน อื่นๆ', icon: 'fa-file-lines', tone: 't-blue', perm: 'other',
     title: 'รายงาน อื่นๆ', fields: [
       { name: 'report_time', label: 'วันที่เวลาที่รายงาน', type: 'datetime-local' },
       { name: 'activity', label: 'การปฏิบัติ', type: 'text' },
@@ -315,7 +345,7 @@ const MODULES = {
 
 const QUICK = ['daily', 'checkpoint', 'arrest', 'accident'];
 const GROUPS = [
-  { key: 'mission', title: 'ภารกิจ', icon: 'fa-bullseye', items: ['task', 'LIST_TASK', 'royal', 'other'] },
+  { key: 'mission', title: 'ภารกิจ', icon: 'fa-bullseye', items: ['task', 'LIST_TASK', 'royal'] },
   { key: 'check', title: 'ตรวจ ประชาสัมพันธ์ และยานพาหนะ', icon: 'fa-truck-field', items: ['weight', 'news', 'fuel'] }
 ];
 
@@ -327,14 +357,25 @@ let ENV = 'demo';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = v => v ? new Date(v).toLocaleString('th-TH') : '';
-const fmtDate = v => v ? new Date(v).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' }) : '';
 const has = p => session && (session.user.perms.includes('all') || session.user.perms.includes(p));
 const pad = n => String(n).padStart(2, '0');
 const today = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
-const nowLocal = () => { const d = new Date(); return `${today()}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const localStr = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const nowLocal = () => localStr(new Date());
 const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'สวัสดีตอนเช้า' : h < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น'; };
+const denied = () => { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; };
 
-// ที่เก็บข้อมูลชั่วคราว (draft) — ถ้าเบราว์เซอร์บล็อก localStorage จะใช้หน่วยความจำแทน
+// แปลงวันที่แบบ ISO เป็นรูปแบบไทย เช่น "11 พ.ย. 69 15:40 น."
+const MON = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+function thDisp(v, withTime) {
+  const m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+  if (!m) return v || '';
+  let s = `${+m[3]} ${MON[+m[2] - 1]} ${pad((+m[1] + 543) % 100)}`;
+  if (withTime && m[4]) s += ` ${m[4]}:${m[5]} น.`;
+  return s;
+}
+
+// ที่เก็บ draft — ถ้าเบราว์เซอร์บล็อก localStorage จะใช้หน่วยความจำแทน
 const MEM = {};
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return MEM[k] || null; } },
@@ -389,14 +430,13 @@ const notify = (title, msg, tone = 'info') => modal({ title, tone, icon: ICONS[t
 const ask = (title, bodyHtml, ok = 'ยืนยันการส่ง') => modal({ title, body: bodyHtml, ok, cancel: 'ยกเลิก', icon: 'fa-paper-plane', tone: 'info' });
 const listModal = (title, items) => modal({ title, tone: 'warn', icon: ICONS.warn, body: `<ul>${items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` });
 const sumHtml = rows => `<div class="sum">${rows.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`;
-// ฟีเจอร์ที่ยังไม่เปิดใช้งานในโหมดทดลอง
-// 🔧 PLACEHOLDER: เมื่อทำฟีเจอร์จริง ให้แทนที่การเรียก soon() ด้วยหน้าจอ/ฟังก์ชันจริง
+// 🔧 PLACEHOLDER: ฟีเจอร์ที่ยังไม่เปิดในโหมดทดลอง — เมื่อทำจริงให้แทนที่การเรียก soon()
 const soon = name => notify(name, 'ฟีเจอร์นี้ยังไม่เปิดให้ใช้งานในโหมดทดลอง', 'info');
 
 /* ============================================================
-   ตัวเลือก dropdown (หน่วยบริการ / เจ้าหน้าที่ / ข้อหา)
+   ตัวเลือก dropdown
    ============================================================ */
-// 🔧 PLACEHOLDER: ข้อมูลสมมติ ใช้เมื่อหลังบ้านยังไม่มี action 'options' (ดู DailyReport.gs)
+// 🔧 PLACEHOLDER: ข้อมูลสมมติ ใช้เมื่อหลังบ้านยังไม่มีข้อมูลในชีตตัวเลือก (แก้จริงในชีต Units/Officers/Charges ฯลฯ)
 const DEMO_OPT = {
   units: ['โคกสำโรง', 'ลพบุรี', 'พัฒนานิคม'],
   officers: [
@@ -407,9 +447,11 @@ const DEMO_OPT = {
   acts: {
     'พ.ร.บ.จราจรทางบก พ.ศ. 2522': ['ขับรถเร็วเกินกำหนด', 'ไม่สวมหมวกนิรภัย', 'ไม่คาดเข็มขัดนิรภัย', 'ขับรถขณะเมาสุรา'],
     'พ.ร.บ.ขนส่งทางบก พ.ศ. 2522': ['บรรทุกน้ำหนักเกิน', 'ใช้รถผิดประเภท'],
-    'พ.ร.บ.ทางหลวง พ.ศ. 2535': ['ทำให้ทางหลวงเสียหาย'],
-    'อื่นๆ': ['อื่นๆ']
-  }
+    'พ.ร.บ.ทางหลวง พ.ศ. 2535': ['ทำให้ทางหลวงเสียหาย']
+  },
+  topics: ['ยาเสพติด', 'อาวุธปืน/วัตถุระเบิด', 'บุหรี่ไฟฟ้า', 'ขับรถขณะเมาสุรา', 'คนต่างด้าว/ค้ามนุษย์', 'ทรัพย์สิน', 'อื่นๆ'],
+  places: [{ place: 'จุดตรวจตัวอย่าง กม.100', lat: 14.8, lng: 100.62 }, { place: 'จุดตรวจตัวอย่าง กม.150', lat: 15.1, lng: 100.35 }],
+  evidence: ['เมทแอมเฟตามีน', 'บุหรี่ไฟฟ้า', 'อาวุธปืน', 'โทรศัพท์มือถือ', 'เงินสด']
 };
 let OPT = DEMO_OPT, OPT_PROMISE = null;
 async function loadOptions() {
@@ -430,10 +472,10 @@ function render() {
   if (!OPT_PROMISE) OPT_PROMISE = loadOptions();
   OPT_PROMISE.then(route);
 }
-
 function route() {
   const [a, b] = (location.hash || '#home').slice(1).split('/');
-  $('#app').className = (a === 'form' || a === 'list') ? 'narrow' : '';
+  $('#app').className = (a === 'list') ? 'narrow' : '';
+  cbClose();
   if (a === 'list' && MODULES[b]) return renderList(b);
   if (a === 'form' && MODULES[b]) return renderForm(b);
   if (a === 'dash') return renderDash();
@@ -468,7 +510,6 @@ function renderLogin() {
   $('#go').onclick = submit;
   $('#p').onkeydown = e => { if (e.key === 'Enter') submit(); };
 }
-
 async function doLogout() {
   try { await api('logout'); } catch (e) {}
   session = null; sessionStorage.removeItem('session');
@@ -531,7 +572,6 @@ function renderHome() {
   $('#toolsBtn').onclick = () => soon('เครื่องมือการทำงาน');
   loadTodo();
 }
-
 async function loadTodo() {
   if (!has('dashboard')) return;
   try {
@@ -549,8 +589,8 @@ async function loadTodo() {
 /* ============================================================
    แผงควบคุมสถานี / ประวัติของฉัน
    ============================================================ */
-function topbar(title) {
-  return `<div class="topbar"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> กลับเมนูหลัก</button>
+function topbar(title, back = 'กลับเมนูหลัก') {
+  return `<div class="topbar"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> ${esc(back)}</button>
     <h2>${esc(title)}</h2><span></span></div>`;
 }
 function bindBack() { $('#backBtn').onclick = () => { location.hash = '#home'; }; }
@@ -576,7 +616,6 @@ function renderDash() {
   $('#refresh').onclick = () => load().catch(e => notify('ผิดพลาด', e.message, 'err'));
   load().catch(e => $('#sum').innerHTML = `<div class="err">${esc(e.message)}</div>`);
 }
-
 function renderHistory() {
   const rows = Object.keys(MODULES).filter(k => has(MODULES[k].perm)).map(k =>
     `<a class="item" href="#list/${k}"><div class="ibox sm ${MODULES[k].tone}"><i class="fa-solid ${MODULES[k].icon}"></i></div>
@@ -587,61 +626,387 @@ function renderHistory() {
 }
 
 /* ============================================================
-   ฟอร์มทั่วไป (โมดูลอื่นนอกจากรายงานประจำวัน)
+   คอมโพเนนต์ฟอร์ม (ใช้ร่วมกันทุกฟอร์ม)
    ============================================================ */
-function renderForm(mod, tabIdx = 0) {
-  if (mod === 'daily') return renderDailyForm(0);
-  const m = MODULES[mod];
-  if (!has(m.perm)) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
-  const inputs = m.fields.map(f => {
-    let el;
-    if (f.type === 'select') el = `<select name="${f.name}">${f.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
-    else if (f.type === 'textarea') el = `<textarea name="${f.name}" placeholder="${esc(f.ph || '')}"></textarea>`;
-    else el = `<input name="${f.name}" type="${f.type}" value="${f.type === 'datetime-local' ? nowLocal() : ''}" placeholder="${esc(f.ph || '')}" ${f.type === 'number' ? 'step="any"' : ''}>`;
-    return `<div class="${f.full ? 'full' : ''}"><label>${esc(f.label)}</label>${el}</div>`;
-  }).join('');
+const rq = '<b class="rq">*</b>';
+const fld = (label, inner, cls = '') => `<div class="${cls}"><label>${label}</label>${inner}</div>`;
+const inp = (name, ph = '', type = 'text', extra = '') => `<input name="${name}" type="${type}" placeholder="${esc(ph)}" ${extra}>`;
+const num = (name, extra = '') => `<input name="${name}" type="number" min="0" step="1" value="0" ${extra}>`;
+const area = (name, ph = '', extra = '') => `<textarea name="${name}" placeholder="${esc(ph)}" ${extra}></textarea>`;
+const sel = (name, opts, first = '', extra = '') =>
+  `<select name="${name}" ${extra}>${first ? `<option value="">${esc(first)}</option>` : ''}${opts.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+const unitSel = (name = 'service_unit', first = '-- เลือกหน่วยบริการ --', extra = '') => sel(name, OPT.units, first, extra);
+const fileFld = label => fld(label, '<input type="file" name="__files" multiple accept="image/*,application/pdf">', 'full');
 
-  $('#app').innerHTML = `${topbar(m.title || m.label)}
-    <div class="card">
-      <p class="form-title">${esc(m.label)}</p>
-      <div class="grid">${inputs}</div>
-      <div class="actions">
-        <button class="btn" id="save"><i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง</button>
-        <button class="btn ghost" id="toList">ดูรายการ</button>
-      </div>
+// ช่องวันที่/เวลาแสดงเป็น พ.ศ. เช่น "11 พ.ย. 69 15:40 น." (ค่าจริงเก็บในช่อง native ที่โปร่งใสซ้อนอยู่)
+const dtF = (name, type = 'datetime') => `<div class="dt"><input class="disp" readonly tabindex="-1" data-disp="${name}" placeholder="${type === 'date' ? 'เลือกวันที่' : 'เลือกวันที่และเวลา'}">
+  <input class="nat" name="${name}" type="${type === 'date' ? 'date' : 'datetime-local'}" data-dt="${type}"></div>`;
+function refreshDt() {
+  document.querySelectorAll('#app input.nat').forEach(n => {
+    const d = document.querySelector(`#app [data-disp="${n.name}"]`);
+    if (d) d.value = thDisp(n.value, n.dataset.dt !== 'date');
+  });
+}
+const nowBtn = (name = 'report_time') => `<button type="button" class="sq sm hist" data-now="${name}" title="ตั้งเป็นเวลาปัจจุบัน"><i class="fa-solid fa-clock-rotate-left"></i></button>`;
+const dtNow = (name = 'report_time', label = 'วันที่เวลาที่รายงาน', cls = '') =>
+  fld(label, `<div class="with-btn">${dtF(name)}${nowBtn(name)}</div>`, cls);
+
+// ช่องพิมพ์ค้นหา/กดเลือกจากรายการ (ลูกศรสีน้ำเงินด้านขวา)
+const CB_PH = 'พิมพ์ค้นหา หรือกดเลือกจากรายการ';
+const cbF = (name, src, ph = CB_PH, extra = '') =>
+  `<div class="cb"><input name="${name}" data-cb="${src}" placeholder="${esc(ph)}" autocomplete="off" ${extra}><i class="fa-solid fa-chevron-down"></i></div>`;
+const cbRow = (field, value, src, ph = CB_PH) =>
+  `<div class="cb"><input data-f="${field}" data-cb="${src}" value="${esc(value || '')}" placeholder="${esc(ph)}" autocomplete="off"><i class="fa-solid fa-chevron-down"></i></div>`;
+
+const CB = { el: null, items: [], idx: -1, lock: false };
+function cbItems(el) {
+  const s = el.dataset.cb;
+  if (s === 'officers') return OPT.officers.map(o => o.name);
+  if (s === 'evidence') return OPT.evidence;
+  if (s === 'charges') {
+    const row = el.closest('[data-L]');
+    const act = row && S.lists[row.dataset.L] ? (S.lists[row.dataset.L][+row.dataset.i] || {}).act : '';
+    return OPT.acts[act] || [].concat(...Object.values(OPT.acts));
+  }
+  return [];
+}
+function cbOpen(el, filter) {
+  let box = $('#cbList');
+  if (!box) { box = document.createElement('div'); box.id = 'cbList'; document.body.appendChild(box); }
+  const q = filter ? el.value.trim().toLowerCase() : '';
+  CB.el = el; CB.idx = -1;
+  CB.items = cbItems(el).filter(x => !q || String(x).toLowerCase().includes(q)).slice(0, 80);
+  const r = el.getBoundingClientRect();
+  box.style.left = r.left + 'px'; box.style.top = (r.bottom + 2) + 'px'; box.style.width = r.width + 'px';
+  box.innerHTML = CB.items.length ? CB.items.map((x, i) => `<div data-i="${i}">${esc(x)}</div>`).join('') : '<div class="empty">ไม่พบรายการ (พิมพ์เองได้)</div>';
+}
+function cbClose() { const b = $('#cbList'); if (b) b.remove(); CB.el = null; }
+function cbPick(i) {
+  const el = CB.el; if (!el || CB.items[i] === undefined) return;
+  el.value = CB.items[i]; cbClose();
+  CB.lock = true;   // กันไม่ให้ event input ที่ส่งต่อไปเปิดรายการซ้ำ
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+  CB.lock = false;
+}
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('[data-cb]')) cbOpen(e.target, false); });
+document.addEventListener('input', e => { if (!CB.lock && e.target.matches && e.target.matches('[data-cb]')) cbOpen(e.target, true); });
+document.addEventListener('mousedown', e => {
+  const o = e.target.closest('#cbList div[data-i]');
+  if (o) { e.preventDefault(); cbPick(+o.dataset.i); return; }
+  const ar = e.target.closest('.cb > i');
+  if (ar) { e.preventDefault(); const inp = ar.parentNode.querySelector('input'); if (CB.el === inp) cbClose(); else { inp.focus(); cbOpen(inp, false); } return; }
+  if (!e.target.closest('#cbList') && !(e.target.matches && e.target.matches('[data-cb]'))) cbClose();
+});
+document.addEventListener('keydown', e => {
+  if (!CB.el) return;
+  const box = $('#cbList'); if (!box) return;
+  if (e.key === 'Escape') return cbClose();
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    CB.idx = Math.max(0, Math.min(CB.items.length - 1, CB.idx + (e.key === 'ArrowDown' ? 1 : -1)));
+    [...box.children].forEach((c, i) => c.classList.toggle('on', i === CB.idx));
+    const cur = box.children[CB.idx]; if (cur) cur.scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter' && CB.idx >= 0) { e.preventDefault(); cbPick(CB.idx); }
+});
+window.addEventListener('scroll', e => { if (!(e.target.closest && e.target.closest('#cbList'))) cbClose(); }, true);
+window.addEventListener('resize', cbClose);
+
+/* ---------- state ของฟอร์มที่เปิดอยู่ ---------- */
+const S = { key: '', lists: {}, photos: {}, grouped: false, open: {}, opts: {}, timer: null, phTarget: null, sync: null, tab: 0 };
+const SLOTS = [['full', 'เต็มตัว'], ['half', 'ครึ่งตัว'], ['left', 'ด้านซ้าย'], ['right', 'ด้านขวา']];
+const newSuspect = () => ({ name: '', idtype: 'บัตรประชาชน', idno: '', nation: '', age: '', addr: '', phone: '' });
+const LDEF = {
+  co: () => ({ name: '', role: '' }), team: () => ({ name: '' }), charges: () => ({ act: '', charge: '', n: 1 }),
+  acharges: () => ({ charge: '', other: '' }), suspects: newSuspect, evidence: () => ({ item: '', qty: '', unit: '' })
+};
+const MINROWS = ['co', 'team', 'acharges', 'suspects'];   // รายการที่ต้องเหลืออย่างน้อย 1 แถว
+const rmBtn = (L, i, show = true) => show ? `<button type="button" class="sq sm red" data-ldel="${L}:${i}" title="ลบ"><i class="fa-solid fa-trash"></i></button>` : '';
+
+// ตัววาดรายการไดนามิก
+const LISTR = {
+  co: items => items.map((c, i) => `<div class="rowx" data-L="co" data-i="${i}">${cbRow('name', c.name, 'officers')}
+    ${S.opts.coRole ? `<input data-f="role" value="${esc(c.role || '')}" placeholder="ตำแหน่ง/บทบาท เช่น พลขับสำรอง">` : ''}${rmBtn('co', i, items.length > 1)}</div>`).join(''),
+  team: items => items.map((c, i) => `<div class="rowx" data-L="team" data-i="${i}">${cbRow('name', c.name, 'officers')}${rmBtn('team', i)}</div>`).join(''),
+  charges: items => {
+    const acts = Object.keys(OPT.acts), all = [].concat(...Object.values(OPT.acts));
+    let rows = items.map((c, i) => ({ c, i })), html = '', last = null;
+    if (S.grouped) rows.sort((a, b) => (a.c.act || '\uffff').localeCompare(b.c.act || '\uffff', 'th'));
+    rows.forEach(({ c, i }) => {
+      if (S.grouped && c.act !== last) {
+        last = c.act;
+        const sub = items.filter(x => x.act === c.act).reduce((s, x) => s + (+x.n || 0), 0);
+        html += `<div class="grp">${esc(c.act || 'ไม่ระบุ พ.ร.บ.')}<span>รวม ${sub} ครั้ง</span></div>`;
+      }
+      html += `<div class="rowx" data-L="charges" data-i="${i}">
+        <select data-f="act"><option value="">-- พ.ร.บ. --</option>${acts.map(a => `<option ${a === c.act ? 'selected' : ''}>${esc(a)}</option>`).join('')}</select>
+        ${cbRow('charge', c.charge, 'charges', 'ข้อหา')}
+        <input data-f="n" type="number" min="0" step="1" value="${c.n}" title="จำนวนครั้ง">${rmBtn('charges', i)}</div>`;
+    });
+    return html;
+  },
+  acharges: items => items.map((c, i) => {
+    const acts = Object.keys(OPT.acts);
+    const opts = S.grouped
+      ? acts.map(a => `<optgroup label="${esc(a)}">${OPT.acts[a].map(x => `<option ${x === c.charge ? 'selected' : ''}>${esc(x)}</option>`).join('')}</optgroup>`).join('')
+      : [].concat(...Object.values(OPT.acts)).map(x => `<option ${x === c.charge ? 'selected' : ''}>${esc(x)}</option>`).join('');
+    return `<div class="rowx" data-L="acharges" data-i="${i}">
+      <select data-f="charge" ${i === 0 ? 'data-req="orange"' : ''}><option value="">-- เลือกข้อหา --</option>${opts}<option ${c.charge === 'อื่นๆ' ? 'selected' : ''}>อื่นๆ</option></select>
+      ${c.charge === 'อื่นๆ' ? `<input data-f="other" value="${esc(c.other || '')}" placeholder="พิมพ์ข้อหา">` : ''}${rmBtn('acharges', i)}</div>`;
+  }).join(''),
+  suspects: items => items.map((s, i) => `<div class="susp" data-L="suspects" data-i="${i}">
+    <div class="sb-head"><b>ผู้ต้องหา${items.length > 1 ? ' ' + (i + 1) : ''}</b>${rmBtn('suspects', i, items.length > 1)}</div>
+    <input data-f="name" value="${esc(s.name)}" placeholder="ชื่อ-สกุล">
+    <div class="g-susp">
+      <select data-f="idtype">${['บัตรประชาชน', 'หนังสือเดินทาง', 'ใบอนุญาตทำงาน', 'อื่นๆ'].map(o => `<option ${o === s.idtype ? 'selected' : ''}>${o}</option>`).join('')}</select>
+      <input data-f="idno" value="${esc(s.idno)}" placeholder="เลขบัตร/เอกสาร">
+      <input data-f="nation" value="${esc(s.nation)}" placeholder="สัญชาติ">
+      <input data-f="age" value="${esc(s.age)}" placeholder="อายุ (ปี)" inputmode="numeric"></div>
+    <div class="g-susp2"><input data-f="addr" value="${esc(s.addr)}" placeholder="ที่อยู่"><input data-f="phone" value="${esc(s.phone)}" placeholder="เบอร์โทร (ถ้ามี)" inputmode="tel"></div>
+    <label><i class="fa-solid fa-camera"></i> ภาพถ่ายผู้ต้องหา (แนบไม่ครบ 4 ภาพ/ออกเอกสารได้)</label>
+    <div class="photos">${SLOTS.map(([k, l]) => {
+      const p = S.photos[i + ':' + k];
+      return `<div class="ph${p ? ' has' : ''}" data-ph="${i}:${k}" ${p ? `style="background-image:url(${p.prev})"` : ''}><i class="fa-solid fa-camera"></i><span>${l}</span></div>`;
+    }).join('')}</div></div>`).join(''),
+  evidence: items => items.map((e, i) => `<div class="rowx" data-L="evidence" data-i="${i}">${cbRow('item', e.item, 'evidence', 'รายการของกลาง')}
+    <input data-f="qty" value="${esc(e.qty)}" placeholder="จำนวน" style="max-width:80px"><input data-f="unit" value="${esc(e.unit)}" placeholder="หน่วย" style="max-width:80px">${rmBtn('evidence', i)}</div>`).join('')
+};
+function drawList(n) { const box = $('#L-' + n); if (box && LISTR[n]) box.innerHTML = LISTR[n](S.lists[n] || []); markNeed(); }
+function delList(L, i) {
+  S.lists[L].splice(i, 1);
+  if (!S.lists[L].length && MINROWS.includes(L)) S.lists[L].push(LDEF[L]());
+  if (L === 'suspects') {   // เลื่อนลำดับรูปถ่ายตามผู้ต้องหาที่ถูกลบ
+    const np = {};
+    Object.keys(S.photos).forEach(k => { const [si, slot] = k.split(':'); const n = +si; if (n !== i) np[(n > i ? n - 1 : n) + ':' + slot] = S.photos[k]; });
+    S.photos = np;
+  }
+  drawList(L);
+}
+
+// ไฮไลต์ช่องจำเป็นที่ยังว่าง (ขอบสีแดง/ส้ม)
+function markNeed() {
+  document.querySelectorAll('#dform [data-req]').forEach(el => el.classList.toggle('need-' + el.dataset.req, !String(el.value || '').trim()));
+}
+function applyOpen() { ['pol', 'srch'].forEach(k => { const p = $('#p-' + k); if (p) p.hidden = !S.open[k]; }); }
+
+/* ---------- Draft (บันทึกอัตโนมัติ) ---------- */
+const dkey = k => `hwpd_draft_${session.user.display_name}_${k}`;
+function collectVals() {
+  const v = {};
+  document.querySelectorAll('#dform [name]').forEach(el => { if (el.type !== 'file') v[el.name] = el.value; });
+  return v;
+}
+function saveDraft() {
+  if (!S.key || !$('#dform')) return;
+  store.set(dkey(S.key), JSON.stringify({ v: collectVals(), lists: S.lists, grouped: S.grouped, open: S.open, t: Date.now() }));
+}
+function queueSave() { clearTimeout(S.timer); S.timer = setTimeout(() => { S.timer = null; saveDraft(); }, 300); }
+function flushSave() { if (S.timer) { clearTimeout(S.timer); S.timer = null; saveDraft(); } }
+function loadDraft(k) {
+  try {
+    const d = JSON.parse(store.get(dkey(k)) || 'null');
+    if (!d) return null;
+    if (Date.now() - d.t > 12 * 3600 * 1000) { store.del(dkey(k)); return null; }   // draft เก่าเกิน 12 ชม. ทิ้ง
+    return d;
+  } catch (e) { return null; }
+}
+
+/* ---------- ประกอบหน้าฟอร์ม ---------- */
+function mountForm(o) {
+  flushSave();
+  Object.assign(S, { key: o.key, grouped: false, open: {}, photos: {}, opts: o.opts || {}, sync: o.sync || null, lists: {}, onChange: o.onChange || null });
+  Object.entries(o.lists || {}).forEach(([n, c]) => { S.lists[n] = []; for (let i = 0; i < c; i++) S.lists[n].push(LDEF[n]()); });
+  $('#app').className = 'narrow';
+  $('#app').innerHTML = `${topbar(o.topTitle, o.back)}${o.tabs || ''}
+    <div class="card${o.accent ? ' acc' : ''}" id="dform"${o.accent ? ` style="--acc:${o.accent}"` : ''}>
+      <div class="hint" id="draftBanner" hidden></div>
+      <p class="form-title">${esc(o.title)}</p>
+      <div class="grid">${o.body}</div>
+      <input type="file" id="phFile" accept="image/*" hidden>
+      <div class="actions${o.two ? ' two' : ''}">${o.preBtns || ''}<button class="btn" id="save">${o.saveLabel || '<i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง'}</button></div>
       <div class="err" id="err"></div>
     </div>`;
   bindBack();
-  $('#toList').onclick = () => { location.hash = '#list/' + mod; };
+  if (o.onTab) document.querySelectorAll('[data-tab]').forEach(b => { b.onclick = () => o.onTab(+b.dataset.tab); });
+  const set = (n, v) => { const el = document.querySelector(`#dform [name="${n}"]`); if (el) el.value = v; };
+  S.set = set; S.remount = o.remount;
+  if (o.defaults) o.defaults(set);
 
-  $('#save').onclick = async () => {
-    $('#err').textContent = '';
-    const payload = {};
-    m.fields.forEach(f => { const el = document.querySelector(`[name="${f.name}"]`); payload[f.name] = el ? el.value : ''; });
-    const rows = Object.entries(payload).filter(([, v]) => v !== '')
-      .map(([k, v]) => [(m.fields.find(f => f.name === k) || {}).label || k, v]);
-    if (!(await ask('ตรวจสอบข้อมูลก่อนส่ง', rows.length ? sumHtml(rows) : '<p>(ไม่มีข้อมูล)</p>'))) return;
-    const btn = $('#save'); btn.disabled = true;
-    try {
-      await api('submit', { module: mod, payload });
-      await notify('บันทึกเรียบร้อย', 'ส่งรายงานเข้าระบบแล้ว', 'ok');
-      location.hash = '#list/' + mod;
-    } catch (e) { $('#err').textContent = e.message; btn.disabled = false; }
-  };
+  const d = loadDraft(o.key);
+  if (d) {
+    Object.entries(d.v || {}).forEach(([n, v]) => set(n, v));
+    Object.keys(S.lists).forEach(n => { if (d.lists && d.lists[n]) S.lists[n] = d.lists[n]; if (!S.lists[n].length && MINROWS.includes(n)) S.lists[n].push(LDEF[n]()); });
+    S.grouped = !!d.grouped; S.open = d.open || {};
+    const b = $('#draftBanner'); b.hidden = false;
+    b.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i>
+      <span class="grow">กู้ข้อมูลที่กรอกค้างไว้กลับมาให้แล้ว ตรวจสอบความถูกต้องก่อนส่ง <b>ไฟล์ที่เคยแนบไว้ไม่ได้ถูกกู้กลับมาด้วย กรุณาแนบใหม่</b></span>
+      <button type="button" class="mini warn" id="clearDraft">ล้างแล้วเริ่มใหม่</button>`;
+  }
+  Object.keys(S.lists).forEach(drawList);
+  const g = $('#grpBtn'); if (g) g.classList.toggle('on', S.grouped);
+  applyOpen(); refreshDt(); markNeed(); if (S.sync) S.sync();
+
+  const f = $('#dform');
+  f.addEventListener('input', onFInput);
+  f.addEventListener('change', onFChange);
+  f.addEventListener('click', onFClick);
+  $('#save').onclick = o.submit;
+  if (o.after) o.after();
 }
 
-/* ============================================================
-   หมวดรายงานประจำวัน HWPD (4 แท็บ ตามภาพตัวอย่าง)
-   ============================================================ */
-const DAILY_TABS = [
-  { name: 'เวรผลัด', icon: 'fa-clipboard-list', title: '1. รายงานประจำวัน (เวรผลัด)' },
-  { name: 'ผลปฏิบัติ', icon: 'fa-chart-pie', title: '2. ผลการปฏิบัติประจำวัน' },
-  { name: 'เวรสืบเวร', icon: 'fa-user-clock', title: '3. รายงานประจำวันสืบเวร' },
-  { name: 'ว.4 อื่นๆ', icon: 'fa-car-side', title: '4. รายงาน ว.4 อื่นๆ' }
-];
-// ชื่อฟิลด์ -> ป้ายแสดงในหน้าสรุปก่อนส่ง
-const DL = {
-  report_time: 'วันที่เวลาที่รายงาน', service_unit: 'หน่วยบริการ', chief: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', chief_phone: 'เบอร์โทรศัพท์',
+const lv = t => t.type === 'number' ? (+t.value || 0) : t.value;
+function onFInput(e) {
+  const t = e.target, row = t.closest('[data-L]');
+  if (row && t.dataset.f !== undefined) S.lists[row.dataset.L][+row.dataset.i][t.dataset.f] = lv(t);
+  if (t.classList.contains('nat')) refreshDt();
+  markNeed(); if (S.sync) S.sync(); queueSave();
+}
+function onFChange(e) {
+  const t = e.target, row = t.closest('[data-L]');
+  if (t.classList.contains('nat')) refreshDt();
+  if (row && t.dataset.f !== undefined) {
+    const L = row.dataset.L, f = t.dataset.f;
+    S.lists[L][+row.dataset.i][f] = lv(t);
+    if ((L === 'charges' && (f === 'act' || (f === 'n' && S.grouped))) || (L === 'acharges' && f === 'charge')) drawList(L);
+  }
+  // เลือกชื่อเจ้าหน้าที่แล้วเติมเบอร์โทรให้อัตโนมัติ (ถ้าช่องเบอร์ยังว่าง)
+  if (t.dataset.cb === 'officers' && t.name) {
+    const o = OPT.officers.find(x => x.name === t.value);
+    const ph = document.querySelector(`#dform [name="${t.name}_phone"]`);
+    if (o && o.phone && ph && !ph.value) ph.value = o.phone;
+  }
+  if (t.id === 'phFile') handlePhoto(t);
+  if (S.onChange) S.onChange(t);
+  markNeed(); if (S.sync) S.sync(); queueSave();
+}
+function onFClick(e) {
+  const b = e.target.closest('button, .ph'); if (!b) return;
+  if (b.dataset.now !== undefined) { S.set(b.dataset.now || 'report_time', nowLocal()); refreshDt(); }
+  else if (b.dataset.ladd) {
+    const L = b.dataset.ladd; S.lists[L].push(LDEF[L]()); drawList(L);
+    if (L === 'suspects') { const sc = document.querySelector('#dform [name="suspect_count"]'); if (sc && +sc.value < S.lists.suspects.length) sc.value = S.lists.suspects.length; }
+  }
+  else if (b.dataset.ldel) { const [L, i] = b.dataset.ldel.split(':'); delList(L, +i); }
+  else if (b.id === 'grpBtn') { S.grouped = !S.grouped; ['charges', 'acharges'].forEach(drawList); b.classList.toggle('on', S.grouped); }
+  else if (b.dataset.tog) { S.open[b.dataset.tog] = !S.open[b.dataset.tog]; applyOpen(); }
+  else if (b.id === 'clearDraft') { store.del(dkey(S.key)); S.key = ''; S.remount(); return; }
+  else if (b.dataset.geo) geoFill(b);
+  else if (b.dataset.pin) pinMap(b);
+  else if (b.classList.contains('ph')) { S.phTarget = b.dataset.ph; $('#phFile').click(); }
+  else return;
+  markNeed(); if (S.sync) S.sync(); queueSave();
+}
+
+/* ---------- พิกัด: ดึงจาก GPS / ปักหมุดบนแผนที่ ---------- */
+function geoFill(b) {
+  const [la, ln] = b.dataset.geo.split(',');
+  if (!navigator.geolocation) return notify('ดึงพิกัดไม่ได้', 'อุปกรณ์นี้ไม่รองรับการระบุตำแหน่ง ลองใช้ "ปักหมุด" แทน', 'warn');
+  b.disabled = true;
+  navigator.geolocation.getCurrentPosition(p => {
+    S.set(la, p.coords.latitude.toFixed(6)); S.set(ln, p.coords.longitude.toFixed(6));
+    b.disabled = false; markNeed(); queueSave();
+  }, () => {
+    b.disabled = false;
+    notify('ดึงพิกัดไม่ได้', 'เบราว์เซอร์ไม่อนุญาตให้ใช้ตำแหน่ง หรือไม่พบสัญญาณ GPS ลองใช้ "ปักหมุด" แทน', 'warn');
+  }, { enableHighAccuracy: true, timeout: 12000 });
+}
+let LEAFLET = null;
+function loadLeaflet() {
+  if (window.L) return Promise.resolve();
+  if (LEAFLET) return LEAFLET;
+  LEAFLET = new Promise((res, rej) => {
+    const l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(l);
+    const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+    s.onload = res; s.onerror = () => { LEAFLET = null; rej(new Error('โหลดแผนที่ไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่')); };
+    document.head.appendChild(s);
+  });
+  return LEAFLET;
+}
+async function pinMap(b) {
+  const [la, ln] = b.dataset.pin.split(',');
+  try { await loadLeaflet(); } catch (e) { return notify('เปิดแผนที่ไม่ได้', e.message, 'err'); }
+  const v = n => parseFloat((document.querySelector(`#dform [name="${n}"]`) || {}).value);
+  const cur = [v(la), v(ln)], hasCur = cur.every(isFinite);
+  const ov = document.createElement('div'); ov.className = 'overlay';
+  ov.innerHTML = `<div class="modal" style="width:min(640px,100%)"><h3>ปักหมุดตำแหน่ง</h3>
+    <div id="pinMap" style="height:340px;border-radius:10px;margin:8px 0"></div>
+    <div class="sb-sub" id="pinInfo">แตะ/คลิกบนแผนที่เพื่อปักหมุด</div>
+    <div class="m-act"><button class="btn ghost" data-r="0">ยกเลิก</button><button class="btn" data-r="1" id="pinOk" disabled>ใช้พิกัดนี้</button></div></div>`;
+  document.body.appendChild(ov);
+  // 🔧 PLACEHOLDER: จุดศูนย์กลางแผนที่เริ่มต้น (ตอนนี้เป็นพื้นที่ลพบุรี) เปลี่ยนเป็นพื้นที่รับผิดชอบของคุณได้
+  const map = L.map('pinMap').setView(hasCur ? cur : [14.8, 100.62], hasCur ? 15 : 9);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+  let mk = null, pt = null;
+  const put = (lat, lng) => {
+    pt = [lat, lng];
+    if (mk) mk.setLatLng(pt); else mk = L.circleMarker(pt, { radius: 9, color: '#d92d20', fillOpacity: .7 }).addTo(map);
+    $('#pinInfo').textContent = `ละติจูด ${lat.toFixed(6)}, ลองจิจูด ${lng.toFixed(6)}`; $('#pinOk').disabled = false;
+  };
+  if (hasCur) put(cur[0], cur[1]);
+  map.on('click', e => put(e.latlng.lat, e.latlng.lng));
+  setTimeout(() => map.invalidateSize(), 120);
+  const close = () => { map.remove(); ov.remove(); };
+  ov.addEventListener('click', e => {
+    if (e.target === ov) return close();
+    const r = e.target.closest('[data-r]'); if (!r) return;
+    if (r.dataset.r === '1' && pt) { S.set(la, pt[0].toFixed(6)); S.set(ln, pt[1].toFixed(6)); markNeed(); queueSave(); }
+    close();
+  });
+}
+
+/* ---------- ไฟล์แนบ / รูปถ่าย: ย่อรูปก่อนส่ง ---------- */
+const toB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = () => rej(new Error('อ่านไฟล์ไม่ได้')); r.readAsDataURL(f); });
+function compressImg(f, max = 1600) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(f);
+    img.onload = () => {
+      const s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      res({ name: f.name.replace(/\.\w+$/, '') + '.jpg', mime: 'image/jpeg', data: c.toDataURL('image/jpeg', .8).split(',')[1] });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('อ่านรูป ' + f.name + ' ไม่ได้')); };
+    img.src = url;
+  });
+}
+async function readFiles(list) {
+  const out = []; let total = 0;
+  for (const f of Array.from(list || [])) {
+    let o;
+    if (f.type.startsWith('image/')) o = await compressImg(f);
+    else if (f.type === 'application/pdf') {
+      if (f.size > 5 * 1024 * 1024) throw new Error(`ไฟล์ ${f.name} ใหญ่เกิน 5 MB`);
+      o = { name: f.name, mime: f.type, data: await toB64(f) };
+    } else throw new Error(`ไม่รองรับไฟล์ ${f.name} (รองรับรูปภาพและ PDF)`);
+    total += o.data.length; out.push(o);
+  }
+  return out;
+}
+async function handlePhoto(inputEl) {
+  const f = inputEl.files[0]; if (!f || !S.phTarget) return;
+  try {
+    const o = await compressImg(f, 1200);
+    o.prev = 'data:image/jpeg;base64,' + o.data;
+    S.photos[S.phTarget] = o;
+    const tile = document.querySelector(`.ph[data-ph="${S.phTarget}"]`);
+    if (tile) { tile.classList.add('has'); tile.style.backgroundImage = `url(${o.prev})`; }
+  } catch (e) { notify('แนบรูปไม่ได้', e.message, 'err'); }
+  inputEl.value = '';
+}
+
+/* ---------- เก็บค่าฟอร์ม + ส่งรายงาน ---------- */
+function collectPayload() {
+  const p = {};
+  document.querySelectorAll('#dform [name]').forEach(el => {
+    if (el.type === 'file') return;
+    p[el.name] = el.type === 'number' ? (el.value === '' ? 0 : +el.value) : el.value;
+  });
+  return p;
+}
+// ป้ายชื่อฟิลด์สำหรับหน้าสรุปก่อนส่ง (เรียงตามลำดับในนี้)
+const LBL = {
+  type: 'ประเภท', report_time: 'วันที่เวลาที่รายงาน', service_unit: 'หน่วยบริการ', chief: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', chief_phone: 'เบอร์โทรศัพท์',
   radio_car: 'รถวิทยุตรวจเขต', driver: 'พลขับ', driver_phone: 'เบอร์โทรพลขับ', radio_op: 'พนักงานวิทยุ', radio_op_phone: 'เบอร์โทรพงว.',
   duty_from: 'ปฏิบัติหน้าที่ตั้งแต่', duty_to: 'ถึงวันที่',
   bw_total: 'กล้อง Bodyworn ทั้งหมด', bw_ready: 'กล้อง Bodyworn พร้อมใช้', bw_broken: 'กล้อง Bodyworn เสีย',
@@ -650,45 +1015,109 @@ const DL = {
   pol_smoke_check: 'ตรวจควันดำ (คัน)', pol_smoke_fail: 'พบเกินมาตรฐาน (คัน)', pol_burn: 'เผาป่า/เผาในที่โล่ง (ครั้ง)', pol_factory: 'โรงงาน (แห่ง)', pol_note: 'หมายเหตุ (มลพิษ)',
   s_search: 'ตรวจค้น (ครั้ง)', s_complaint: 'เรื่องร้องทุกข์ (เรื่อง)', s_alien: 'ตรวจคนต่างด้าว (ราย)', s_note: 'หมายเหตุ (ตรวจค้น)',
   duty_officer: 'ร้อยเวร', duty_officer_phone: 'เบอร์โทร (ร้อยเวร)', detective: 'สืบเวร', detective_phone: 'เบอร์โทร (สืบเวร)',
-  action: 'การปฏิบัติ', detail: 'การดำเนินการ', place: 'สถานที่'
+  action: 'การปฏิบัติ', detail: 'การดำเนินการ', place: 'สถานที่',
+  officer: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', officer_count: 'จำนวนผู้ปฏิบัติรวม (นาย)', checkpoint_name: 'สถานที่ตั้งด่าน',
+  start_time: 'เริ่มตั้งด่าน', end_time: 'เลิกด่าน', lat: 'ละติจูด', lng: 'ลองจิจูด',
+  topic: 'หัวข้อการจับกุม', arrested_by: 'จับโดย', arrest_kind: 'ประเภทการจับ', warrant_type: 'ประเภทหมายจับ', warrant_scope: 'ขอบเขตหมาย',
+  event_time: 'เวลาเกิดเหตุ', search_notice: 'การตรวจค้น/แจ้งข้อกล่าวหา', case_no: 'เลขคดี', suspect_count: 'จำนวนผู้ต้องหา (คน)',
+  evidence_text: 'ของกลาง', ecig_type: 'ประเภทคดีบุหรี่ไฟฟ้า', related_url: 'เว็บไซต์/URL', damage_value: 'มูลค่าความเสียหาย (บาท)',
+  circulating_amount: 'วงเงินหมุนเวียน (บาท)', behavior: 'พฤติการณ์', forward_action: 'การดำเนินการส่งต่อ',
+  commander: 'ผู้บังคับบัญชา', ag_office: 'รายงานสำนักงานอัยการจังหวัด', statement: 'คำให้การผู้ต้องหา',
+  resp_officer: 'เจ้าหน้าที่ผู้รับผิดชอบ', resp_officer_phone: 'เบอร์โทร (ผู้รับผิดชอบ)', rights_officer: 'เจ้าพนักงานผู้แจ้งสิทธิ', rights_officer_phone: 'เบอร์โทร (ผู้แจ้งสิทธิ)',
+  accident_time: 'วันที่เวลาที่เกิดเหตุ', report_unit: 'หน่วยรายงาน', road: 'ทล.', km: 'กม.', direction: 'ทิศทาง', location_area: 'ต./อ./จว.',
+  deaths: 'เสียชีวิต (ราย)', injuries: 'ได้รับบาดเจ็บ (ราย)', hospital: 'นำตัวส่ง รพ.', main_vehicle: 'รถหลัก', other_party: 'คู่กรณี',
+  cause_human: 'พฤติกรรมคน (%)', cause_vehicle: 'สภาพรถ (%)', cause_road: 'สภาพถนน (%)', cause_env: 'สภาพแวดล้อม (%)',
+  fixes: 'แนวทางแก้ไข', damage: 'ความเสียหาย', v4_car: 'รถวิทยุ ว.4', joint_units: 'หน่วยร่วมปฏิบัติ', summary: 'รายละเอียดอุบัติเหตุ'
 };
-const D = { tab: 0, co: [], charges: [], grouped: false, open: {}, timer: null };
+function rowsFrom(p, labels = LBL) {
+  const rows = [];
+  Object.keys(labels).forEach(k => {
+    const v = p[k];
+    if (v === undefined || v === '' || v === 0 || v === '0') return;
+    const isDate = /^duty_(from|to)$/.test(k);
+    rows.push([labels[k], /time$/.test(k) ? thDisp(v, true) : isDate ? thDisp(v, false) : v]);
+  });
+  return rows;
+}
+// ยืนยัน -> แนบไฟล์ -> ส่ง -> ล้าง draft -> ไปหน้ารายการ
+async function sendReport(mod, payload, rows, extra = []) {
+  const fl = document.querySelector('#dform [name="__files"]');
+  const n = (fl ? fl.files.length : 0) + extra.length;
+  if (n) rows.push(['ไฟล์แนบ', n + ' ไฟล์']);
+  if (!(await ask('ตรวจสอบข้อมูลก่อนส่ง', sumHtml(rows)))) return;
+  const btn = $('#save'), old = btn.innerHTML; btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+  try {
+    const files = (await readFiles(fl ? fl.files : [])).concat(extra);
+    await api('submit', { module: mod, payload, files });
+    clearTimeout(S.timer); S.timer = null; store.del(dkey(S.key)); S.key = '';
+    await notify('บันทึกเรียบร้อย', 'ส่งรายงานเข้าระบบแล้ว', 'ok');
+    location.hash = '#list/' + mod;
+  } catch (e) { $('#err').textContent = e.message; btn.disabled = false; btn.innerHTML = old; }
+}
 
-/* ---------- ตัวสร้างช่องกรอก ---------- */
-const fld = (label, inner, cls = '') => `<div class="${cls}"><label>${label}</label>${inner}</div>`;
-const inp = (name, ph = '', type = 'text', extra = '') => `<input name="${name}" type="${type}" placeholder="${esc(ph)}" ${extra}>`;
-const num = (name, extra = '') => `<input name="${name}" type="number" min="0" step="1" value="0" ${extra}>`;
-// ช่องพิมพ์ค้นหา/เลือกจากรายการ (ใช้ datalist)
-const pick = (name, ph = 'พิมพ์ค้นหา หรือกดเลือกจากรายการ') => `<input name="${name}" list="dl-officers" placeholder="${ph}" autocomplete="off" data-officer>`;
-const unitSel = () => `<select name="service_unit"><option value="">-- เลือกหน่วยบริการ --</option>${OPT.units.map(u => `<option>${esc(u)}</option>`).join('')}</select>`;
-const timeFld = (cls = '') => fld('วันที่เวลาที่รายงาน', `<div class="with-btn">${inp('report_time', '', 'datetime-local')}
-  <button type="button" class="sq sm" data-now title="ตั้งเป็นเวลาปัจจุบัน"><i class="fa-solid fa-clock-rotate-left"></i></button></div>`, cls);
-const dateFlds = () => fld('ปฏิบัติหน้าที่ตั้งแต่ (ว/ด/ป)', inp('duty_from', '', 'date')) + fld('ถึงวันที่ (ว/ด/ป)', inp('duty_to', '', 'date'));
+/* ============================================================
+   เปิดฟอร์มของแต่ละโมดูล
+   ============================================================ */
+function renderForm(mod) {
+  const m = MODULES[mod];
+  if (!has(m.perm)) return denied();
+  if (mod === 'daily') return renderDailyForm(0);
+  if (mod === 'checkpoint') return renderCheckpointForm();
+  if (mod === 'arrest') return renderArrestForm();
+  if (mod === 'accident') return renderAccidentForm();
+  return renderGenericForm(mod);
+}
+
+/* ---------- ฟอร์มทั่วไป ---------- */
+function renderGenericForm(mod) {
+  const m = MODULES[mod];
+  const body = m.fields.map(f => {
+    let el;
+    if (f.type === 'select') el = sel(f.name, f.options);
+    else if (f.type === 'textarea') el = area(f.name, f.ph || '');
+    else if (f.type === 'datetime-local') el = dtF(f.name);
+    else el = inp(f.name, f.ph || '', f.type, f.type === 'number' ? 'step="any"' : '');
+    return fld(esc(f.label), el, f.full ? 'full' : '');
+  }).join('');
+  mountForm({ key: mod, topTitle: m.title || m.label, title: m.label, body, remount: () => renderGenericForm(mod),
+    defaults: set => m.fields.forEach(f => { if (f.type === 'datetime-local') set(f.name, nowLocal()); }),
+    submit: () => {
+      const p = collectPayload();
+      const labels = {}; m.fields.forEach(f => labels[f.name] = f.label);
+      sendReport(mod, p, rowsFrom(p, labels));
+    } });
+}
+
+/* ---------- รายงานประจำวัน HWPD (4 แท็บ) ---------- */
+const DAILY_TABS = [
+  { name: 'เวรผลัด', icon: 'fa-clipboard-list', title: '1. รายงานประจำวัน (เวรผลัด)' },
+  { name: 'ผลปฏิบัติ', icon: 'fa-chart-pie', title: '2. ผลการปฏิบัติประจำวัน' },
+  { name: 'เวรสืบเวร', icon: 'fa-truck-field', title: '3. รายงานประจำวันสืบเวร' },
+  { name: 'ว.4 อื่นๆ', icon: 'fa-car-side', title: '4. รายงาน ว.4 อื่นๆ' }
+];
 const bodyworn = title => `<div class="full"><span class="badge cyan">${title}</span></div>
   <div class="full g3">${fld('ทั้งหมด', num('bw_total'))}${fld('พร้อมใช้', num('bw_ready'))}${fld('เสีย', num('bw_broken'))}</div>`;
-const fileFld = label => fld(label, '<input type="file" name="__files" multiple accept="image/*,application/pdf">', 'full');
+const dateFlds = () => fld('ปฏิบัติหน้าที่ตั้งแต่ (ว/ด/ป)', dtF('duty_from', 'date')) + fld('ถึงวันที่ (ว/ด/ป)', dtF('duty_to', 'date'));
 
-/* ---------- เนื้อหาแต่ละแท็บ ---------- */
 function dailyBody(t) {
   if (t === 0) return `
-    ${timeFld()}${fld('หน่วยบริการ', unitSel())}
+    ${dtNow()}${fld('หน่วยบริการ', unitSel())}
     <hr class="divider">
-    ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย', pick('chief'))}${fld('เบอร์โทรศัพท์', inp('chief_phone', '08x-xxxxxxx', 'tel'))}
+    ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย', cbF('chief', 'officers'))}${fld('เบอร์โทรศัพท์', inp('chief_phone', '08x-xxxxxxx', 'tel'))}
     ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เลขรถ'), 'full')}
-    <div class="stack">${fld('พลขับ', pick('driver'))}${inp('driver_phone', 'เบอร์โทรพลขับ', 'tel')}</div>
-    <div class="stack">${fld('พนักงานวิทยุ', pick('radio_op'))}${inp('radio_op_phone', 'เบอร์โทรพงว.', 'tel')}</div>
+    <div class="stack">${fld('พลขับ', cbF('driver', 'officers'))}${inp('driver_phone', 'เบอร์โทรพลขับ', 'tel')}</div>
+    <div class="stack">${fld('พนักงานวิทยุ', cbF('radio_op', 'officers'))}${inp('radio_op_phone', 'เบอร์โทรพงว.', 'tel')}</div>
     <div class="full subbox">
       <div class="sb-head"><b>ผู้ร่วมออก ว.4 เพิ่มเติม (ถ้ามี)</b>
-        <button type="button" class="mini" id="addCo"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
-      <div id="coList"></div>
+        <button type="button" class="mini" data-ladd="co"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
+      <div id="L-co"></div>
     </div>
     ${dateFlds()}
     ${bodyworn('กล้อง Bodyworn')}
     ${fileFld('แนบไฟล์หลักฐาน')}`;
 
   if (t === 1) return `
-    <div class="hint" id="draftBanner" hidden></div>
-    ${fld('หน่วยบริการ', unitSel())}${timeFld()}
+    ${fld('หน่วยบริการ', unitSel())}${dtNow()}
     <hr class="divider">
     <div class="full g4">
       ${fld('ว.43 (ครั้ง)', num('cnt_w43'))}${fld('บริการ (ครั้ง)', num('cnt_service'))}${fld('ว.42 (ครั้ง)', num('cnt_w42'))}
@@ -697,14 +1126,14 @@ function dailyBody(t) {
     <div class="full subbox">
       <div class="sb-head"><b><i class="fa-solid fa-gavel"></i> รายการข้อหา ว.20</b>
         <span><button type="button" class="mini" id="grpBtn"><i class="fa-solid fa-layer-group"></i> จัดกลุ่มตาม พ.ร.บ.</button>
-        <button type="button" class="mini yellow" id="addCh"><i class="fa-solid fa-plus"></i> เพิ่มข้อหา</button></span></div>
+        <button type="button" class="mini yellow" data-ladd="charges"><i class="fa-solid fa-plus"></i> เพิ่มข้อหา</button></span></div>
       <div class="sb-sub">ไม่มีการจับกุม = ไม่ต้องเพิ่มแถว · ยอด ว.20 จะเป็น 0</div>
-      <div id="chList"></div>
+      <div id="L-charges"></div>
       <div class="sb-sub sum">รวมเป็นยอด ว.20 = <span id="ch20">0</span> ครั้ง</div>
     </div>
     <div class="full subbox beige">
       <div style="margin-bottom:8px"><span class="badge yellow">แยกประเภทการจับกุม (ไม่บังคับ)</span></div>
-      <div class="g3" style="grid-template-columns:1fr 1fr 1.2fr;align-items:end">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px 12px;align-items:end">
         ${fld('จับกุมตามหมายจับ (ราย)', num('arrest_warrant'))}${fld('จับกุมซึ่งหน้า (ราย)', num('arrest_flagrante'))}
         <div class="sb-sub" id="arrSum">รวมแยกประเภท 0 / ยอด ว.20 ทั้งหมด 0</div>
       </div>
@@ -725,115 +1154,31 @@ function dailyBody(t) {
     ${fileFld('แนบไฟล์หลักฐาน')}`;
 
   if (t === 2) return `
-    ${timeFld('full')}
+    ${dtNow('report_time', 'วันที่เวลาที่รายงาน', 'full')}
     <hr class="divider">
     ${[['duty_officer', 'ร้อยเวรฯ'], ['detective', 'สืบเวร'], ['radio_op', 'พนักงานวิทยุ']].map(([n, l]) =>
-      `<div class="full" style="display:grid;grid-template-columns:2fr 1fr;gap:14px">${fld(l, pick(n))}${fld('เบอร์โทรศัพท์', inp(n + '_phone', '', 'tel'))}</div>`).join('')}
+      `<div class="full" style="display:grid;grid-template-columns:2fr 1fr;gap:14px">${fld(l, cbF(n, 'officers'))}${fld('เบอร์โทรศัพท์', inp(n + '_phone', '', 'tel'))}</div>`).join('')}
     <hr class="divider">
     ${dateFlds()}`;
 
   return `
-    ${timeFld()}${fld('หน่วยบริการ', unitSel())}
+    ${dtNow()}${fld('หน่วยบริการ', unitSel())}
     <hr class="divider">
     <div class="full subbox">
       <div class="sb-head"><b>รายชื่อเจ้าหน้าที่ผู้ปฏิบัติ</b>
-        <button type="button" class="mini" id="addCo"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
-      <div id="coList"></div>
+        <button type="button" class="mini" data-ladd="co"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
+      <div id="L-co"></div>
     </div>
     ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เช่น 51xx'), 'full')}
-    ${fld('การปฏิบัติ', `<select name="action"><option value="">-- เลือก --</option>${OPT.actions.map(a => `<option>${esc(a)}</option>`).join('')}</select>`)}
-    ${fld('การดำเนินการ', '<textarea name="detail" placeholder="รายละเอียด..."></textarea>')}
+    ${fld('การปฏิบัติ', sel('action', OPT.actions, '-- เลือก --'))}
+    ${fld('การดำเนินการ', area('detail', 'รายละเอียด...'))}
     ${fld('สถานที่', inp('place', 'สถานที่ปฏิบัติงาน'), 'full')}
     ${fileFld('แนบไฟล์ประกอบ')}`;
 }
 
-/* ---------- วาดหน้าฟอร์มรายงานประจำวัน ---------- */
-function renderDailyForm(tab = 0) {
-  if (!has('daily')) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
-  flushSave();
-  D.tab = tab; D.co = [{ name: '', role: '' }]; D.charges = []; D.grouped = false; D.open = {};
-  $('#app').className = 'narrow';
-  $('#app').innerHTML = `${topbar('หมวดรายงานประจำวัน HWPD')}
-    <div class="tabs">${DAILY_TABS.map((t, i) => `<button class="${i === tab ? 'on' : ''}" data-tab="${i}"><i class="fa-solid ${t.icon}"></i> ${i + 1}. ${esc(t.name)}</button>`).join('')}</div>
-    <div class="card" id="dform">
-      <datalist id="dl-officers">${OPT.officers.map(o => `<option value="${esc(o.name)}">`).join('')}</datalist>
-      <p class="form-title">${esc(DAILY_TABS[tab].title)}</p>
-      <div class="grid">${dailyBody(tab)}</div>
-      <div class="actions">
-        <button class="btn" id="save"><i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง</button>
-      </div>
-      <div class="err" id="err"></div>
-    </div>`;
-  bindBack();
-  document.querySelectorAll('[data-tab]').forEach(b => { b.onclick = () => renderDailyForm(+b.dataset.tab); });
-
-  // ค่าเริ่มต้น
-  const set = (n, v) => { const el = document.querySelector(`#dform [name="${n}"]`); if (el) el.value = v; };
-  set('report_time', nowLocal()); set('duty_from', today()); set('duty_to', today());
-  if (session.user.unit && OPT.units.includes(session.user.unit)) set('service_unit', session.user.unit);
-
-  // กู้ draft (ถ้ามี)
-  const d = loadDraft(tab);
-  if (d) {
-    Object.entries(d.v || {}).forEach(([n, v]) => set(n, v));
-    D.co = d.co && d.co.length ? d.co : D.co; D.charges = d.charges || []; D.grouped = !!d.grouped; D.open = d.open || {};
-    const b = $('#draftBanner');
-    if (b) b.hidden = false; else $('#dform .grid').insertAdjacentHTML('afterbegin', '<div class="hint" id="draftBanner"></div>');
-    $('#draftBanner').hidden = false;
-    $('#draftBanner').innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i>
-      <span class="grow">กู้ข้อมูลที่กรอกค้างไว้กลับมาให้แล้ว ตรวจสอบความถูกต้องก่อนส่ง <b>ไฟล์ที่เคยแนบไว้ไม่ได้ถูกกู้กลับมาด้วย กรุณาแนบใหม่</b></span>
-      <button type="button" class="mini warn" id="clearDraft">ล้างแล้วเริ่มใหม่</button>`;
-  }
-  drawCo(); drawCharges(); applyOpen(); syncTotals();
-
-  const f = $('#dform');
-  f.addEventListener('input', onDInput);
-  f.addEventListener('change', onDChange);
-  f.addEventListener('click', onDClick);
-  $('#save').onclick = submitDaily;
-}
-
-/* ---------- รายชื่อผู้ร่วมปฏิบัติ ---------- */
-function drawCo() {
-  const box = $('#coList'); if (!box) return;
-  const role = D.tab === 0;
-  box.innerHTML = D.co.map((c, i) => `<div class="rowx" data-ci="${i}">
-    <input data-ck="name" list="dl-officers" value="${esc(c.name)}" placeholder="พิมพ์ค้นหา หรือกดเลือกจากรายการ" autocomplete="off">
-    ${role ? `<input data-ck="role" value="${esc(c.role)}" placeholder="ตำแหน่ง/บทบาท เช่น พลขับสำรอง">` : ''}
-    ${D.co.length > 1 ? `<button type="button" class="sq sm red" data-cdel="${i}" title="ลบ"><i class="fa-solid fa-trash"></i></button>` : ''}</div>`).join('');
-}
-
-/* ---------- รายการข้อหา ว.20 ---------- */
-function drawCharges() {
-  const box = $('#chList'); if (!box) return;
-  const all = [].concat(...Object.values(OPT.acts));
-  const acts = Object.keys(OPT.acts);
-  let rows = D.charges.map((c, i) => ({ c, i }));
-  if (D.grouped) rows.sort((a, b) => (a.c.act || '\uffff').localeCompare(b.c.act || '\uffff', 'th'));
-  let html = '', last = null;
-  rows.forEach(({ c, i }) => {
-    if (D.grouped && c.act !== last) {
-      last = c.act;
-      const sub = D.charges.filter(x => x.act === c.act).reduce((s, x) => s + (+x.n || 0), 0);
-      html += `<div class="grp">${esc(c.act || 'ไม่ระบุ พ.ร.บ.')}<span>รวม ${sub} ครั้ง</span></div>`;
-    }
-    const opts = OPT.acts[c.act] || all;
-    html += `<div class="rowx" data-i="${i}">
-      <select data-k="act"><option value="">-- พ.ร.บ. --</option>${acts.map(a => `<option ${a === c.act ? 'selected' : ''}>${esc(a)}</option>`).join('')}</select>
-      <input data-k="charge" list="dl-ch-${i}" value="${esc(c.charge)}" placeholder="ข้อหา" autocomplete="off">
-      <datalist id="dl-ch-${i}">${opts.map(o => `<option value="${esc(o)}">`).join('')}</datalist>
-      <input data-k="n" type="number" min="0" step="1" value="${c.n}" title="จำนวนครั้ง">
-      <button type="button" class="sq sm red" data-del="${i}" title="ลบ"><i class="fa-solid fa-trash"></i></button></div>`;
-  });
-  box.innerHTML = html;
-  const g = $('#grpBtn'); if (g) g.classList.toggle('on', D.grouped);
-  syncTotals();
-}
-
-// ยอด ว.20 อัตโนมัติ + ตรวจยอดแยกประเภทจับกุม
-function syncTotals() {
+function syncDaily() {
   const w = document.querySelector('#dform [name="cnt_w20"]'); if (!w) return;
-  const tot = D.charges.reduce((s, c) => s + (+c.n || 0), 0);
+  const tot = S.lists.charges.reduce((s, c) => s + (+c.n || 0), 0);
   w.value = tot; $('#ch20').textContent = tot;
   const v = n => +(document.querySelector(`#dform [name="${n}"]`) || {}).value || 0;
   const a = v('arrest_warrant') + v('arrest_flagrante');
@@ -841,149 +1186,258 @@ function syncTotals() {
   el.classList.toggle('bad', a > tot);
 }
 
-function applyOpen() {
-  ['pol', 'srch'].forEach(k => { const p = $('#p-' + k); if (p) p.hidden = !D.open[k]; });
-}
-
-/* ---------- เหตุการณ์ในฟอร์ม ---------- */
-function onDInput(e) {
-  const t = e.target;
-  if (t.dataset.ck !== undefined) D.co[+t.closest('[data-ci]').dataset.ci][t.dataset.ck] = t.value;
-  else if (t.dataset.k !== undefined) {
-    const c = D.charges[+t.closest('[data-i]').dataset.i];
-    c[t.dataset.k] = t.dataset.k === 'n' ? (+t.value || 0) : t.value;
-  }
-  syncTotals(); queueSave();
-}
-function onDChange(e) {
-  const t = e.target;
-  if (t.dataset.k === 'act') { D.charges[+t.closest('[data-i]').dataset.i].act = t.value; drawCharges(); }
-  else if (t.dataset.k === 'n' && D.grouped) drawCharges();
-  // เลือกชื่อเจ้าหน้าที่แล้วเติมเบอร์โทรให้อัตโนมัติ (ถ้าช่องเบอร์ยังว่าง)
-  if (t.matches('[data-officer]')) {
-    const o = OPT.officers.find(x => x.name === t.value);
-    const ph = document.querySelector(`#dform [name="${t.name}_phone"]`);
-    if (o && o.phone && ph && !ph.value) ph.value = o.phone;
-  }
-  queueSave();
-}
-function onDClick(e) {
-  const b = e.target.closest('button'); if (!b) return;
-  if (b.dataset.now !== undefined) { document.querySelector('#dform [name="report_time"]').value = nowLocal(); }
-  else if (b.dataset.del !== undefined) { D.charges.splice(+b.dataset.del, 1); drawCharges(); }
-  else if (b.dataset.cdel !== undefined) { D.co.splice(+b.dataset.cdel, 1); if (!D.co.length) D.co.push({ name: '', role: '' }); drawCo(); }
-  else if (b.id === 'addCo') { D.co.push({ name: '', role: '' }); drawCo(); }
-  else if (b.id === 'addCh') { D.charges.push({ act: '', charge: '', n: 1 }); drawCharges(); }
-  else if (b.id === 'grpBtn') { D.grouped = !D.grouped; drawCharges(); }
-  else if (b.dataset.tog) { D.open[b.dataset.tog] = !D.open[b.dataset.tog]; applyOpen(); }
-  else if (b.id === 'clearDraft') { store.del(dkey(D.tab)); renderDailyForm(D.tab); return; }
-  else return;
-  queueSave();
-}
-
-/* ---------- Draft: บันทึกข้อมูลที่กรอกค้างไว้อัตโนมัติ ---------- */
-const dkey = t => `hwpd_draft_${session.user.display_name}_${t}`;
-function collectDaily() {
-  const v = {};
-  document.querySelectorAll('#dform [name]').forEach(el => { if (el.type !== 'file') v[el.name] = el.value; });
-  return v;
-}
-function saveDraft() {
-  if (!$('#dform')) return;
-  store.set(dkey(D.tab), JSON.stringify({ v: collectDaily(), co: D.co, charges: D.charges, grouped: D.grouped, open: D.open, t: Date.now() }));
-}
-function queueSave() { clearTimeout(D.timer); D.timer = setTimeout(() => { D.timer = null; saveDraft(); }, 300); }
-function flushSave() { if (D.timer) { clearTimeout(D.timer); D.timer = null; saveDraft(); } }
-function loadDraft(t) {
-  try {
-    const d = JSON.parse(store.get(dkey(t)) || 'null');
-    if (!d) return null;
-    if (Date.now() - d.t > 12 * 3600 * 1000) { store.del(dkey(t)); return null; }   // draft เก่าเกิน 12 ชม. ทิ้ง
-    return d;
-  } catch (e) { return null; }
-}
-
-/* ---------- ไฟล์แนบ: ย่อรูปก่อนส่ง ---------- */
-const toB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = () => rej(new Error('อ่านไฟล์ไม่ได้')); r.readAsDataURL(f); });
-function compressImg(f) {
-  return new Promise((res, rej) => {
-    const img = new Image(), url = URL.createObjectURL(f);
-    img.onload = () => {
-      const s = Math.min(1, 1600 / Math.max(img.width, img.height));
-      const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
-      res({ name: f.name.replace(/\.\w+$/, '') + '.jpg', mime: 'image/jpeg', data: c.toDataURL('image/jpeg', .8).split(',')[1] });
-    };
-    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('อ่านรูป ' + f.name + ' ไม่ได้')); };
-    img.src = url;
+function renderDailyForm(tab = 0) {
+  if (!has('daily')) return denied();
+  S.tab = tab;
+  mountForm({
+    key: 'daily:' + tab, topTitle: 'หมวดรายงานประจำวัน HWPD', title: DAILY_TABS[tab].title, body: dailyBody(tab),
+    tabs: `<div class="tabs">${DAILY_TABS.map((t, i) => `<button class="${i === tab ? 'on' : ''}" data-tab="${i}"><i class="fa-solid ${t.icon}"></i> ${i + 1}. ${esc(t.name)}</button>`).join('')}</div>`,
+    lists: tab === 0 || tab === 3 ? { co: 1 } : tab === 1 ? { charges: 0 } : {},
+    opts: { coRole: tab === 0 }, sync: syncDaily, onTab: renderDailyForm, remount: () => renderDailyForm(tab), submit: submitDaily,
+    defaults: set => {
+      set('report_time', nowLocal()); set('duty_from', today()); set('duty_to', today());
+      if (session.user.unit && OPT.units.includes(session.user.unit)) set('service_unit', session.user.unit);
+    }
   });
 }
-async function readFiles(list) {
-  const out = []; let total = 0;
-  for (const f of list) {
-    let o;
-    if (f.type.startsWith('image/')) o = await compressImg(f);
-    else if (f.type === 'application/pdf') {
-      if (f.size > 5 * 1024 * 1024) throw new Error(`ไฟล์ ${f.name} ใหญ่เกิน 5 MB`);
-      o = { name: f.name, mime: f.type, data: await toB64(f) };
-    } else throw new Error(`ไม่รองรับไฟล์ ${f.name} (รองรับรูปภาพและ PDF)`);
-    total += o.data.length; out.push(o);
-  }
-  if (total > 20e6) throw new Error('ไฟล์แนบรวมใหญ่เกินไป กรุณาลดจำนวนไฟล์');
-  return out;
-}
 
-/* ---------- ตรวจข้อมูล + ส่ง ---------- */
 async function submitDaily() {
-  $('#err').textContent = '';
-  flushSave();
-  const t = D.tab, v = collectDaily();
-  const n = k => +v[k] || 0;
-  const errs = [];
-  if (t !== 2 && !v.service_unit) errs.push('กรุณาเลือกหน่วยบริการ');
-  if (!v.report_time) errs.push('กรุณาระบุวันที่เวลาที่รายงาน');
-  if ((t === 0 || t === 2) && v.duty_from && v.duty_to && v.duty_from > v.duty_to) errs.push('วันที่ "ถึงวันที่" ต้องไม่ก่อนวันที่เริ่มปฏิบัติหน้าที่');
+  $('#err').textContent = ''; flushSave();
+  const t = S.tab, p = collectPayload(), n = k => +p[k] || 0, errs = [];
+  if (t !== 2 && !p.service_unit) errs.push('กรุณาเลือกหน่วยบริการ');
+  if (!p.report_time) errs.push('กรุณาระบุวันที่เวลาที่รายงาน');
+  if ((t === 0 || t === 2) && p.duty_from && p.duty_to && p.duty_from > p.duty_to) errs.push('วันที่ "ถึงวันที่" ต้องไม่ก่อนวันที่เริ่มปฏิบัติหน้าที่');
   if ((t === 0 || t === 1) && n('bw_ready') + n('bw_broken') > n('bw_total')) errs.push('กล้อง Bodyworn: พร้อมใช้ + เสีย ต้องไม่เกินจำนวนทั้งหมด');
   if (t === 1) {
     if (n('arrest_warrant') + n('arrest_flagrante') > n('cnt_w20')) errs.push('ยอดแยกประเภทการจับกุมเกินยอด ว.20 ทั้งหมด');
-    if (D.charges.some(c => (+c.n || 0) > 0 && !c.charge.trim())) errs.push('มีรายการข้อหาที่ระบุจำนวนแล้วแต่ยังไม่ได้ใส่ชื่อข้อหา');
+    if (S.lists.charges.some(c => (+c.n || 0) > 0 && !c.charge.trim())) errs.push('มีรายการข้อหาที่ระบุจำนวนแล้วแต่ยังไม่ได้ใส่ชื่อข้อหา');
   }
   if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
 
-  // สร้าง payload (ฟิลด์ตัวเลขแปลงเป็นตัวเลข)
-  const payload = { type: DAILY_TABS[t].name };
-  Object.entries(v).forEach(([k, val]) => {
-    const el = document.querySelector(`#dform [name="${k}"]`);
-    payload[k] = el && el.type === 'number' ? (val === '' ? 0 : +val) : val;
-  });
-  const co = D.co.filter(c => c.name.trim());
+  const payload = Object.assign({ type: DAILY_TABS[t].name }, p);
+  const co = (S.lists.co || []).filter(c => c.name.trim());
   if (t === 0 || t === 3) payload.co_officers = JSON.stringify(co);
-  if (t === 1) payload.charges = JSON.stringify(D.charges.filter(c => c.charge.trim() && (+c.n || 0) > 0));
+  const ch = (S.lists.charges || []).filter(c => c.charge.trim() && (+c.n || 0) > 0);
+  if (t === 1) payload.charges = JSON.stringify(ch);
 
-  // สรุปให้ตรวจก่อนส่ง
-  const rows = [['ประเภท', payload.type]];
-  Object.keys(DL).forEach(k => {
-    const val = payload[k];
-    if (val === undefined || val === '' || val === 0) return;
-    rows.push([DL[k], k === 'report_time' ? fmt(val) : (k === 'duty_from' || k === 'duty_to') ? fmtDate(val) : val]);
-  });
+  const rows = [['ประเภท', payload.type]].concat(rowsFrom(payload));
+  rows.splice(1, 1);   // ลบแถว "ประเภท" ซ้ำที่มาจาก LBL
   if (co.length) rows.push([t === 0 ? 'ผู้ร่วมออก ว.4' : 'เจ้าหน้าที่ผู้ปฏิบัติ', co.map(c => c.name + (c.role ? ` (${c.role})` : '')).join(', ')]);
-  if (t === 1 && D.charges.length) rows.push(['รายการข้อหา', D.charges.filter(c => c.charge.trim() && +c.n > 0).map(c => `${c.charge} ×${c.n}`).join(', ')]);
-  const fl = document.querySelector('#dform [name="__files"]').files;
-  if (fl.length) rows.push(['ไฟล์แนบ', fl.length + ' ไฟล์']);
-  if (!(await ask('ตรวจสอบข้อมูลก่อนส่ง', sumHtml(rows)))) return;
+  if (ch.length) rows.push(['รายการข้อหา', ch.map(c => `${c.charge} ×${c.n}`).join(', ')]);
+  sendReport('daily', payload, rows);
+}
 
-  const btn = $('#save'); btn.disabled = true; btn.textContent = 'กำลังส่ง...';
-  try {
-    const files = await readFiles(fl);
-    await api('submit', { module: 'daily', payload, files });
-    store.del(dkey(t));
-    await notify('บันทึกเรียบร้อย', 'ส่งรายงานเข้าระบบแล้ว', 'ok');
-    location.hash = '#list/daily';
-  } catch (e) {
-    $('#err').textContent = e.message;
-    btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง';
-  }
+/* ---------- รายงานด่าน จุดตรวจ จุดสกัด ---------- */
+function renderCheckpointForm() {
+  const body = `
+    ${dtNow()}${fld('หน่วยบริการ ' + rq, unitSel())}
+    <hr class="divider">
+    ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย (ยศ ชื่อ สกุล ตำแหน่ง) ' + rq, cbF('officer', 'officers'))}
+    ${fld('จำนวนผู้ปฏิบัติรวม (นาย) ' + rq, inp('officer_count', 'รวมผู้รายงาน', 'number', 'min="0" step="1"'))}
+    ${fld('รถวิทยุตรวจเขต ' + rq, inp('radio_car', 'ระบุเลขรถวิทยุ'), 'full')}
+    ${fld('สถานที่ตั้งด่าน ' + rq, sel('checkpoint_name', OPT.places.map(p => p.place), '-- เลือกสถานที่ --'))}<div></div>
+    <hr class="divider">
+    <div class="full"><span class="badge cyan"><i class="fa-solid fa-clock"></i> ช่วงเวลาที่ตั้งด่าน</span>
+      <div class="sb-sub" style="margin-top:4px">หน้าภาพรวมของ ผบก.ทล. จะแสดงหมุดสีเขียวเฉพาะด่านที่ยังอยู่ในช่วงเวลานี้</div></div>
+    ${fld('เริ่มตั้งด่าน ' + rq, dtF('start_time'))}${fld('เลิกด่าน ' + rq, dtF('end_time'))}
+    <hr class="divider">
+    <div class="full coord">
+      ${fld('ละติจูด ' + rq, inp('lat', 'เช่น 16.8765', 'text', 'inputmode="decimal"'))}
+      ${fld('ลองจิจูด ' + rq, inp('lng', 'เช่น 98.5432', 'text', 'inputmode="decimal"'))}
+      <button type="button" class="mini green" data-geo="lat,lng" style="height:31px"><i class="fa-solid fa-location-crosshairs"></i> ดึงพิกัด</button>
+      <button type="button" class="mini" data-pin="lat,lng" style="height:31px"><i class="fa-solid fa-map-location-dot"></i> ปักหมุด</button>
+    </div>
+    ${fileFld('แนบภาพประกอบด่าน (เลือกได้หลายไฟล์)')}`;
+  mountForm({
+    key: 'checkpoint', topTitle: 'รายงานด่าน จุดตรวจ จุดสกัด', back: 'กลับ', title: '', body, remount: renderCheckpointForm,
+    defaults: set => {
+      const d = new Date(); set('report_time', localStr(d)); set('start_time', localStr(d)); set('end_time', localStr(new Date(d.getTime() + 3 * 3600e3)));
+      if (session.user.unit && OPT.units.includes(session.user.unit)) set('service_unit', session.user.unit);
+    },
+    // เลือกสถานที่ตั้งด่านแล้วเติมพิกัดให้ (ถ้าในชีต Places มีพิกัด)
+    onChange: t => {
+      if (t.name !== 'checkpoint_name') return;
+      const pl = OPT.places.find(x => x.place === t.value);
+      if (pl && pl.lat && pl.lng) { S.set('lat', pl.lat); S.set('lng', pl.lng); }
+    },
+    submit: () => {
+      $('#err').textContent = ''; flushSave();
+      const p = collectPayload(), errs = [];
+      const req = { service_unit: 'หน่วยบริการ', officer: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', radio_car: 'รถวิทยุตรวจเขต', checkpoint_name: 'สถานที่ตั้งด่าน', start_time: 'เริ่มตั้งด่าน', end_time: 'เลิกด่าน', lat: 'ละติจูด', lng: 'ลองจิจูด' };
+      Object.keys(req).forEach(k => { if (!String(p[k] || '').trim()) errs.push('กรุณากรอก ' + req[k]); });
+      if (!(+p.officer_count > 0)) errs.push('กรุณากรอกจำนวนผู้ปฏิบัติรวม (นาย)');
+      if (p.start_time && p.end_time && p.end_time <= p.start_time) errs.push('เวลาเลิกด่านต้องหลังเวลาเริ่มตั้งด่าน');
+      const la = parseFloat(p.lat), ln = parseFloat(p.lng);
+      if (p.lat && (!isFinite(la) || la < -90 || la > 90)) errs.push('ละติจูดไม่ถูกต้อง');
+      if (p.lng && (!isFinite(ln) || ln < -180 || ln > 180)) errs.push('ลองจิจูดไม่ถูกต้อง');
+      if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+      sendReport('checkpoint', p, rowsFrom(p));
+    }
+  });
+  $('#dform .form-title').hidden = true;   // หน้านี้ไม่มีหัวข้อกลางการ์ด (ชื่ออยู่แถบบน)
+}
+
+/* ---------- รายงานการจับกุม ---------- */
+function renderArrestForm() {
+  const body = `
+    ${dtNow()}${fld('หัวข้อการจับกุม', sel('topic', OPT.topics, '-- เลือกหัวข้อ --', 'data-req="red"'))}
+    <div class="full subbox">
+      <div class="sb-head"><b><i class="fa-solid fa-gavel"></i> ข้อหาหลัก / ข้อหาที่จับกุม</b>
+        <span><button type="button" class="mini" id="grpBtn"><i class="fa-solid fa-layer-group"></i> จัดกลุ่มตาม พ.ร.บ.</button>
+        <button type="button" class="mini" data-ladd="acharges"><i class="fa-solid fa-plus"></i> เพิ่มข้อหา</button></span></div>
+      <div id="L-acharges"></div>
+      <div class="note-s">ข้อหาแรกคือข้อหาหลัก · เลือกจากรายการ หรือเลือก "อื่นๆ" เพื่อพิมพ์ข้อหาเอง</div>
+    </div>
+    <!-- 🔧 PLACEHOLDER: ตัวเลือกของ 4 ช่องนี้ภาพไม่เห็นรายการข้างใน แก้ตามระเบียบจริงได้ -->
+    <div class="full g4">
+      ${fld('จับโดย', sel('arrested_by', ['จับเอง', 'ร่วมกับหน่วยอื่น', 'รับตัวจากหน่วยอื่น']))}
+      ${fld('ประเภทการจับ', sel('arrest_kind', ['จับกุมซึ่งหน้า', 'จับกุมตามหมายจับ']))}
+      ${fld('ประเภทหมายจับ', sel('warrant_type', ['ไม่ใช่หมายจับ', 'หมายจับศาลจังหวัด', 'หมายจับศาลอาญา', 'หมายจับศาลอื่น']))}
+      ${fld('ขอบเขตหมาย (กรณีมีจับตามหมาย)', sel('warrant_scope', ['ไม่ใช่หมายจับ', 'ในเขตอำนาจหมาย', 'นอกเขตอำนาจหมาย']))}
+    </div>
+    <div class="full g3">
+      ${fld('เวลาเกิดเหตุ', dtF('event_time'))}
+      ${fld('การตรวจค้น/แจ้งข้อกล่าวหา (ถ้ามี)', sel('search_notice', ['— ไม่มี —', 'มีการตรวจค้น', 'มีการแจ้งข้อกล่าวหา', 'ตรวจค้นและแจ้งข้อกล่าวหา']))}
+      ${fld('เลขคดี (ถ้ามี)', inp('case_no', 'เช่น 123/2569 (เว้นว่างได้)'))}
+    </div>
+    <div class="full subbox">
+      <div class="sb-head"><b>ชุดจับกุม</b><button type="button" class="mini dark" data-ladd="team"><i class="fa-solid fa-plus"></i> เพิ่มนายตำรวจ</button></div>
+      <div id="L-team"></div>
+    </div>
+    ${fld('จำนวนผู้ต้องหา (คน)', '<input name="suspect_count" type="number" min="0" step="1" value="1">')}<div></div>
+    <div class="full subbox">
+      <div class="sb-head"><b><i class="fa-solid fa-people-group"></i> ข้อมูลผู้ต้องหา</b>
+        <button type="button" class="mini" data-ladd="suspects"><i class="fa-solid fa-user-plus"></i> เพิ่มผู้ต้องหา</button></div>
+      <div id="L-suspects"></div>
+    </div>
+    ${fld('สถานที่จับกุม/เกิดเหตุ', inp('place', ''), 'full')}
+    <div class="full coord">
+      ${fld('ละติจูด (Latitude)', inp('lat', '', 'text', 'inputmode="decimal"'))}
+      ${fld('ลองจิจูด (Longitude)', inp('lng', '', 'text', 'inputmode="decimal"'))}
+      <button type="button" class="mini green" data-geo="lat,lng" style="height:31px"><i class="fa-solid fa-location-crosshairs"></i> ระบุพิกัด</button>
+      <button type="button" class="mini" data-pin="lat,lng" style="height:31px"><i class="fa-solid fa-map-location-dot"></i> ปักหมุด</button>
+    </div>
+    <div class="full subbox">
+      <div class="sb-head"><b><i class="fa-solid fa-box-open"></i> รายการของกลาง</b>
+        <button type="button" class="mini" data-ladd="evidence"><i class="fa-solid fa-plus"></i> เพิ่มของกลาง</button></div>
+      <div class="sb-sub">ไม่มีของกลาง = ไม่ต้องเพิ่มรายการ · ระบบจะสรุปข้อความลงช่อง "ของกลาง (ข้อความ)" ให้อัตโนมัติ</div>
+      <div id="L-evidence"></div>
+    </div>
+    ${fld('ของกลาง (ข้อความ)', area('evidence_text', 'ระบุของกลางที่ยึดได้...'), 'full')}
+    ${fld('ประเภทคดีบุหรี่ไฟฟ้า', sel('ecig_type', ['— ไม่ใช่คดีบุหรี่ไฟฟ้า —', 'บุหรี่ไฟฟ้า', 'น้ำยาบุหรี่ไฟฟ้า', 'อุปกรณ์/อะไหล่']))}
+    ${fld('เว็บไซต์/URL ที่เกี่ยวข้อง', inp('related_url', 'เช่น https://... (เว้นว่างได้)'))}
+    ${fld('มูลค่าความเสียหาย (บาท)', inp('damage_value', 'เว้นว่างได้', 'text', 'inputmode="decimal"'))}
+    ${fld('วงเงินหมุนเวียน (บาท)', inp('circulating_amount', 'เว้นว่างได้', 'text', 'inputmode="decimal"'))}
+    ${fld('พฤติการณ์', area('behavior', 'ระบุพฤติการณ์การจับกุม...'), 'full')}
+    ${fld('การดำเนินการส่งต่อ', inp('forward_action', 'เช่น ส่ง พงส.สภ.เมืองตาก ดำเนินคดีตามกฎหมาย'), 'full')}
+    ${fileFld('แนบภาพประกอบ/บันทึกจับกุม (เลือกได้หลายไฟล์)')}
+    <div class="full subbox">
+      <div class="sb-head"><b><i class="fa-solid fa-file-lines"></i> ข้อมูลสำหรับเอกสารจับกุม</b>
+        <span class="note-s" style="margin:0">ใช้ตอนคัดลอกเอกสารเท่านั้น ไม่ได้บันทึกลงรายงาน</span></div>
+      <div class="grid">
+        ${fld('ผู้บังคับบัญชา', inp('commander', 'เว้นว่าง = ใช้ข้อความ "ผู้บังคับบัญชาตามลำดับชั้น"'))}
+        ${fld('รายงานสำนักงานอัยการจังหวัด', inp('ag_office', 'เช่น ตาก (เว้นว่างได้)'))}
+        ${fld('คำให้การผู้ต้องหา', inp('statement', 'เช่น ให้การปฏิเสธตลอดข้อกล่าวหา') + '<div class="warn-t"><i class="fa-solid fa-triangle-exclamation"></i> เว้นว่างไว้ เอกสารจะขึ้นว่า "ให้การรับสารภาพตลอดข้อกล่าวหา" ซึ่งเป็นข้อความที่มีผลทางคดี กรุณาตรวจก่อนพิมพ์ส่ง</div>', 'full')}
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;grid-column:1/-1">${fld('เจ้าหน้าที่ผู้รับผิดชอบ', cbF('resp_officer', 'officers'))}${fld('เบอร์โทร', inp('resp_officer_phone', '', 'tel'))}</div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;grid-column:1/-1">${fld('เจ้าพนักงานผู้แจ้งสิทธิ (ม.22,23)', cbF('rights_officer', 'officers'))}${fld('เบอร์โทร', inp('rights_officer_phone', '', 'tel'))}</div>
+      </div>
+      <div class="note-s">ชุดจับกุมและของกลางที่กรอกไว้ด้านบนจะถูกส่งเข้าเอกสารให้อัตโนมัติ</div>
+    </div>`;
+  mountForm({
+    key: 'arrest', topTitle: 'รายงานการจับกุม', title: '', body, accent: '#d92d20', two: true,
+    preBtns: '<button type="button" class="btn ghost" id="docBtn"><i class="fa-solid fa-file-lines"></i> เอกสารจับกุม (ม.22-23)</button>',
+    saveLabel: '<i class="fa-solid fa-paper-plane"></i> ส่งรายงาน',
+    lists: { acharges: 1, team: 1, suspects: 1, evidence: 0 }, remount: renderArrestForm,
+    defaults: set => {
+      const n = nowLocal(); set('report_time', n); set('event_time', n);
+      // เติมชื่อผู้ใช้เป็นเจ้าหน้าที่ผู้รับผิดชอบเริ่มต้น (แก้ได้)
+      set('resp_officer', session.user.display_name); set('rights_officer', session.user.display_name);
+    },
+    // ถ้ามีรายการของกลาง ให้สรุปเป็นข้อความในช่อง "ของกลาง (ข้อความ)" อัตโนมัติ
+    sync: () => {
+      const ta = document.querySelector('#dform [name="evidence_text"]'); if (!ta) return;
+      const ev = S.lists.evidence.filter(e => e.item.trim());
+      ta.readOnly = ev.length > 0;
+      if (ev.length) ta.value = ev.map(e => [e.item, e.qty, e.unit].filter(Boolean).join(' ')).join(', ');
+    },
+    after: () => { $('#docBtn').onclick = () => soon('เอกสารจับกุม (ม.22-23)'); $('#dform .form-title').hidden = true; },   // 🔧 PLACEHOLDER: ต่อกับการสร้างเอกสารจับกุมจริง
+    submit: () => {
+      $('#err').textContent = ''; flushSave();
+      const p = collectPayload(), errs = [];
+      const ch = S.lists.acharges.map(c => (c.charge === 'อื่นๆ' ? (c.other || '').trim() : c.charge)).filter(Boolean);
+      if (!p.topic) errs.push('กรุณาเลือกหัวข้อการจับกุม');
+      if (!ch.length) errs.push('กรุณาเลือกข้อหาหลัก');
+      if (!p.event_time) errs.push('กรุณาระบุเวลาเกิดเหตุ');
+      if ((p.lat && !p.lng) || (!p.lat && p.lng)) errs.push('กรุณากรอกพิกัดให้ครบทั้งละติจูดและลองจิจูด');
+      if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+
+      ['search_notice', 'ecig_type'].forEach(k => { if (String(p[k]).startsWith('—')) p[k] = ''; });   // ค่า "— ไม่มี —" ถือว่าว่าง
+      const sus = S.lists.suspects.filter(s => s.name.trim());
+      const team = S.lists.team.filter(c => c.name.trim()).map(c => c.name);
+      const ev = S.lists.evidence.filter(e => e.item.trim());
+      const payload = Object.assign({}, p, {
+        charges: JSON.stringify(ch), team: JSON.stringify(team), suspects: JSON.stringify(sus), evidence: JSON.stringify(ev),
+        // คอลัมน์เดิมของระบบ (ใช้แสดงในหน้ารายการ)
+        arrest_time: p.event_time, charge: ch[0], suspect_name: sus.length ? sus[0].name : ''
+      });
+      const rows = rowsFrom(p);
+      rows.splice(1, 0, ['ข้อหา', ch.join(', ')]);
+      if (team.length) rows.push(['ชุดจับกุม', team.join(', ')]);
+      if (sus.length) rows.push(['ผู้ต้องหา', sus.map(s => s.name).join(', ')]);
+      // รูปถ่ายผู้ต้องหา แนบไปพร้อมไฟล์
+      const extra = Object.keys(S.photos).sort().map(k => {
+        const [si, slot] = k.split(':'), o = S.photos[k];
+        return { name: `suspect${+si + 1}_${slot}.jpg`, mime: o.mime, data: o.data };
+      });
+      sendReport('arrest', payload, rows, extra);
+    }
+  });
+}
+
+/* ---------- รายงานอุบัติเหตุ ---------- */
+function renderAccidentForm() {
+  const pct = (n, l) => fld(l, `<input name="${n}" class="ctr" placeholder="-" inputmode="numeric">`);
+  const body = `
+    ${dtNow('accident_time', 'วันที่เวลาที่เกิดเหตุ')}${fld('หน่วยรายงาน ' + rq, unitSel('report_unit', '-- เลือกหน่วยรายงาน --'))}
+    <hr class="divider"><div class="sec-h">3. สถานที่เกิดเหตุ</div>
+    <div class="full g4">
+      ${fld('ทล.', inp('road', 'เช่น 1'))}${fld('กม.', inp('km', 'เช่น 580+400'))}
+      ${fld('ทิศทาง', sel('direction', ['ขาเข้า', 'ขาออก']))}${fld('ต. / อ. / จว.', inp('location_area', 'ต.วังจันทร์ อ.สามเงา จ.ตาก'))}
+    </div>
+    <hr class="divider"><div class="sec-h">4. ผู้เสียชีวิต / ผู้ได้รับบาดเจ็บ</div>
+    <div class="full g3">
+      ${fld('เสียชีวิต (ราย)', inp('deaths', 'ระบุจำนวน หรือใส่ -'))}${fld('ได้รับบาดเจ็บ (ราย)', inp('injuries', 'ระบุจำนวน หรือใส่ -'))}
+      ${fld('นำตัวส่ง รพ.', inp('hospital', 'ระบุชื่อ รพ. หรือใส่ -'))}
+    </div>
+    <hr class="divider"><div class="sec-h">5. รถที่เกิดเหตุ</div>
+    ${fld('รถหลัก (ประเภทและทะเบียน)', inp('main_vehicle', 'เช่น รถบรรทุก 10 ล้อ ทะเบียน 70-8717 ลำปาง'))}
+    ${fld('คู่กรณี (ประเภทและทะเบียน)', inp('other_party', 'ระบุคู่กรณี หรือ พิมพ์ "ไม่มีคู่กรณี"', 'text', 'data-req="red"'))}
+    <hr class="divider"><div class="sec-h">6. สรุปสาเหตุ (%)</div>
+    <div class="full g4">${pct('cause_human', 'พฤติกรรมคน (%)')}${pct('cause_vehicle', 'สภาพรถ (%)')}${pct('cause_road', 'สภาพถนน (%)')}${pct('cause_env', 'สภาพแวดล้อม (%)')}</div>
+    <hr class="divider">
+    ${fld('7. แนวทางแก้ไข (ใส่ขีด - ขึ้นบรรทัดใหม่ตามต้องการ)', area('fixes', '- กวดขันวินัยการจราจร\n- ติดตั้งป้ายสัญญาณจราจร...'), 'full')}
+    ${fld('8. ความเสียหาย', inp('damage', 'ไม่มี หรือ มี (ระบุรายละเอียดและราคา)'))}${fld('8.1 มูลค่าทรัพย์สินเสียหายรวม (บาท)', inp('damage_value', 'เช่น 50000', 'text', 'inputmode="decimal"'))}
+    ${fld('9. รถวิทยุตำรวจทางหลวงที่ ว.4', inp('v4_car', 'เช่น 5115'))}<div></div>
+    ${fld('10. หน่วยร่วมปฏิบัติ', inp('joint_units', 'เช่น ตำรวจ สภ.สามเงา, กู้ภัยวังจันทร์'), 'full')}
+    ${fld('รายละเอียดอุบัติเหตุ (พฤติการณ์)', area('summary', ''), 'full')}
+    ${fileFld('แนบภาพประกอบ')}`;
+  mountForm({
+    key: 'accident', topTitle: 'รายงานอุบัติเหตุ', title: '', body, accent: '#f5b301', remount: renderAccidentForm,
+    saveLabel: '<i class="fa-solid fa-paper-plane"></i> ส่งรายงาน',
+    defaults: set => { set('accident_time', nowLocal()); if (session.user.unit && OPT.units.includes(session.user.unit)) set('report_unit', session.user.unit); },
+    after: () => { $('#dform .form-title').hidden = true; },
+    submit: () => {
+      $('#err').textContent = ''; flushSave();
+      const p = collectPayload(), errs = [];
+      if (!p.report_unit) errs.push('กรุณาเลือกหน่วยรายงาน');
+      if (!p.accident_time) errs.push('กรุณาระบุวันที่เวลาที่เกิดเหตุ');
+      if (!String(p.other_party || '').trim()) errs.push('กรุณาระบุคู่กรณี (หรือพิมพ์ "ไม่มีคู่กรณี")');
+      const cs = ['cause_human', 'cause_vehicle', 'cause_road', 'cause_env'].map(k => parseFloat(p[k])).filter(isFinite);
+      if (cs.length && Math.round(cs.reduce((a, b) => a + b, 0)) !== 100) errs.push('สรุปสาเหตุ (%) รวมกันต้องได้ 100');
+      if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+      sendReport('accident', p, rowsFrom(p));
+    }
+  });
 }
 
 /* ============================================================
@@ -991,10 +1445,9 @@ async function submitDaily() {
    ============================================================ */
 function renderList(mod) {
   const m = MODULES[mod];
-  if (!has(m.perm)) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
+  if (!has(m.perm)) return denied();
   const label = name => (m.labels && m.labels[name]) || (m.fields.find(f => f.name === name) || { label: name }).label;
   const isTime = c => /time$|^start$|^end$/.test(c);
-
   $('#app').className = '';
   $('#app').innerHTML = `${topbar(m.label + ' · รายการ')}
     <div class="card">
@@ -1007,7 +1460,6 @@ function renderList(mod) {
       <div class="err" id="err"></div>
     </div>`;
   bindBack();
-
   const load = async () => {
     $('#err').textContent = '';
     const rows = await api('list', { module: mod, filter: { from: $('#from').value, to: $('#to').value } });
