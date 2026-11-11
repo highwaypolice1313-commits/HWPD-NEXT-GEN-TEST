@@ -13,58 +13,44 @@
 <style>
   /* ===== ตัวแปรสี (โหมดสว่าง) ===== */
   :root {
-    --c: #1565a8;            /* สีหลัก (น้ำเงิน) */
-    --c2: #2f86c9;           /* สีหลักอ่อน */
-    --title: #0f7391;        /* สีหัวข้อหน้า (เขียวน้ำเงิน) */
-    --txt: #16283a;          /* สีตัวอักษร */
-    --muted: #64748b;        /* สีตัวอักษรรอง */
-    --line: #d3deea;         /* สีเส้นขอบ */
-    --card: rgba(255,255,255,.82);  /* พื้นการ์ดแบบโปร่ง */
-    --field: #ffffff;        /* พื้นช่องกรอก */
-    --warn-bg: #fff4e0; --warn-tx: #b45309;
+    --c: #1565a8; --c2: #2f86c9; --title: #0f7391;
+    --txt: #16283a; --muted: #64748b; --line: #d3deea;
+    --card: rgba(255,255,255,.82); --field: #ffffff;
+    --warn-bg: #fff4e0; --warn-tx: #b45309; --warn-line: #f5d9a8;
     --ok: #2e9e6a;
-    --bg1: #b7defa; --bg2: #eaf2fb; --bg3: #c9efec;   /* พื้นหลังไล่สี */
-    --radius: 18px;
-    --shadow: 0 8px 28px rgba(21,101,168,.10);
+    --bg1: #b7defa; --bg2: #eaf2fb; --bg3: #c9efec;
+    --radius: 18px; --shadow: 0 8px 28px rgba(21,101,168,.10);
   }
   /* ===== ตัวแปรสี (โหมดมืด) ===== */
   [data-theme="dark"] {
     --c: #4aa3e8; --c2: #2f86c9; --title: #5fd0e8;
     --txt: #e6eef7; --muted: #93a4b8; --line: #2a3a4d;
     --card: rgba(22,34,48,.88); --field: #101c2a;
-    --warn-bg: #3a2c12; --warn-tx: #fbbf24;
+    --warn-bg: #3a2c12; --warn-tx: #fbbf24; --warn-line: #5a4519;
     --bg1: #0b1622; --bg2: #0f1e2e; --bg3: #0e2a2e;
     --shadow: 0 8px 28px rgba(0,0,0,.35);
   }
 
   * { box-sizing: border-box; }
   html { min-height: 100%; }
-  body {
-    margin: 0; min-height: 100vh; color: var(--txt);
+  body { margin: 0; min-height: 100vh; color: var(--txt);
     font-family: "Sarabun", "Noto Sans Thai", system-ui, sans-serif;
-    /* พื้นหลังไล่สีฟ้า -> ขาว -> เขียวมิ้นต์ ตามภาพตัวอย่าง */
-    background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%) fixed;
-  }
+    background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%) fixed; }
   [hidden] { display: none !important; }
 
-  /* ===== แถบโหมดทดลอง ===== */
   .banner { background: #ffd166; text-align: center; padding: 7px 10px; font-weight: 600; font-size: 14px; color: #3b2f00; }
 
-  /* ===== โครงหน้า ===== */
   main { max-width: 1080px; margin: 0 auto; padding: 26px 18px 120px; }
-  main.narrow { max-width: 620px; }     /* หน้าฟอร์มแคบตรงกลาง */
-  .card {
-    background: var(--card); border: 1px solid rgba(255,255,255,.6);
-    border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
-    backdrop-filter: blur(8px);
-  }
+  main.narrow { max-width: 620px; }
+  .card { background: var(--card); border: 1px solid rgba(255,255,255,.6); border-radius: var(--radius);
+    padding: 22px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
   [data-theme="dark"] .card { border-color: var(--line); }
 
-  /* ===== หน้าเข้าสู่ระบบ ===== */
+  /* ===== เข้าสู่ระบบ ===== */
   .login { max-width: 380px; margin: 70px auto; }
   .login h2 { margin: 0 0 16px; color: var(--title); font-size: 22px; text-align: center; }
 
-  /* ===== หัวหน้าหลัก (ชื่อผู้ใช้ + ปุ่มไอคอน) ===== */
+  /* ===== หน้าหลัก ===== */
   .hero { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
   .hero small { color: var(--muted); font-size: 14px; }
   .hero h1 { margin: 2px 0 8px; font-size: 28px; line-height: 1.2; }
@@ -74,32 +60,25 @@
   .chip i { color: var(--c); font-size: 12px; }
   .tools { display: flex; gap: 8px; align-items: center; }
   .sq { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; cursor: pointer;
-    background: var(--field); border: 1px solid var(--line); color: var(--c); font-size: 16px; box-shadow: none; padding: 0; }
+    background: var(--field); border: 1px solid var(--line); color: var(--c); font-size: 16px; padding: 0; }
+  .sq.sm { width: 36px; height: 36px; font-size: 14px; border-radius: 8px; flex: none; }
   .sq.red { color: #d92d20; }
   .pill-btn { height: 44px; padding: 0 14px; border-radius: 12px; background: var(--field); border: 1px solid var(--line);
     color: #c2570c; cursor: pointer; font: inherit; font-size: 14px; display: inline-flex; align-items: center; gap: 7px; }
-
-  /* ===== หัวข้อกลุ่ม ===== */
   .sec { display: flex; align-items: center; gap: 8px; margin: 26px 4px 10px; font-weight: 600; font-size: 16px; }
   .sec i { color: var(--c); }
-
-  /* ===== การ์ด "ต้องทำตอนนี้" ===== */
   .todo { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
   .todo .ico { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-size: 22px;
     background: #d9f1e7; color: #1f8f62; border: 1px solid #bfe6d3; }
   .todo.warn .ico { background: #fff1d6; color: #c2570c; border-color: #fbd9a0; }
   .todo b { display: block; font-size: 17px; }
   .todo span { font-size: 13px; color: var(--muted); }
-
-  /* ===== การ์ดงานที่ทำบ่อย (4 ใบ) ===== */
   .quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
   .qcard { cursor: pointer; padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid rgba(255,255,255,.6);
     box-shadow: var(--shadow); transition: transform .15s; text-decoration: none; color: inherit; display: block; }
   .qcard:hover { transform: translateY(-2px); }
   .qcard b { display: block; margin-top: 14px; font-size: 17px; }
   .qcard span { font-size: 12.5px; color: var(--muted); }
-
-  /* ไอคอนสี่เหลี่ยมมน (ใช้ทั้งการ์ดใหญ่และรายการเมนู) */
   .ibox { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; border: 1px solid transparent; }
   .ibox.sm { width: 36px; height: 36px; font-size: 15px; border-radius: 10px; flex: none; }
   .t-blue   { background: #dbeefb; color: #1565a8; border-color: #bcdcf3; }
@@ -108,8 +87,6 @@
   .t-purple { background: #ece0fb; color: #7e3fd0; border-color: #d9c4f3; }
   .t-green  { background: #d9f1e7; color: #1f8f62; border-color: #bfe6d3; }
   .t-brown  { background: #f6e9d6; color: #a9690b; border-color: #ead2ad; }
-
-  /* ===== กลุ่มเมนู 3 คอลัมน์ ===== */
   .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; align-items: start; }
   .group h4 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--muted); display: flex; gap: 7px; align-items: center; }
   .item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; margin-bottom: 8px; border-radius: 12px;
@@ -118,13 +95,13 @@
   .item span { flex: 1; font-size: 15px; }
   .item .chev { color: var(--muted); font-size: 12px; }
 
-  /* ===== แถบบนของหน้าฟอร์ม ===== */
+  /* ===== แถบบน + แท็บ ===== */
   .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-bottom: 12px; }
   .topbar h2 { margin: 0; font-size: 18px; color: var(--title); text-align: center; }
   .back { justify-self: start; display: inline-flex; gap: 6px; align-items: center; padding: 4px 10px; font-size: 12px; cursor: pointer;
-    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 6px; box-shadow: none; font-family: inherit; }
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 6px; font-family: inherit; }
   .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tabs button { background: transparent; color: var(--muted); border: 0; box-shadow: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; }
+  .tabs button { background: transparent; color: var(--muted); border: 0; font-size: 13px; padding: 6px 12px; border-radius: 8px; font-family: inherit; cursor: pointer; }
   .tabs button.on { background: #cfe5f7; color: var(--c); font-weight: 600; }
   [data-theme="dark"] .tabs button.on { background: #1d3a56; }
 
@@ -132,14 +109,50 @@
   .form-title { text-align: center; color: var(--title); font-size: 16px; font-weight: 600; margin: 0 0 14px; }
   .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
   .grid .full { grid-column: 1 / -1; }
+  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 14px; }
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 14px; }
+  .stack { display: grid; gap: 8px; align-content: start; }
   label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
   input, select, textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px;
     font: inherit; font-size: 14px; background: var(--field); color: var(--txt); }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--c2); box-shadow: 0 0 0 3px rgba(47,134,201,.18); }
+  input[type=number] { text-align: center; }
+  input[readonly] { background: #fdf0d8; border-color: #e9a24a; color: #8a4b08; font-weight: 600; }
   textarea { min-height: 84px; resize: vertical; }
-  .divider { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+  .divider { grid-column: 1 / -1; border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+  .with-btn { display: flex; gap: 8px; }
+  .with-btn input { flex: 1; }
+  .note-s { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-  /* ===== ปุ่ม ===== */
+  /* กล่องย่อย / ป้าย / แถวไดนามิก */
+  .subbox { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--field); }
+  .subbox.beige { background: #fff8e6; border: 1px dashed #f0c96a; }
+  [data-theme="dark"] .subbox.beige { background: #2a2312; }
+  .sb-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 13px; }
+  .sb-sub { font-size: 12px; color: var(--muted); margin: 2px 0; }
+  .sb-sub.sum { color: #c2570c; font-weight: 600; }
+  .sb-sub.bad { color: #d92d20; font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+  .badge.cyan { background: #19c4e6; color: #fff; }
+  .badge.yellow { background: #ffc107; color: #3b2f00; }
+  .mini { padding: 4px 10px; font-size: 12px; border-radius: 6px; cursor: pointer; font-family: inherit;
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); display: inline-flex; gap: 6px; align-items: center; }
+  .mini.yellow { background: #ffc107; color: #3b2f00; border-color: #ffc107; font-weight: 600; }
+  .mini.warn { background: transparent; color: #c2570c; border-color: #e9a24a; }
+  .mini.on { background: var(--c); color: #fff; }
+  .rowx { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+  .rowx > input, .rowx > select { flex: 1; min-width: 0; }
+  .rowx > input[type=number] { flex: 0 0 84px; }
+  .grp { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--c); display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 3px; }
+  .grp span { color: var(--muted); font-weight: 500; }
+  .tog { width: 100%; text-align: center; padding: 7px 10px; font-size: 12.5px; cursor: pointer; font-family: inherit;
+    background: var(--field); color: var(--c); border: 1px solid var(--c2); border-radius: 6px; }
+  .panel { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--field); }
+  .hint { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: var(--warn-bg); color: var(--warn-tx);
+    border: 1px solid var(--warn-line); border-radius: 8px; padding: 8px 12px; font-size: 12.5px; }
+  .hint .grow { flex: 1; min-width: 200px; }
+
+  /* ===== ปุ่มหลัก ===== */
   button { font: inherit; cursor: pointer; }
   .btn { width: 100%; background: linear-gradient(180deg, var(--c2), var(--c)); color: #fff; border: 0; border-radius: 8px;
     padding: 11px 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(21,101,168,.25); }
@@ -148,7 +161,7 @@
   .btn.ok { width: auto; background: linear-gradient(180deg, #4cc38a, var(--ok)); padding: 6px 12px; font-size: 13px; }
   .actions { margin-top: 18px; display: grid; gap: 10px; }
 
-  /* ===== ตาราง/รายการ ===== */
+  /* ===== ตาราง ===== */
   .tbl-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -160,50 +173,67 @@
   .row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin-bottom: 14px; }
   .row > div { flex: 1; min-width: 150px; }
   .err { color: #b00020; margin-top: 10px; min-height: 18px; font-size: 14px; }
-  .hint { background: var(--warn-bg); color: var(--warn-tx); border: 1px solid #f5d9a8; border-radius: 8px; padding: 8px 12px; font-size: 12.5px; margin-bottom: 14px; }
 
-  /* ===== ปุ่มลอย "ผู้ช่วยกฎหมาย" (มุมขวาล่าง) ===== */
+  /* ===== ปุ่มลอย ===== */
   .fab { position: fixed; right: 18px; bottom: 18px; z-index: 20; display: inline-flex; gap: 9px; align-items: center;
     padding: 12px 20px; border-radius: 999px; border: 0; color: #fff; font-weight: 600;
     background: linear-gradient(180deg, #1f6fb5, #14558f); box-shadow: 0 8px 22px rgba(20,85,143,.4); }
 
+  /* ===== Modal แจ้งเตือน ===== */
+  .overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px;
+    background: rgba(10,25,40,.5); backdrop-filter: blur(3px); animation: fade .15s ease both; }
+  .modal { width: min(440px, 100%); max-height: 88vh; overflow: auto; background: var(--field); color: var(--txt);
+    border-radius: 18px; padding: 24px 22px 18px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.35); animation: pop .18s ease both; }
+  .m-ico { width: 56px; height: 56px; margin: 0 auto 10px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; }
+  .m-ico.info { background: #dbeefb; color: #1565a8; }
+  .m-ico.ok { background: #d9f1e7; color: #1f8f62; }
+  .m-ico.err { background: #fde0e0; color: #d92d20; }
+  .m-ico.warn { background: #fff1d6; color: #c2570c; }
+  .modal h3 { margin: 0 0 8px; font-size: 18px; }
+  .m-body { font-size: 14px; color: var(--muted); text-align: left; }
+  .m-body p { margin: 0; text-align: center; line-height: 1.6; }
+  .m-body ul { margin: 0; padding-left: 20px; line-height: 1.7; color: var(--txt); }
+  .m-act { display: flex; gap: 10px; margin-top: 18px; }
+  .sum { display: grid; gap: 6px; }
+  .sum div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+  .sum span { color: var(--muted); }
+  .sum b { color: var(--txt); text-align: right; font-weight: 600; word-break: break-word; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+
   @media (max-width: 600px) {
     .grid { grid-template-columns: 1fr; }
+    .g4 { grid-template-columns: repeat(2, 1fr); }
+    .g3 { grid-template-columns: 1fr; }
     .hero h1 { font-size: 23px; }
     main { padding: 16px 12px 110px; }
+    .rowx { flex-wrap: wrap; }
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
 
 <div id="banner" class="banner" hidden>โหมดทดลอง: ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ไม่กระทบข้อมูลจริง</div>
 <main id="app"></main>
-
-<!-- ปุ่มลอยผู้ช่วยกฎหมาย: แสดงเฉพาะตอนล็อกอิน -->
 <button id="fab" class="fab" hidden><i class="fa-solid fa-scale-balanced"></i> ผู้ช่วยกฎหมาย</button>
 
 <script>
 /* ============================================================
    ตั้งค่าหลัก
    ============================================================ */
-// 🔧 PLACEHOLDER: ใส่ URL เว็บแอป Apps Script ของคุณที่นี่ (ค่าเดิมคงไว้ได้ถ้าไม่เปลี่ยน)
+// 🔧 PLACEHOLDER: URL เว็บแอป Apps Script (ค่าเดิมคงไว้ได้ถ้าไม่เปลี่ยน)
 const API_URL = 'https://script.google.com/macros/s/AKfycbxssyQml6dXj92np0pSwDfFNEGtDqu4O3kAUxueMViNDk-yhJHb0UCf6Lj9mwKofM8sYA/exec';
 
 /* ============================================================
-   นิยามโมดูล (ฟิลด์/คอลัมน์เหมือนโค้ดเดิมทุกอย่าง)
-   เพิ่มคีย์ใหม่: icon = ไอคอน FA, tone = สีไอคอน, desc = คำอธิบายใต้ชื่อ, group = กลุ่มเมนู
-   full:true = ช่องกว้างเต็มแถว
+   นิยามโมดูล (daily ใช้ฟอร์มพิเศษ renderDailyForm ด้านล่าง)
    ============================================================ */
 const MODULES = {
   daily: { label: 'รายงานประจำวัน', desc: 'ยอดผลการปฏิบัติประจำผลัด', icon: 'fa-clipboard-list', tone: 't-blue', perm: 'daily',
-    title: 'หมวดรายงานประจำวัน',
-    tabs: ['เวรผลัด', 'ผลปฏิบัติ', 'เวรสืบเวร', 'ว.4 อื่นๆ'],
-    fields: [
-      { name: 'report_time', label: 'วันที่เวลาที่รายงาน', type: 'datetime-local' },
-      { name: 'count', label: 'จำนวน', type: 'number' },
-      { name: 'note', label: 'หมายเหตุ', type: 'textarea', full: true }],
-    cols: ['report_time', 'type', 'count', 'note'] },
+    title: 'หมวดรายงานประจำวัน HWPD', fields: [],
+    // ชื่อคอลัมน์ในหน้ารายการ
+    labels: { type: 'ประเภท', report_time: 'วันที่เวลา', service_unit: 'หน่วยบริการ', radio_car: 'รถวิทยุ' },
+    cols: ['type', 'report_time', 'service_unit', 'radio_car'] },
   checkpoint: { label: 'รายงานตั้งด่าน', desc: 'จุดตรวจ ผลการตรวจ', icon: 'fa-road-barrier', tone: 't-orange', perm: 'checkpoint',
     title: 'รายงานด่าน จุดตรวจ จุดสกัด', fields: [
       { name: 'checkpoint_name', label: 'ชื่อด่าน', type: 'text', full: true },
@@ -283,8 +313,7 @@ const MODULES = {
     cols: ['report_time', 'activity', 'place'] }
 };
 
-// กลุ่มเมนูหน้าหลัก (3 กล่องด้านล่าง) — เรียงตามภาพตัวอย่าง
-const QUICK = ['daily', 'checkpoint', 'arrest', 'accident'];            // งานที่ทำบ่อย 4 ใบ
+const QUICK = ['daily', 'checkpoint', 'arrest', 'accident'];
 const GROUPS = [
   { key: 'mission', title: 'ภารกิจ', icon: 'fa-bullseye', items: ['task', 'LIST_TASK', 'royal', 'other'] },
   { key: 'check', title: 'ตรวจ ประชาสัมพันธ์ และยานพาหนะ', icon: 'fa-truck-field', items: ['weight', 'news', 'fuel'] }
@@ -297,17 +326,22 @@ let session = JSON.parse(sessionStorage.getItem('session') || 'null');
 let ENV = 'demo';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-// แสดงวันเวลาแบบ พ.ศ. (th-TH ใช้ปี พ.ศ. อยู่แล้ว)
 const fmt = v => v ? new Date(v).toLocaleString('th-TH') : '';
+const fmtDate = v => v ? new Date(v).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' }) : '';
 const has = p => session && (session.user.perms.includes('all') || session.user.perms.includes(p));
-// วันที่ท้องถิ่น yyyy-mm-dd (แก้ปัญหา toISOString เป็นเวลา UTC ทำให้วันคลาดเคลื่อน)
 const pad = n => String(n).padStart(2, '0');
 const today = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
-// เวลาปัจจุบันสำหรับ input datetime-local
 const nowLocal = () => { const d = new Date(); return `${today()}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
 const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'สวัสดีตอนเช้า' : h < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น'; };
 
-// โหมดมืด: จำค่าใน sessionStorage (ใช้ try/catch กันกรณีเบราว์เซอร์บล็อก)
+// ที่เก็บข้อมูลชั่วคราว (draft) — ถ้าเบราว์เซอร์บล็อก localStorage จะใช้หน่วยความจำแทน
+const MEM = {};
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return MEM[k] || null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { MEM[k] = v; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { delete MEM[k]; } }
+};
+
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
   try { sessionStorage.setItem('theme', t); } catch (e) {}
@@ -327,13 +361,74 @@ async function api(action, body = {}) {
 }
 
 /* ============================================================
-   เรนเดอร์หลัก + เราท์ (hash)
+   Modal แจ้งเตือน (แทน alert / confirm ทั้งระบบ)
+   ============================================================ */
+function modal({ icon = 'fa-circle-info', tone = 'info', title = '', body = '', ok = 'ตกลง', cancel = null }) {
+  return new Promise(resolve => {
+    const ov = document.createElement('div');
+    ov.className = 'overlay';
+    ov.innerHTML = `<div class="modal" role="dialog" aria-modal="true">
+      <div class="m-ico ${tone}"><i class="fa-solid ${icon}"></i></div>
+      <h3>${esc(title)}</h3><div class="m-body">${body}</div>
+      <div class="m-act">${cancel ? `<button class="btn ghost" data-r="0">${esc(cancel)}</button>` : ''}
+        <button class="btn" data-r="1">${esc(ok)}</button></div></div>`;
+    const onKey = e => { if (e.key === 'Escape') close(false); };
+    const close = v => { ov.remove(); document.removeEventListener('keydown', onKey); resolve(v); };
+    ov.addEventListener('click', e => {
+      if (e.target === ov) return close(false);
+      const b = e.target.closest('[data-r]');
+      if (b) close(b.dataset.r === '1');
+    });
+    document.addEventListener('keydown', onKey);
+    document.body.appendChild(ov);
+    ov.querySelector('[data-r="1"]').focus();
+  });
+}
+const ICONS = { info: 'fa-circle-info', ok: 'fa-circle-check', err: 'fa-circle-exclamation', warn: 'fa-triangle-exclamation' };
+const notify = (title, msg, tone = 'info') => modal({ title, tone, icon: ICONS[tone], body: `<p>${esc(msg)}</p>` });
+const ask = (title, bodyHtml, ok = 'ยืนยันการส่ง') => modal({ title, body: bodyHtml, ok, cancel: 'ยกเลิก', icon: 'fa-paper-plane', tone: 'info' });
+const listModal = (title, items) => modal({ title, tone: 'warn', icon: ICONS.warn, body: `<ul>${items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` });
+const sumHtml = rows => `<div class="sum">${rows.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`;
+// ฟีเจอร์ที่ยังไม่เปิดใช้งานในโหมดทดลอง
+// 🔧 PLACEHOLDER: เมื่อทำฟีเจอร์จริง ให้แทนที่การเรียก soon() ด้วยหน้าจอ/ฟังก์ชันจริง
+const soon = name => notify(name, 'ฟีเจอร์นี้ยังไม่เปิดให้ใช้งานในโหมดทดลอง', 'info');
+
+/* ============================================================
+   ตัวเลือก dropdown (หน่วยบริการ / เจ้าหน้าที่ / ข้อหา)
+   ============================================================ */
+// 🔧 PLACEHOLDER: ข้อมูลสมมติ ใช้เมื่อหลังบ้านยังไม่มี action 'options' (ดู DailyReport.gs)
+const DEMO_OPT = {
+  units: ['โคกสำโรง', 'ลพบุรี', 'พัฒนานิคม'],
+  officers: [
+    { name: 'ร.ต.อ. ตัวอย่าง หนึ่ง', phone: '081-000-0001' },
+    { name: 'ด.ต. ตัวอย่าง สอง', phone: '081-000-0002' },
+    { name: 'จ.ส.ต. ตัวอย่าง สาม', phone: '081-000-0003' }],
+  actions: ['ตั้งจุดตรวจ', 'ลาดตระเวน', 'อำนวยความสะดวกจราจร', 'ช่วยเหลือผู้ประสบเหตุ', 'อื่นๆ'],
+  acts: {
+    'พ.ร.บ.จราจรทางบก พ.ศ. 2522': ['ขับรถเร็วเกินกำหนด', 'ไม่สวมหมวกนิรภัย', 'ไม่คาดเข็มขัดนิรภัย', 'ขับรถขณะเมาสุรา'],
+    'พ.ร.บ.ขนส่งทางบก พ.ศ. 2522': ['บรรทุกน้ำหนักเกิน', 'ใช้รถผิดประเภท'],
+    'พ.ร.บ.ทางหลวง พ.ศ. 2535': ['ทำให้ทางหลวงเสียหาย'],
+    'อื่นๆ': ['อื่นๆ']
+  }
+};
+let OPT = DEMO_OPT, OPT_PROMISE = null;
+async function loadOptions() {
+  try {
+    const d = await api('options');
+    OPT = Object.assign({}, DEMO_OPT, d || {});
+    OPT.officers = OPT.officers.map(o => typeof o === 'string' ? { name: o, phone: '' } : o);
+  } catch (e) { OPT = DEMO_OPT; }
+}
+
+/* ============================================================
+   เรนเดอร์หลัก + เราท์
    ============================================================ */
 function render() {
   $('#banner').hidden = ENV !== 'demo';
   $('#fab').hidden = !session;
-  if (!session) return renderLogin();
-  route();
+  if (!session) { OPT_PROMISE = null; return renderLogin(); }
+  if (!OPT_PROMISE) OPT_PROMISE = loadOptions();
+  OPT_PROMISE.then(route);
 }
 
 function route() {
@@ -345,16 +440,11 @@ function route() {
   if (a === 'history') return renderHistory();
   return renderHome();
 }
-window.addEventListener('hashchange', () => { if (session) route(); });
-
-// ปุ่มลอยผู้ช่วยกฎหมาย
-$('#fab').onclick = () => {
-  // 🔧 PLACEHOLDER: เปลี่ยนเป็นเปิดหน้า/แชตผู้ช่วยกฎหมายของคุณ
-  alert('ผู้ช่วยกฎหมาย: (ตัวอย่างสำหรับทดลองใช้)');
-};
+window.addEventListener('hashchange', () => { if (session && OPT_PROMISE) OPT_PROMISE.then(route); });
+$('#fab').onclick = () => soon('ผู้ช่วยกฎหมาย');
 
 /* ============================================================
-   หน้าเข้าสู่ระบบ
+   เข้าสู่ระบบ / ออกจากระบบ
    ============================================================ */
 function renderLogin() {
   $('#app').className = '';
@@ -386,21 +476,16 @@ async function doLogout() {
 }
 
 /* ============================================================
-   หน้าหลัก (ตามภาพตัวอย่างที่ 1)
+   หน้าหลัก
    ============================================================ */
 function renderHome() {
   const u = session.user;
-  // การ์ดเมนูใหญ่ 4 ใบ
   const quick = QUICK.filter(k => has(MODULES[k].perm)).map(k => {
     const m = MODULES[k];
-    return `<a class="qcard" href="#form/${k}">
-      <div class="ibox ${m.tone}"><i class="fa-solid ${m.icon}"></i></div>
+    return `<a class="qcard" href="#form/${k}"><div class="ibox ${m.tone}"><i class="fa-solid ${m.icon}"></i></div>
       <b>${esc(m.label)}</b><span>${esc(m.desc || '')}</span></a>`;
   }).join('');
-
-  // รายการเมนูในแต่ละกลุ่ม
-  const itemHtml = (icon, tone, text, href) => `
-    <a class="item" href="${href}"><div class="ibox sm ${tone}"><i class="fa-solid ${icon}"></i></div>
+  const itemHtml = (icon, tone, text, href) => `<a class="item" href="${href}"><div class="ibox sm ${tone}"><i class="fa-solid ${icon}"></i></div>
     <span>${esc(text)}</span><i class="fa-solid fa-chevron-right chev"></i></a>`;
   const groups = GROUPS.map(g => {
     const rows = g.items.map(k => {
@@ -410,8 +495,6 @@ function renderHome() {
     }).join('');
     return rows ? `<div class="card group"><h4><i class="fa-solid ${g.icon}"></i> ${esc(g.title)}</h4>${rows}</div>` : '';
   }).join('');
-
-  // กลุ่ม "ของฉัน"
   const mine = `<div class="card group"><h4><i class="fa-solid fa-user"></i> ของฉัน</h4>
     ${itemHtml('fa-clock-rotate-left', 't-blue', 'ประวัติของฉัน', '#history')}
     <a class="item" id="toolsBtn"><div class="ibox sm t-blue"><i class="fa-solid fa-toolbox"></i></div>
@@ -424,7 +507,7 @@ function renderHome() {
         <h1>${esc(u.display_name)}</h1>
         <div class="chips">
           <span class="chip"><i class="fa-solid fa-location-dot"></i> ${esc(u.unit || '-')}</span>
-          <!-- 🔧 PLACEHOLDER: ถ้า API ส่งจังหวัด/สิทธิ์มา ให้แก้ 2 ชิปด้านล่างให้ตรงชื่อฟิลด์จริง -->
+          <!-- 🔧 PLACEHOLDER: แก้ชื่อฟิลด์ province / role ให้ตรงกับที่ API ส่งมา -->
           <span class="chip"><i class="fa-solid fa-users"></i> ${esc(u.province || 'จังหวัด')}</span>
           <span class="chip"><i class="fa-solid fa-id-badge"></i> ${esc(u.role || (has('all') ? 'แอดมินสถานี' : 'เจ้าหน้าที่'))}</span>
         </div>
@@ -436,29 +519,19 @@ function renderHome() {
         <button class="sq red" id="outBtn" title="ออกจากระบบ"><i class="fa-solid fa-power-off"></i></button>
       </div>
     </div>
-
     <div class="sec"><i class="fa-solid fa-bolt"></i> ต้องทำตอนนี้</div>
-    <div id="todo" class="card todo">
-      <div class="ico"><i class="fa-solid fa-check"></i></div>
-      <div><b>ไม่มีภารกิจหรือใบค้างวันนี้</b><span>เลือกงานที่จะทำจากด้านล่างได้เลย</span></div>
-    </div>
-
+    <div id="todo" class="card todo"><div class="ico"><i class="fa-solid fa-check"></i></div>
+      <div><b>ไม่มีภารกิจหรือใบค้างวันนี้</b><span>เลือกงานที่จะทำจากด้านล่างได้เลย</span></div></div>
     ${quick ? `<div class="sec"><i class="fa-solid fa-star"></i> งานที่ทำบ่อย</div><div class="quick">${quick}</div>` : ''}
-
     <div class="groups" style="margin-top:16px">${groups}${mine}</div>`;
 
-  // ปุ่มต่างๆ
   $('#themeBtn').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
   $('#outBtn').onclick = doLogout;
-  // 🔧 PLACEHOLDER: ต่อกับ action เปลี่ยนรหัสผ่านของ API (เช่น api('change_password', {...}))
-  $('#keyBtn').onclick = () => alert('เปลี่ยนรหัสผ่าน: (ตัวอย่างสำหรับทดลองใช้)');
-  // 🔧 PLACEHOLDER: เปลี่ยนเป็นหน้าเครื่องมือการทำงานจริง
-  $('#toolsBtn').onclick = () => alert('เครื่องมือการทำงาน: (ตัวอย่างสำหรับทดลองใช้)');
-
+  $('#keyBtn').onclick = () => soon('เปลี่ยนรหัสผ่าน');
+  $('#toolsBtn').onclick = () => soon('เครื่องมือการทำงาน');
   loadTodo();
 }
 
-// อัปเดตการ์ด "ต้องทำตอนนี้" — ถ้ามีสิทธิ์ดูภาพรวมและมีรายการรอตรวจ ให้เตือน
 async function loadTodo() {
   if (!has('dashboard')) return;
   try {
@@ -470,16 +543,21 @@ async function loadTodo() {
       el.innerHTML = `<div class="ico"><i class="fa-solid fa-bell"></i></div>
         <div><b>มีรายงานรอตรวจ ${pending} รายการ</b><span>เปิดแผงควบคุมสถานีเพื่อตรวจสอบ</span></div>`;
     }
-  } catch (e) { /* ไม่ต้องแจ้ง error ถ้าโหลดไม่ได้ */ }
+  } catch (e) { /* โหลดไม่ได้ก็ไม่ต้องแจ้ง */ }
 }
 
 /* ============================================================
-   แผงควบคุมสถานี (สรุปยอด) — สำหรับผู้มีสิทธิ์ dashboard
+   แผงควบคุมสถานี / ประวัติของฉัน
    ============================================================ */
+function topbar(title) {
+  return `<div class="topbar"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> กลับเมนูหลัก</button>
+    <h2>${esc(title)}</h2><span></span></div>`;
+}
+function bindBack() { $('#backBtn').onclick = () => { location.hash = '#home'; }; }
+
 function renderDash() {
   if (!has('dashboard')) { location.hash = '#home'; return; }
-  $('#app').innerHTML = `
-    ${topbar('แผงควบคุมสถานี')}
+  $('#app').innerHTML = `${topbar('แผงควบคุมสถานี')}
     <div class="card">
       <div class="row">
         <div><label>จากวันที่</label><input type="date" id="from" value="${today().slice(0, 8) + '01'}"></div>
@@ -495,13 +573,10 @@ function renderDash() {
       Object.keys(d).filter(k => MODULES[k]).map(k => `<tr><td>${esc(MODULES[k].label)}</td>
         <td class="stat-num">${d[k].total}</td><td class="stat-num">${d[k].pending}</td></tr>`).join('') + '</table>';
   };
-  $('#refresh').onclick = () => load().catch(e => alert(e.message));
+  $('#refresh').onclick = () => load().catch(e => notify('ผิดพลาด', e.message, 'err'));
   load().catch(e => $('#sum').innerHTML = `<div class="err">${esc(e.message)}</div>`);
 }
 
-/* ============================================================
-   หน้า "ประวัติของฉัน" — เลือกโมดูลเพื่อดูรายการ
-   ============================================================ */
 function renderHistory() {
   const rows = Object.keys(MODULES).filter(k => has(MODULES[k].perm)).map(k =>
     `<a class="item" href="#list/${k}"><div class="ibox sm ${MODULES[k].tone}"><i class="fa-solid ${MODULES[k].icon}"></i></div>
@@ -512,45 +587,23 @@ function renderHistory() {
 }
 
 /* ============================================================
-   แถบบน (ปุ่มกลับ + ชื่อหน้า) — ไม่มีโลโก้
-   ============================================================ */
-function topbar(title) {
-  return `<div class="topbar">
-    <button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> กลับเมนูหลัก</button>
-    <h2>${esc(title)}</h2><span></span></div>`;
-}
-function bindBack() { $('#backBtn').onclick = () => { location.hash = '#home'; }; }
-
-/* ============================================================
-   หน้าฟอร์มบันทึกรายงาน (ตามภาพตัวอย่างที่ 2-10)
+   ฟอร์มทั่วไป (โมดูลอื่นนอกจากรายงานประจำวัน)
    ============================================================ */
 function renderForm(mod, tabIdx = 0) {
+  if (mod === 'daily') return renderDailyForm(0);
   const m = MODULES[mod];
   if (!has(m.perm)) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
-
-  const tabs = m.tabs
-    ? `<div class="tabs">${m.tabs.map((t, i) =>
-        `<button class="${i === tabIdx ? 'on' : ''}" data-tab="${i}">${i + 1}. ${esc(t)}</button>`).join('')}</div>` : '';
-
   const inputs = m.fields.map(f => {
     let el;
-    if (f.type === 'select') {
-      el = `<select name="${f.name}">${f.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
-    } else if (f.type === 'textarea') {
-      el = `<textarea name="${f.name}" placeholder="${esc(f.ph || '')}"></textarea>`;
-    } else {
-      // datetime-local ใส่เวลาปัจจุบันให้อัตโนมัติ
-      const val = f.type === 'datetime-local' ? nowLocal() : '';
-      el = `<input name="${f.name}" type="${f.type}" value="${val}" placeholder="${esc(f.ph || '')}" ${f.type === 'number' ? 'step="any"' : ''}>`;
-    }
+    if (f.type === 'select') el = `<select name="${f.name}">${f.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+    else if (f.type === 'textarea') el = `<textarea name="${f.name}" placeholder="${esc(f.ph || '')}"></textarea>`;
+    else el = `<input name="${f.name}" type="${f.type}" value="${f.type === 'datetime-local' ? nowLocal() : ''}" placeholder="${esc(f.ph || '')}" ${f.type === 'number' ? 'step="any"' : ''}>`;
     return `<div class="${f.full ? 'full' : ''}"><label>${esc(f.label)}</label>${el}</div>`;
   }).join('');
 
-  $('#app').innerHTML = `
-    ${topbar(m.title || m.label)}
-    ${tabs}
+  $('#app').innerHTML = `${topbar(m.title || m.label)}
     <div class="card">
-      <p class="form-title">${m.tabs ? `${tabIdx + 1}. ${esc(m.tabs[tabIdx])}` : esc(m.label)}</p>
+      <p class="form-title">${esc(m.label)}</p>
       <div class="grid">${inputs}</div>
       <div class="actions">
         <button class="btn" id="save"><i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง</button>
@@ -558,33 +611,379 @@ function renderForm(mod, tabIdx = 0) {
       </div>
       <div class="err" id="err"></div>
     </div>`;
-
   bindBack();
   $('#toList').onclick = () => { location.hash = '#list/' + mod; };
-  document.querySelectorAll('[data-tab]').forEach(btn => { btn.onclick = () => renderForm(mod, +btn.dataset.tab); });
 
   $('#save').onclick = async () => {
     $('#err').textContent = '';
     const payload = {};
-    m.fields.forEach(f => {
-      const el = document.querySelector(`[name="${f.name}"]`);
-      payload[f.name] = el ? el.value : '';
-    });
-    if (m.tabs) payload.type = m.tabs[tabIdx];
-
-    // สรุปข้อมูลให้ตรวจก่อนส่ง
-    const summary = Object.entries(payload).filter(([k, v]) => v !== '' && k !== 'type')
-      .map(([k, v]) => `${(m.fields.find(f => f.name === k) || {}).label}: ${v}`).join('\n');
-    const tabLine = m.tabs ? `ประเภท: ${m.tabs[tabIdx]}\n` : '';
-    if (!confirm(`ตรวจสอบข้อมูลก่อนส่ง\n\n${tabLine}${summary || '(ไม่มีข้อมูล)'}\n\nยืนยันการส่ง?`)) return;
-
+    m.fields.forEach(f => { const el = document.querySelector(`[name="${f.name}"]`); payload[f.name] = el ? el.value : ''; });
+    const rows = Object.entries(payload).filter(([, v]) => v !== '')
+      .map(([k, v]) => [(m.fields.find(f => f.name === k) || {}).label || k, v]);
+    if (!(await ask('ตรวจสอบข้อมูลก่อนส่ง', rows.length ? sumHtml(rows) : '<p>(ไม่มีข้อมูล)</p>'))) return;
     const btn = $('#save'); btn.disabled = true;
     try {
       await api('submit', { module: mod, payload });
-      alert('บันทึกเรียบร้อย');
+      await notify('บันทึกเรียบร้อย', 'ส่งรายงานเข้าระบบแล้ว', 'ok');
       location.hash = '#list/' + mod;
     } catch (e) { $('#err').textContent = e.message; btn.disabled = false; }
   };
+}
+
+/* ============================================================
+   หมวดรายงานประจำวัน HWPD (4 แท็บ ตามภาพตัวอย่าง)
+   ============================================================ */
+const DAILY_TABS = [
+  { name: 'เวรผลัด', icon: 'fa-clipboard-list', title: '1. รายงานประจำวัน (เวรผลัด)' },
+  { name: 'ผลปฏิบัติ', icon: 'fa-chart-pie', title: '2. ผลการปฏิบัติประจำวัน' },
+  { name: 'เวรสืบเวร', icon: 'fa-user-clock', title: '3. รายงานประจำวันสืบเวร' },
+  { name: 'ว.4 อื่นๆ', icon: 'fa-car-side', title: '4. รายงาน ว.4 อื่นๆ' }
+];
+// ชื่อฟิลด์ -> ป้ายแสดงในหน้าสรุปก่อนส่ง
+const DL = {
+  report_time: 'วันที่เวลาที่รายงาน', service_unit: 'หน่วยบริการ', chief: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', chief_phone: 'เบอร์โทรศัพท์',
+  radio_car: 'รถวิทยุตรวจเขต', driver: 'พลขับ', driver_phone: 'เบอร์โทรพลขับ', radio_op: 'พนักงานวิทยุ', radio_op_phone: 'เบอร์โทรพงว.',
+  duty_from: 'ปฏิบัติหน้าที่ตั้งแต่', duty_to: 'ถึงวันที่',
+  bw_total: 'กล้อง Bodyworn ทั้งหมด', bw_ready: 'กล้อง Bodyworn พร้อมใช้', bw_broken: 'กล้อง Bodyworn เสีย',
+  cnt_w43: 'ว.43 (ครั้ง)', cnt_service: 'บริการ (ครั้ง)', cnt_w42: 'ว.42 (ครั้ง)', cnt_w20: 'ว.20 (ครั้ง)',
+  arrest_warrant: 'จับกุมตามหมายจับ (ราย)', arrest_flagrante: 'จับกุมซึ่งหน้า (ราย)',
+  pol_smoke_check: 'ตรวจควันดำ (คัน)', pol_smoke_fail: 'พบเกินมาตรฐาน (คัน)', pol_burn: 'เผาป่า/เผาในที่โล่ง (ครั้ง)', pol_factory: 'โรงงาน (แห่ง)', pol_note: 'หมายเหตุ (มลพิษ)',
+  s_search: 'ตรวจค้น (ครั้ง)', s_complaint: 'เรื่องร้องทุกข์ (เรื่อง)', s_alien: 'ตรวจคนต่างด้าว (ราย)', s_note: 'หมายเหตุ (ตรวจค้น)',
+  duty_officer: 'ร้อยเวร', duty_officer_phone: 'เบอร์โทร (ร้อยเวร)', detective: 'สืบเวร', detective_phone: 'เบอร์โทร (สืบเวร)',
+  action: 'การปฏิบัติ', detail: 'การดำเนินการ', place: 'สถานที่'
+};
+const D = { tab: 0, co: [], charges: [], grouped: false, open: {}, timer: null };
+
+/* ---------- ตัวสร้างช่องกรอก ---------- */
+const fld = (label, inner, cls = '') => `<div class="${cls}"><label>${label}</label>${inner}</div>`;
+const inp = (name, ph = '', type = 'text', extra = '') => `<input name="${name}" type="${type}" placeholder="${esc(ph)}" ${extra}>`;
+const num = (name, extra = '') => `<input name="${name}" type="number" min="0" step="1" value="0" ${extra}>`;
+// ช่องพิมพ์ค้นหา/เลือกจากรายการ (ใช้ datalist)
+const pick = (name, ph = 'พิมพ์ค้นหา หรือกดเลือกจากรายการ') => `<input name="${name}" list="dl-officers" placeholder="${ph}" autocomplete="off" data-officer>`;
+const unitSel = () => `<select name="service_unit"><option value="">-- เลือกหน่วยบริการ --</option>${OPT.units.map(u => `<option>${esc(u)}</option>`).join('')}</select>`;
+const timeFld = (cls = '') => fld('วันที่เวลาที่รายงาน', `<div class="with-btn">${inp('report_time', '', 'datetime-local')}
+  <button type="button" class="sq sm" data-now title="ตั้งเป็นเวลาปัจจุบัน"><i class="fa-solid fa-clock-rotate-left"></i></button></div>`, cls);
+const dateFlds = () => fld('ปฏิบัติหน้าที่ตั้งแต่ (ว/ด/ป)', inp('duty_from', '', 'date')) + fld('ถึงวันที่ (ว/ด/ป)', inp('duty_to', '', 'date'));
+const bodyworn = title => `<div class="full"><span class="badge cyan">${title}</span></div>
+  <div class="full g3">${fld('ทั้งหมด', num('bw_total'))}${fld('พร้อมใช้', num('bw_ready'))}${fld('เสีย', num('bw_broken'))}</div>`;
+const fileFld = label => fld(label, '<input type="file" name="__files" multiple accept="image/*,application/pdf">', 'full');
+
+/* ---------- เนื้อหาแต่ละแท็บ ---------- */
+function dailyBody(t) {
+  if (t === 0) return `
+    ${timeFld()}${fld('หน่วยบริการ', unitSel())}
+    <hr class="divider">
+    ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย', pick('chief'))}${fld('เบอร์โทรศัพท์', inp('chief_phone', '08x-xxxxxxx', 'tel'))}
+    ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เลขรถ'), 'full')}
+    <div class="stack">${fld('พลขับ', pick('driver'))}${inp('driver_phone', 'เบอร์โทรพลขับ', 'tel')}</div>
+    <div class="stack">${fld('พนักงานวิทยุ', pick('radio_op'))}${inp('radio_op_phone', 'เบอร์โทรพงว.', 'tel')}</div>
+    <div class="full subbox">
+      <div class="sb-head"><b>ผู้ร่วมออก ว.4 เพิ่มเติม (ถ้ามี)</b>
+        <button type="button" class="mini" id="addCo"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
+      <div id="coList"></div>
+    </div>
+    ${dateFlds()}
+    ${bodyworn('กล้อง Bodyworn')}
+    ${fileFld('แนบไฟล์หลักฐาน')}`;
+
+  if (t === 1) return `
+    <div class="hint" id="draftBanner" hidden></div>
+    ${fld('หน่วยบริการ', unitSel())}${timeFld()}
+    <hr class="divider">
+    <div class="full g4">
+      ${fld('ว.43 (ครั้ง)', num('cnt_w43'))}${fld('บริการ (ครั้ง)', num('cnt_service'))}${fld('ว.42 (ครั้ง)', num('cnt_w42'))}
+      <div><label style="color:#c2570c">ว.20 (ครั้ง)</label>${num('cnt_w20', 'readonly')}<div class="note-s">รวมจากรายการข้อหาอัตโนมัติ</div></div>
+    </div>
+    <div class="full subbox">
+      <div class="sb-head"><b><i class="fa-solid fa-gavel"></i> รายการข้อหา ว.20</b>
+        <span><button type="button" class="mini" id="grpBtn"><i class="fa-solid fa-layer-group"></i> จัดกลุ่มตาม พ.ร.บ.</button>
+        <button type="button" class="mini yellow" id="addCh"><i class="fa-solid fa-plus"></i> เพิ่มข้อหา</button></span></div>
+      <div class="sb-sub">ไม่มีการจับกุม = ไม่ต้องเพิ่มแถว · ยอด ว.20 จะเป็น 0</div>
+      <div id="chList"></div>
+      <div class="sb-sub sum">รวมเป็นยอด ว.20 = <span id="ch20">0</span> ครั้ง</div>
+    </div>
+    <div class="full subbox beige">
+      <div style="margin-bottom:8px"><span class="badge yellow">แยกประเภทการจับกุม (ไม่บังคับ)</span></div>
+      <div class="g3" style="grid-template-columns:1fr 1fr 1.2fr;align-items:end">
+        ${fld('จับกุมตามหมายจับ (ราย)', num('arrest_warrant'))}${fld('จับกุมซึ่งหน้า (ราย)', num('arrest_flagrante'))}
+        <div class="sb-sub" id="arrSum">รวมแยกประเภท 0 / ยอด ว.20 ทั้งหมด 0</div>
+      </div>
+    </div>
+    <hr class="divider">
+    ${bodyworn('รายงานกล้อง Bodyworn')}
+    <hr class="divider">
+    <!-- 🔧 PLACEHOLDER: ฟิลด์ใน 2 แผงนี้ผมเดาจากชื่อหัวข้อ (ภาพไม่เห็นเนื้อหาข้างใน) แก้ชื่อ/เพิ่มลดได้ -->
+    <button type="button" class="tog full" data-tog="pol"><i class="fa-solid fa-smog"></i> การตรวจมลพิษ/ควันดำ + เผาป่า/โรงงาน (กดเพื่อเปิด-ปิด)</button>
+    <div class="panel full" id="p-pol" hidden><div class="g4">
+      ${fld('ตรวจควันดำ (คัน)', num('pol_smoke_check'))}${fld('พบเกินมาตรฐาน (คัน)', num('pol_smoke_fail'))}
+      ${fld('เผาป่า/เผาในที่โล่ง (ครั้ง)', num('pol_burn'))}${fld('โรงงาน (แห่ง)', num('pol_factory'))}</div>
+      <div style="margin-top:10px">${fld('หมายเหตุ', inp('pol_note', 'รายละเอียดเพิ่มเติม'))}</div></div>
+    <button type="button" class="tog full" data-tog="srch"><i class="fa-solid fa-magnifying-glass"></i> ตรวจค้น / เรื่องร้องทุกข์ / ตรวจคนต่างด้าว (กดเพื่อเปิด-ปิด)</button>
+    <div class="panel full" id="p-srch" hidden><div class="g3">
+      ${fld('ตรวจค้น (ครั้ง)', num('s_search'))}${fld('เรื่องร้องทุกข์ (เรื่อง)', num('s_complaint'))}${fld('ตรวจคนต่างด้าว (ราย)', num('s_alien'))}</div>
+      <div style="margin-top:10px">${fld('หมายเหตุ', inp('s_note', 'รายละเอียดเพิ่มเติม'))}</div></div>
+    ${fileFld('แนบไฟล์หลักฐาน')}`;
+
+  if (t === 2) return `
+    ${timeFld('full')}
+    <hr class="divider">
+    ${[['duty_officer', 'ร้อยเวรฯ'], ['detective', 'สืบเวร'], ['radio_op', 'พนักงานวิทยุ']].map(([n, l]) =>
+      `<div class="full" style="display:grid;grid-template-columns:2fr 1fr;gap:14px">${fld(l, pick(n))}${fld('เบอร์โทรศัพท์', inp(n + '_phone', '', 'tel'))}</div>`).join('')}
+    <hr class="divider">
+    ${dateFlds()}`;
+
+  return `
+    ${timeFld()}${fld('หน่วยบริการ', unitSel())}
+    <hr class="divider">
+    <div class="full subbox">
+      <div class="sb-head"><b>รายชื่อเจ้าหน้าที่ผู้ปฏิบัติ</b>
+        <button type="button" class="mini" id="addCo"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
+      <div id="coList"></div>
+    </div>
+    ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เช่น 51xx'), 'full')}
+    ${fld('การปฏิบัติ', `<select name="action"><option value="">-- เลือก --</option>${OPT.actions.map(a => `<option>${esc(a)}</option>`).join('')}</select>`)}
+    ${fld('การดำเนินการ', '<textarea name="detail" placeholder="รายละเอียด..."></textarea>')}
+    ${fld('สถานที่', inp('place', 'สถานที่ปฏิบัติงาน'), 'full')}
+    ${fileFld('แนบไฟล์ประกอบ')}`;
+}
+
+/* ---------- วาดหน้าฟอร์มรายงานประจำวัน ---------- */
+function renderDailyForm(tab = 0) {
+  if (!has('daily')) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
+  flushSave();
+  D.tab = tab; D.co = [{ name: '', role: '' }]; D.charges = []; D.grouped = false; D.open = {};
+  $('#app').className = 'narrow';
+  $('#app').innerHTML = `${topbar('หมวดรายงานประจำวัน HWPD')}
+    <div class="tabs">${DAILY_TABS.map((t, i) => `<button class="${i === tab ? 'on' : ''}" data-tab="${i}"><i class="fa-solid ${t.icon}"></i> ${i + 1}. ${esc(t.name)}</button>`).join('')}</div>
+    <div class="card" id="dform">
+      <datalist id="dl-officers">${OPT.officers.map(o => `<option value="${esc(o.name)}">`).join('')}</datalist>
+      <p class="form-title">${esc(DAILY_TABS[tab].title)}</p>
+      <div class="grid">${dailyBody(tab)}</div>
+      <div class="actions">
+        <button class="btn" id="save"><i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง</button>
+      </div>
+      <div class="err" id="err"></div>
+    </div>`;
+  bindBack();
+  document.querySelectorAll('[data-tab]').forEach(b => { b.onclick = () => renderDailyForm(+b.dataset.tab); });
+
+  // ค่าเริ่มต้น
+  const set = (n, v) => { const el = document.querySelector(`#dform [name="${n}"]`); if (el) el.value = v; };
+  set('report_time', nowLocal()); set('duty_from', today()); set('duty_to', today());
+  if (session.user.unit && OPT.units.includes(session.user.unit)) set('service_unit', session.user.unit);
+
+  // กู้ draft (ถ้ามี)
+  const d = loadDraft(tab);
+  if (d) {
+    Object.entries(d.v || {}).forEach(([n, v]) => set(n, v));
+    D.co = d.co && d.co.length ? d.co : D.co; D.charges = d.charges || []; D.grouped = !!d.grouped; D.open = d.open || {};
+    const b = $('#draftBanner');
+    if (b) b.hidden = false; else $('#dform .grid').insertAdjacentHTML('afterbegin', '<div class="hint" id="draftBanner"></div>');
+    $('#draftBanner').hidden = false;
+    $('#draftBanner').innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i>
+      <span class="grow">กู้ข้อมูลที่กรอกค้างไว้กลับมาให้แล้ว ตรวจสอบความถูกต้องก่อนส่ง <b>ไฟล์ที่เคยแนบไว้ไม่ได้ถูกกู้กลับมาด้วย กรุณาแนบใหม่</b></span>
+      <button type="button" class="mini warn" id="clearDraft">ล้างแล้วเริ่มใหม่</button>`;
+  }
+  drawCo(); drawCharges(); applyOpen(); syncTotals();
+
+  const f = $('#dform');
+  f.addEventListener('input', onDInput);
+  f.addEventListener('change', onDChange);
+  f.addEventListener('click', onDClick);
+  $('#save').onclick = submitDaily;
+}
+
+/* ---------- รายชื่อผู้ร่วมปฏิบัติ ---------- */
+function drawCo() {
+  const box = $('#coList'); if (!box) return;
+  const role = D.tab === 0;
+  box.innerHTML = D.co.map((c, i) => `<div class="rowx" data-ci="${i}">
+    <input data-ck="name" list="dl-officers" value="${esc(c.name)}" placeholder="พิมพ์ค้นหา หรือกดเลือกจากรายการ" autocomplete="off">
+    ${role ? `<input data-ck="role" value="${esc(c.role)}" placeholder="ตำแหน่ง/บทบาท เช่น พลขับสำรอง">` : ''}
+    ${D.co.length > 1 ? `<button type="button" class="sq sm red" data-cdel="${i}" title="ลบ"><i class="fa-solid fa-trash"></i></button>` : ''}</div>`).join('');
+}
+
+/* ---------- รายการข้อหา ว.20 ---------- */
+function drawCharges() {
+  const box = $('#chList'); if (!box) return;
+  const all = [].concat(...Object.values(OPT.acts));
+  const acts = Object.keys(OPT.acts);
+  let rows = D.charges.map((c, i) => ({ c, i }));
+  if (D.grouped) rows.sort((a, b) => (a.c.act || '\uffff').localeCompare(b.c.act || '\uffff', 'th'));
+  let html = '', last = null;
+  rows.forEach(({ c, i }) => {
+    if (D.grouped && c.act !== last) {
+      last = c.act;
+      const sub = D.charges.filter(x => x.act === c.act).reduce((s, x) => s + (+x.n || 0), 0);
+      html += `<div class="grp">${esc(c.act || 'ไม่ระบุ พ.ร.บ.')}<span>รวม ${sub} ครั้ง</span></div>`;
+    }
+    const opts = OPT.acts[c.act] || all;
+    html += `<div class="rowx" data-i="${i}">
+      <select data-k="act"><option value="">-- พ.ร.บ. --</option>${acts.map(a => `<option ${a === c.act ? 'selected' : ''}>${esc(a)}</option>`).join('')}</select>
+      <input data-k="charge" list="dl-ch-${i}" value="${esc(c.charge)}" placeholder="ข้อหา" autocomplete="off">
+      <datalist id="dl-ch-${i}">${opts.map(o => `<option value="${esc(o)}">`).join('')}</datalist>
+      <input data-k="n" type="number" min="0" step="1" value="${c.n}" title="จำนวนครั้ง">
+      <button type="button" class="sq sm red" data-del="${i}" title="ลบ"><i class="fa-solid fa-trash"></i></button></div>`;
+  });
+  box.innerHTML = html;
+  const g = $('#grpBtn'); if (g) g.classList.toggle('on', D.grouped);
+  syncTotals();
+}
+
+// ยอด ว.20 อัตโนมัติ + ตรวจยอดแยกประเภทจับกุม
+function syncTotals() {
+  const w = document.querySelector('#dform [name="cnt_w20"]'); if (!w) return;
+  const tot = D.charges.reduce((s, c) => s + (+c.n || 0), 0);
+  w.value = tot; $('#ch20').textContent = tot;
+  const v = n => +(document.querySelector(`#dform [name="${n}"]`) || {}).value || 0;
+  const a = v('arrest_warrant') + v('arrest_flagrante');
+  const el = $('#arrSum'); el.textContent = `รวมแยกประเภท ${a} / ยอด ว.20 ทั้งหมด ${tot}`;
+  el.classList.toggle('bad', a > tot);
+}
+
+function applyOpen() {
+  ['pol', 'srch'].forEach(k => { const p = $('#p-' + k); if (p) p.hidden = !D.open[k]; });
+}
+
+/* ---------- เหตุการณ์ในฟอร์ม ---------- */
+function onDInput(e) {
+  const t = e.target;
+  if (t.dataset.ck !== undefined) D.co[+t.closest('[data-ci]').dataset.ci][t.dataset.ck] = t.value;
+  else if (t.dataset.k !== undefined) {
+    const c = D.charges[+t.closest('[data-i]').dataset.i];
+    c[t.dataset.k] = t.dataset.k === 'n' ? (+t.value || 0) : t.value;
+  }
+  syncTotals(); queueSave();
+}
+function onDChange(e) {
+  const t = e.target;
+  if (t.dataset.k === 'act') { D.charges[+t.closest('[data-i]').dataset.i].act = t.value; drawCharges(); }
+  else if (t.dataset.k === 'n' && D.grouped) drawCharges();
+  // เลือกชื่อเจ้าหน้าที่แล้วเติมเบอร์โทรให้อัตโนมัติ (ถ้าช่องเบอร์ยังว่าง)
+  if (t.matches('[data-officer]')) {
+    const o = OPT.officers.find(x => x.name === t.value);
+    const ph = document.querySelector(`#dform [name="${t.name}_phone"]`);
+    if (o && o.phone && ph && !ph.value) ph.value = o.phone;
+  }
+  queueSave();
+}
+function onDClick(e) {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.now !== undefined) { document.querySelector('#dform [name="report_time"]').value = nowLocal(); }
+  else if (b.dataset.del !== undefined) { D.charges.splice(+b.dataset.del, 1); drawCharges(); }
+  else if (b.dataset.cdel !== undefined) { D.co.splice(+b.dataset.cdel, 1); if (!D.co.length) D.co.push({ name: '', role: '' }); drawCo(); }
+  else if (b.id === 'addCo') { D.co.push({ name: '', role: '' }); drawCo(); }
+  else if (b.id === 'addCh') { D.charges.push({ act: '', charge: '', n: 1 }); drawCharges(); }
+  else if (b.id === 'grpBtn') { D.grouped = !D.grouped; drawCharges(); }
+  else if (b.dataset.tog) { D.open[b.dataset.tog] = !D.open[b.dataset.tog]; applyOpen(); }
+  else if (b.id === 'clearDraft') { store.del(dkey(D.tab)); renderDailyForm(D.tab); return; }
+  else return;
+  queueSave();
+}
+
+/* ---------- Draft: บันทึกข้อมูลที่กรอกค้างไว้อัตโนมัติ ---------- */
+const dkey = t => `hwpd_draft_${session.user.display_name}_${t}`;
+function collectDaily() {
+  const v = {};
+  document.querySelectorAll('#dform [name]').forEach(el => { if (el.type !== 'file') v[el.name] = el.value; });
+  return v;
+}
+function saveDraft() {
+  if (!$('#dform')) return;
+  store.set(dkey(D.tab), JSON.stringify({ v: collectDaily(), co: D.co, charges: D.charges, grouped: D.grouped, open: D.open, t: Date.now() }));
+}
+function queueSave() { clearTimeout(D.timer); D.timer = setTimeout(() => { D.timer = null; saveDraft(); }, 300); }
+function flushSave() { if (D.timer) { clearTimeout(D.timer); D.timer = null; saveDraft(); } }
+function loadDraft(t) {
+  try {
+    const d = JSON.parse(store.get(dkey(t)) || 'null');
+    if (!d) return null;
+    if (Date.now() - d.t > 12 * 3600 * 1000) { store.del(dkey(t)); return null; }   // draft เก่าเกิน 12 ชม. ทิ้ง
+    return d;
+  } catch (e) { return null; }
+}
+
+/* ---------- ไฟล์แนบ: ย่อรูปก่อนส่ง ---------- */
+const toB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = () => rej(new Error('อ่านไฟล์ไม่ได้')); r.readAsDataURL(f); });
+function compressImg(f) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(f);
+    img.onload = () => {
+      const s = Math.min(1, 1600 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      res({ name: f.name.replace(/\.\w+$/, '') + '.jpg', mime: 'image/jpeg', data: c.toDataURL('image/jpeg', .8).split(',')[1] });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('อ่านรูป ' + f.name + ' ไม่ได้')); };
+    img.src = url;
+  });
+}
+async function readFiles(list) {
+  const out = []; let total = 0;
+  for (const f of list) {
+    let o;
+    if (f.type.startsWith('image/')) o = await compressImg(f);
+    else if (f.type === 'application/pdf') {
+      if (f.size > 5 * 1024 * 1024) throw new Error(`ไฟล์ ${f.name} ใหญ่เกิน 5 MB`);
+      o = { name: f.name, mime: f.type, data: await toB64(f) };
+    } else throw new Error(`ไม่รองรับไฟล์ ${f.name} (รองรับรูปภาพและ PDF)`);
+    total += o.data.length; out.push(o);
+  }
+  if (total > 20e6) throw new Error('ไฟล์แนบรวมใหญ่เกินไป กรุณาลดจำนวนไฟล์');
+  return out;
+}
+
+/* ---------- ตรวจข้อมูล + ส่ง ---------- */
+async function submitDaily() {
+  $('#err').textContent = '';
+  flushSave();
+  const t = D.tab, v = collectDaily();
+  const n = k => +v[k] || 0;
+  const errs = [];
+  if (t !== 2 && !v.service_unit) errs.push('กรุณาเลือกหน่วยบริการ');
+  if (!v.report_time) errs.push('กรุณาระบุวันที่เวลาที่รายงาน');
+  if ((t === 0 || t === 2) && v.duty_from && v.duty_to && v.duty_from > v.duty_to) errs.push('วันที่ "ถึงวันที่" ต้องไม่ก่อนวันที่เริ่มปฏิบัติหน้าที่');
+  if ((t === 0 || t === 1) && n('bw_ready') + n('bw_broken') > n('bw_total')) errs.push('กล้อง Bodyworn: พร้อมใช้ + เสีย ต้องไม่เกินจำนวนทั้งหมด');
+  if (t === 1) {
+    if (n('arrest_warrant') + n('arrest_flagrante') > n('cnt_w20')) errs.push('ยอดแยกประเภทการจับกุมเกินยอด ว.20 ทั้งหมด');
+    if (D.charges.some(c => (+c.n || 0) > 0 && !c.charge.trim())) errs.push('มีรายการข้อหาที่ระบุจำนวนแล้วแต่ยังไม่ได้ใส่ชื่อข้อหา');
+  }
+  if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+
+  // สร้าง payload (ฟิลด์ตัวเลขแปลงเป็นตัวเลข)
+  const payload = { type: DAILY_TABS[t].name };
+  Object.entries(v).forEach(([k, val]) => {
+    const el = document.querySelector(`#dform [name="${k}"]`);
+    payload[k] = el && el.type === 'number' ? (val === '' ? 0 : +val) : val;
+  });
+  const co = D.co.filter(c => c.name.trim());
+  if (t === 0 || t === 3) payload.co_officers = JSON.stringify(co);
+  if (t === 1) payload.charges = JSON.stringify(D.charges.filter(c => c.charge.trim() && (+c.n || 0) > 0));
+
+  // สรุปให้ตรวจก่อนส่ง
+  const rows = [['ประเภท', payload.type]];
+  Object.keys(DL).forEach(k => {
+    const val = payload[k];
+    if (val === undefined || val === '' || val === 0) return;
+    rows.push([DL[k], k === 'report_time' ? fmt(val) : (k === 'duty_from' || k === 'duty_to') ? fmtDate(val) : val]);
+  });
+  if (co.length) rows.push([t === 0 ? 'ผู้ร่วมออก ว.4' : 'เจ้าหน้าที่ผู้ปฏิบัติ', co.map(c => c.name + (c.role ? ` (${c.role})` : '')).join(', ')]);
+  if (t === 1 && D.charges.length) rows.push(['รายการข้อหา', D.charges.filter(c => c.charge.trim() && +c.n > 0).map(c => `${c.charge} ×${c.n}`).join(', ')]);
+  const fl = document.querySelector('#dform [name="__files"]').files;
+  if (fl.length) rows.push(['ไฟล์แนบ', fl.length + ' ไฟล์']);
+  if (!(await ask('ตรวจสอบข้อมูลก่อนส่ง', sumHtml(rows)))) return;
+
+  const btn = $('#save'); btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+  try {
+    const files = await readFiles(fl);
+    await api('submit', { module: 'daily', payload, files });
+    store.del(dkey(t));
+    await notify('บันทึกเรียบร้อย', 'ส่งรายงานเข้าระบบแล้ว', 'ok');
+    location.hash = '#list/daily';
+  } catch (e) {
+    $('#err').textContent = e.message;
+    btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ตรวจสอบข้อมูลก่อนส่ง';
+  }
 }
 
 /* ============================================================
@@ -593,12 +992,11 @@ function renderForm(mod, tabIdx = 0) {
 function renderList(mod) {
   const m = MODULES[mod];
   if (!has(m.perm)) { $('#app').innerHTML = '<div class="card">ไม่มีสิทธิ์ใช้งานส่วนนี้</div>'; return; }
-  const label = name => name === 'type' ? 'ประเภท' : (m.fields.find(f => f.name === name) || { label: name }).label;
+  const label = name => (m.labels && m.labels[name]) || (m.fields.find(f => f.name === name) || { label: name }).label;
   const isTime = c => /time$|^start$|^end$/.test(c);
 
-  $('#app').className = '';   // ตารางกว้างกว่าฟอร์ม
-  $('#app').innerHTML = `
-    ${topbar(m.label + ' · รายการ')}
+  $('#app').className = '';
+  $('#app').innerHTML = `${topbar(m.label + ' · รายการ')}
     <div class="card">
       <div class="row">
         <div><label>จากวันที่</label><input type="date" id="from" value="${today().slice(0, 8) + '01'}"></div>
@@ -614,15 +1012,14 @@ function renderList(mod) {
     $('#err').textContent = '';
     const rows = await api('list', { module: mod, filter: { from: $('#from').value, to: $('#to').value } });
     if (!rows.length) { $('#tbl').innerHTML = '<p>ไม่มีรายการ</p>'; return; }
-    const cols = m.tabs ? ['type', ...m.cols.filter(c => c !== 'type')] : m.cols;
+    const cols = m.cols;
     $('#tbl').innerHTML = `<table><tr>${cols.map(c => `<th>${esc(label(c))}</th>`).join('')}
       <th>หน่วย</th><th>สถานะ</th><th></th></tr>` +
       rows.map(r => `<tr>
         ${cols.map(c => `<td>${esc(isTime(c) ? fmt(r[c]) : r[c])}</td>`).join('')}
         <td>${esc(r.unit)}</td>
         <td><span class="tag ${esc(r.status)}">${r.status === 'approved' ? 'อนุมัติแล้ว' : 'รอตรวจ'}</span></td>
-        <td>${has('approve') && r.status === 'pending'
-          ? `<button class="btn ok" data-id="${esc(r.id)}">อนุมัติ</button>` : ''}</td>
+        <td>${has('approve') && r.status === 'pending' ? `<button class="btn ok" data-id="${esc(r.id)}">อนุมัติ</button>` : ''}</td>
       </tr>`).join('') + '</table>';
     document.querySelectorAll('button[data-id]').forEach(btn => {
       btn.onclick = async () => {
@@ -636,7 +1033,7 @@ function renderList(mod) {
 }
 
 /* ============================================================
-   เริ่มต้นระบบ: ตรวจ session เดิมก่อนแสดงหน้า
+   เริ่มต้นระบบ
    ============================================================ */
 (async () => {
   if (session) {
