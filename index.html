@@ -145,7 +145,7 @@
     text-align: left; background: var(--field); border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 13px; color: var(--txt); cursor: pointer; }
   .pkbtn:focus-visible { outline: none; border-color: var(--c2); box-shadow: 0 0 0 3px rgba(47,134,201,.18); }
   .pkbtn .pkv { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pkbtn .pkv.ph { color: #94a3b8; }
+  .pkbtn .pkv.pkph { color: #94a3b8; }
   .pkbtn i { color: var(--c); font-size: 12px; flex: none; }
 
   /* หน้าต่างเลือก (bottom sheet บนมือถือ / กล่องกลางจอบนคอม) */
@@ -228,10 +228,10 @@
   .susp { border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin-top: 8px; background: var(--card); }
   .susp > label { margin-top: 8px; }
   .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .ph { height: 62px; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; align-content: center;
+  .ptile { height: 62px; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; align-content: center;
     gap: 2px; font-size: 11px; color: var(--muted); cursor: pointer; background: var(--field) center/cover no-repeat; }
-  .ph.has { color: transparent; border-color: var(--ok); }
-  .ph.has i { color: transparent; }
+  .ptile.has { color: transparent; border-color: var(--ok); }
+  .ptile.has i { color: transparent; }
 
   /* ===== ปุ่ม ===== */
   button { font: inherit; cursor: pointer; }
@@ -338,7 +338,7 @@
     .rowx { flex-wrap: wrap; }
     .rowx > input[type=number] { flex: 1 0 80px; }
     .photos { grid-template-columns: repeat(2, 1fr); }
-    .ph { height: 84px; }
+    .ptile { height: 84px; }
     .actions.two { grid-template-columns: 1fr; }
     /* ปุ่มส่งลอยติดขอบล่างจอ ไม่ต้องเลื่อนลงไปกด */
     #dform .actions { position: sticky; bottom: 0; margin: 16px -16px -16px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
@@ -352,6 +352,135 @@
     .sum span { max-width: 40%; }
     .dc { height: 44px; }
   }
+
+  /* ============================================================
+     ปรับความสวยงาม / ใช้งานง่ายขึ้น (ทับค่าด้านบน)
+     ============================================================ */
+  :root { --radius: 20px; --shadow: 0 12px 32px rgba(21,101,168,.10), 0 2px 6px rgba(21,101,168,.05); }
+  :root[data-theme="light"] label { color: #4b5d75; }
+  label { font-weight: 500; font-size: 12.5px; margin-bottom: 5px; }
+  #app > * { animation: rise .3s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes shim { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+  @keyframes flash { 0%, 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); } 30% { box-shadow: 0 0 0 6px rgba(229,72,77,.35); } }
+  .flash { animation: flash 1.4s ease; border-radius: 10px; }
+  .card { border-radius: var(--radius); }
+
+  /* หัวหน้าหลัก: การ์ดไล่สี + ไอคอนผู้ใช้ */
+  .hero { background: linear-gradient(135deg, #1565a8 0%, #2f86c9 55%, #19a3c4 100%); color: #fff; border: 0; position: relative; overflow: hidden; }
+  [data-theme="dark"] .hero { background: linear-gradient(135deg, #123e66 0%, #1a5f8f 55%, #127a92 100%); }
+  .hero::after { content: ""; position: absolute; right: -50px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,.10); pointer-events: none; }
+  .hero-l { display: flex; gap: 14px; align-items: center; min-width: 0; position: relative; z-index: 1; }
+  .avatar { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.2); border: 2px solid rgba(255,255,255,.4); display: grid; place-items: center; font-size: 24px; flex: none; }
+  .hero small { color: rgba(255,255,255,.85); }
+  .hero h1 { color: #fff; }
+  .hero .chip { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.3); color: #fff; }
+  .hero .chip i { color: #fff; }
+  .hero .tools { position: relative; z-index: 1; }
+  .hero .sq, .hero .pill-btn { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); color: #fff; backdrop-filter: blur(4px); }
+  .hero .sq.red { color: #ffd6d3; }
+  .t-blue   { background: linear-gradient(135deg, #e3f2fe, #c4e2f8); }
+  .t-orange { background: linear-gradient(135deg, #ffeede, #fbd5b5); }
+  .t-red    { background: linear-gradient(135deg, #fee6e6, #f8c4c4); }
+  .t-purple { background: linear-gradient(135deg, #f1e8fd, #dcc9f5); }
+  .t-green  { background: linear-gradient(135deg, #def5ea, #bfe9d3); }
+  .t-brown  { background: linear-gradient(135deg, #f9eddc, #ecd5ae); }
+  .qcard { border-radius: 20px; padding: 18px; position: relative; overflow: hidden; }
+  .qcard::after { content: "\f054"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 16px; top: 18px; color: var(--line); font-size: 13px; }
+  .qcard:hover { box-shadow: 0 14px 30px rgba(21,101,168,.16); }
+  .item, .rec, .dcard { border-radius: 14px; }
+  .qcard:active, .item:active, .rec:active, .dcard:active { transform: scale(.985); }
+  .sec { font-size: 15px; letter-spacing: .2px; }
+
+  /* แถบบน / แท็บ แบบ segmented */
+  .back { border-radius: 999px; padding: 6px 13px 6px 10px; font-weight: 500; }
+  .tabs { background: var(--card); padding: 5px; border-radius: 16px; box-shadow: var(--shadow); gap: 4px; }
+  .tabs button { border-radius: 12px; font-weight: 500; }
+  .tabs button.on { background: linear-gradient(135deg, var(--c), var(--c2)); color: #fff; box-shadow: 0 4px 12px rgba(21,101,168,.3); }
+  [data-theme="dark"] .tabs button.on { background: linear-gradient(135deg, #1d5f95, #2a7fbd); }
+
+  /* ช่องกรอก */
+  input, textarea, .pkbtn { border-radius: 10px; border-color: #cddae8; min-height: 40px; font-size: 14px; padding: 8px 12px; transition: border-color .15s, box-shadow .15s; }
+  [data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] .pkbtn { border-color: var(--line); }
+  input:focus, textarea:focus, .pkbtn:focus-visible { box-shadow: 0 0 0 4px rgba(47,134,201,.18); }
+  textarea { min-height: 84px; }
+  input[type=file] { padding: 9px; background: var(--soft); border-style: dashed; }
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+  .pkbtn:hover { border-color: var(--c2); }
+
+  /* หัวข้อส่วนในฟอร์ม */
+  .fsec { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 14px; border-top: 1px dashed var(--line); font-weight: 700; font-size: 14.5px; color: var(--title); }
+  .grid > .fsec:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+  .fsec i { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--sel); color: var(--c); font-size: 14px; flex: none; }
+  .fsec small { margin-left: auto; font-weight: 400; color: var(--muted); font-size: 11.5px; }
+  .subbox { border-radius: 14px; background: var(--soft); border-color: transparent; }
+  .subbox .pkbtn, .subbox input, .subbox textarea { background: var(--field); }
+  .susp { background: var(--field); border-radius: 12px; }
+  .panel { border-radius: 14px; background: var(--soft); border-color: transparent; }
+  .tog { border-radius: 12px; font-weight: 500; }
+  .mini { border-radius: 999px; }
+  .sb-sub.ok { color: var(--ok); font-weight: 600; }
+  .hint { border-radius: 12px; }
+
+  /* ตัวปรับตัวเลข + / − */
+  .nstep { display: flex; align-items: stretch; border: 1px solid #cddae8; border-radius: 10px; overflow: hidden; background: var(--field); transition: box-shadow .15s, border-color .15s; }
+  [data-theme="dark"] .nstep { border-color: var(--line); }
+  .nstep input { border: 0; border-radius: 0; text-align: center; min-width: 0; flex: 1; box-shadow: none !important; font-weight: 600; }
+  .nstep button { width: 42px; border: 0; background: var(--soft); color: var(--c); font-size: 18px; font-weight: 700; cursor: pointer; flex: none; line-height: 1; }
+  .nstep button:active { background: var(--sel); }
+  .nstep:focus-within { border-color: var(--c2); box-shadow: 0 0 0 4px rgba(47,134,201,.18); }
+  .nstep.ro input { background: #fdf0d8; color: #8a4b08; }
+  .nstep.ro { border-color: #e9a24a; }
+
+  /* ปุ่ม */
+  .btn { border-radius: 12px; box-shadow: 0 6px 16px rgba(21,101,168,.28); transition: transform .12s, box-shadow .2s; }
+  .btn:active { transform: scale(.98); }
+  .btn.ghost, .btn.danger { box-shadow: none; }
+
+  /* แจ้งเตือนเล็ก (toast) + โครงโหลดข้อมูล (skeleton) */
+  #toasts { position: fixed; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom)); display: grid; justify-items: center; gap: 8px; z-index: 130; pointer-events: none; padding: 0 16px; }
+  .toast { pointer-events: auto; background: #16283a; color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; display: flex; gap: 9px; align-items: center; box-shadow: 0 10px 28px rgba(0,0,0,.28); animation: up .22s ease both; transition: opacity .3s; }
+  .toast.ok i { color: #6ee7a8; } .toast.err i { color: #ff9b95; }
+  .skel { height: 66px; border-radius: 14px; margin-bottom: 8px; background: linear-gradient(90deg, var(--soft) 25%, var(--sel) 37%, var(--soft) 63%); background-size: 400% 100%; animation: shim 1.3s ease infinite; }
+  .save-ind { display: flex; justify-content: flex-end; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); margin: -6px 0 8px; }
+  .save-ind.ok { color: var(--ok); }
+  .sheet::before { content: ""; display: block; width: 42px; height: 4px; border-radius: 2px; background: var(--line); margin: 8px auto 0; }
+  .sh-it { padding: 14px 14px; border-radius: 12px; }
+
+  /* หน้าเข้าสู่ระบบ */
+  .login { max-width: 400px; text-align: center; }
+  .login .brand { width: 72px; height: 72px; border-radius: 22px; margin: 0 auto 14px; display: grid; place-items: center; font-size: 32px; color: #fff; background: linear-gradient(135deg, #1565a8, #19a3c4); box-shadow: 0 12px 26px rgba(21,101,168,.35); }
+  .login h2 { margin: 0; }
+  .login-sub { margin: 4px 0 20px; color: var(--muted); font-size: 13.5px; }
+  .login label, .login .err { text-align: left; }
+  .login .pw { position: relative; }
+  .login .pw input { padding-right: 46px; }
+  .pw-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 0; background: transparent; color: var(--muted); font-size: 16px; }
+  .demo-acc { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 12.5px; color: var(--muted); }
+  .demo-acc .seg { justify-content: center; margin-top: 8px; }
+  .demo-acc .seg button { font-size: 12.5px; padding: 6px 12px; }
+
+  /* เมนูล่างบนมือถือ */
+  #bnav { display: none; }
+  @media (max-width: 600px) {
+    #bnav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--card); backdrop-filter: blur(16px); border-top: 1px solid var(--line);
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); gap: 4px; }
+    body.inform #bnav, body.noauth #bnav { display: none; }
+    #bnav a { flex: 1; display: grid; justify-items: center; gap: 2px; padding: 7px 4px; border-radius: 14px; color: var(--muted); text-decoration: none; font-size: 11.5px; }
+    #bnav a i { font-size: 19px; }
+    #bnav a.on { color: var(--c); font-weight: 700; background: var(--sel); }
+    body:not(.inform):not(.noauth) .fab { bottom: calc(80px + env(safe-area-inset-bottom)); }
+    main { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+    body.inform main { padding-bottom: 24px; }
+    input, textarea, .pkbtn { font-size: 16px; min-height: 48px; }
+    .nstep button { width: 52px; font-size: 20px; }
+    .avatar { width: 48px; height: 48px; font-size: 20px; }
+    .hero h1 { font-size: 20px; }
+    .fsec { font-size: 14px; }
+    #toasts { bottom: calc(86px + env(safe-area-inset-bottom)); }
+    body.inform #toasts { bottom: calc(24px + env(safe-area-inset-bottom)); }
+  }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -359,6 +488,8 @@
 
 <div id="banner" class="banner" hidden>โหมดทดลอง: ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ไม่กระทบข้อมูลจริง</div>
 <main id="app"></main>
+<nav id="bnav" hidden></nav>
+<div id="toasts"></div>
 <button id="fab" class="fab" hidden aria-label="ผู้ช่วยกฎหมาย"><i class="fa-solid fa-scale-balanced"></i> ผู้ช่วยกฎหมาย</button>
 
 <script>
@@ -451,7 +582,7 @@ const GROUPS = [
    ตัวแปรและฟังก์ชันช่วย
    ============================================================ */
 let session = JSON.parse(sessionStorage.getItem('session') || 'null');
-let ENV = 'demo';
+let ENV = 'demo', ENV_OK = false;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = v => v ? new Date(v).toLocaleString('th-TH') : '';
@@ -512,6 +643,10 @@ async function api(action, body = {}) {
   }
   return j.data;
 }
+// ถามเซิร์ฟเวอร์ว่าเป็นโหมดไหน (ใช้ตัดสินว่าจะโชว์บัญชีทดลองในหน้าเข้าสู่ระบบหรือไม่)
+async function probeEnv() {
+  try { const r = await fetch(API_URL); const j = await r.json(); if (j && j.env) { ENV = j.env; ENV_OK = true; } } catch (e) {}
+}
 function sessionExpired() {
   if (!session) return;
   session = null; sessionStorage.removeItem('session'); location.hash = ''; render();
@@ -548,10 +683,35 @@ function modal({ icon = '', tone = 'info', title = '', body = '', ok = 'ตก�
 const ICONS = { info: 'fa-circle-info', ok: 'fa-circle-check', err: 'fa-circle-exclamation', warn: 'fa-triangle-exclamation' };
 const notify = (title, msg, tone = 'info') => modal({ title, tone, icon: ICONS[tone], body: `<p>${esc(msg)}</p>` });
 const ask = (title, bodyHtml, ok = 'ยืนยันการส่ง', icon = 'fa-paper-plane', tone = 'info') => modal({ title, body: bodyHtml, ok, cancel: 'ยกเลิก', icon, tone });
-const listModal = (title, items) => modal({ title, tone: 'warn', icon: ICONS.warn, body: `<ul>${items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` });
+const listModal = (title, items, focus) => modal({ title, tone: 'warn', icon: ICONS.warn, body: `<ul>${items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` })
+  .then(() => { if (focus) focusField(focus); });
+// รวมข้อผิดพลาดของฟอร์ม: E.add(ข้อความ, ชื่อช่อง) -> E.show() จะแสดงรายการแล้วเลื่อนไปที่ช่องแรกที่ผิดให้อัตโนมัติ
+function makeErrs() {
+  const l = [];
+  return { add(m, f) { l.push({ m, f }); }, get n() { return l.length; },
+    show(title = 'ตรวจสอบข้อมูลอีกครั้ง') { const first = l.find(x => x.f); return listModal(title, l.map(x => x.m), first && first.f); } };
+}
+function focusField(name) {
+  let el = name.startsWith('#') ? document.querySelector(name) : document.querySelector(`#dform [name="${name}"]`);
+  if (!el) return;
+  if (el.type === 'hidden') { const w = el.parentNode; el = w.querySelector('.pkbtn') || w; }
+  if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600);
+}
 const sumHtml = rows => `<div class="sum">${rows.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`;
 // 🔧 PLACEHOLDER: ฟีเจอร์ที่ยังไม่เปิดในโหมดทดลอง — เมื่อทำจริงให้แทนที่การเรียก soon()
 const soon = name => notify(name, 'ฟีเจอร์นี้ยังไม่เปิดให้ใช้งานในโหมดทดลอง', 'info');
+// แจ้งเตือนเล็กๆ ที่หายเอง (ไม่ขวางการใช้งาน)
+function toast(msg, tone = 'ok') {
+  const box = $('#toasts'); if (!box) return;
+  const t = document.createElement('div'); t.className = 'toast ' + tone;
+  t.innerHTML = `<i class="fa-solid ${tone === 'err' ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i> ${esc(msg)}`;
+  box.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 320); }, 2300);
+}
+const skel = (n = 3) => Array.from({ length: n }, () => '<div class="skel"></div>').join('');
+// หัวข้อส่วนในฟอร์ม (ไอคอน + ชื่อ) ช่วยให้ฟอร์มยาวอ่านง่าย
+const sech = (icon, title, sub = '') => `<div class="fsec"><i class="fa-solid ${icon}"></i><span>${title}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
 
 /* ============================================================
    หน้าต่างเลือก (Picker): ใช้กับ "ช่องเลือก", "ช่องค้นหา", "วันที่/เวลา"
@@ -685,12 +845,12 @@ function pkHtml({ kind = 'select', src = '', opts = null, ph = '', name = '', f 
   const display = kind === 'dt' ? thDisp(value, dt !== 'date') : value;
   const icon = kind === 'dt' ? 'fa-calendar-days' : 'fa-chevron-down';
   return `<div class="pk" data-kind="${kind}" data-src="${src}" data-ph="${esc(ph)}" data-dt="${dt}" data-clear="${clear ? 1 : 0}"${opts ? ` data-opts="${esc(JSON.stringify(opts))}"` : ''}>
-    <input type="hidden" ${attrs} value="${esc(value)}"><button type="button" class="pkbtn"><span class="pkv${display ? '' : ' ph'}">${esc(display || ph)}</span><i class="fa-solid ${icon}"></i></button></div>`;
+    <input type="hidden" ${attrs} value="${esc(value)}"><button type="button" class="pkbtn"><span class="pkv${display ? '' : ' pkph'}">${esc(display || ph)}</span><i class="fa-solid ${icon}"></i></button></div>`;
 }
 function pkText(w) {
   const h = w.querySelector('input[type=hidden]'), s = w.querySelector('.pkv'), v = h.value;
   const t = w.dataset.kind === 'dt' ? thDisp(v, w.dataset.dt !== 'date') : v;
-  s.textContent = t || w.dataset.ph || ''; s.classList.toggle('ph', !t);
+  s.textContent = t || w.dataset.ph || ''; s.classList.toggle('pkph', !t);
 }
 function refreshPk() { document.querySelectorAll('#app .pk').forEach(pkText); }
 const refreshDt = refreshPk;
@@ -773,14 +933,25 @@ async function loadOptions() {
 function render() {
   $('#banner').hidden = ENV !== 'demo';
   $('#fab').hidden = !session;
+  document.body.classList.toggle('noauth', !session);
   if (!session) { OPT_PROMISE = null; return renderLogin(); }
   if (!OPT_PROMISE) OPT_PROMISE = loadOptions();
   OPT_PROMISE.then(route);
+}
+// เมนูล่างสำหรับมือถือ (ซ่อนเองตอนกรอกฟอร์ม)
+function renderNav(a) {
+  const nav = $('#bnav'); if (!nav) return;
+  if (!session) { nav.hidden = true; return; }
+  nav.hidden = false;
+  const items = [['#home', 'fa-house', 'หน้าหลัก', 'home'], ['#history', 'fa-clock-rotate-left', 'ประวัติ', 'history']]
+    .concat(has('dashboard') ? [['#dash', 'fa-chart-pie', 'แผงควบคุม', 'dash']] : [], [['#tools', 'fa-toolbox', 'เครื่องมือ', 'tools']]);
+  nav.innerHTML = items.map(([h, i, t, k]) => `<a href="${h}" class="${a === k ? 'on' : ''}"><i class="fa-solid ${i}"></i><span>${t}</span></a>`).join('');
 }
 function route() {
   document.body.classList.remove('inform');
   window.scrollTo(0, 0);
   const [a, b, c] = (location.hash || '#home').slice(1).split('/');
+  renderNav(a || 'home');
   $('#app').className = '';
   if (a === 'list' && MODULES[b]) return renderList(b);
   if (a === 'form' && MODULES[b]) return renderForm(b, c);
@@ -795,15 +966,23 @@ $('#fab').onclick = () => soon('ผู้ช่วยกฎหมาย');
 /* ============================================================
    เข้าสู่ระบบ / ออกจากระบบ / เปลี่ยนรหัสผ่าน
    ============================================================ */
+// 🔧 PLACEHOLDER: บัญชีทดลองที่แสดงในหน้าเข้าสู่ระบบ (ตรงกับ seedDemo ใน Code.gs) แสดงเฉพาะเมื่อเซิร์ฟเวอร์ตอบว่า env = demo
+const DEMO_ACCS = [['officer01', 'เจ้าหน้าที่'], ['head01', 'หัวหน้าหน่วย'], ['approver01', 'ผู้อนุมัติ'], ['commander01', 'ผู้บังคับบัญชา'], ['admin01', 'ผู้ดูแลระบบ']];
+const DEMO_PW = 'demo1234';
 function renderLogin() {
   $('#app').className = '';
+  const demo = ENV === 'demo' && ENV_OK;
   $('#app').innerHTML = `
     <div class="card login">
-      <h2>เข้าสู่ระบบ</h2>
-      <div style="margin-bottom:12px"><label>ชื่อผู้ใช้</label><input id="u" autocomplete="username" autocapitalize="none"></div>
-      <div style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="p" type="password" autocomplete="current-password"></div>
+      <div class="brand"><i class="fa-solid fa-shield-halved"></i></div>
+      <h2>ระบบรายงานประจำวัน</h2>
+      <p class="login-sub">เข้าสู่ระบบเพื่อเริ่มใช้งาน</p>
+      <div style="margin-bottom:12px"><label>ชื่อผู้ใช้</label><input id="u" autocomplete="username" autocapitalize="none" autocorrect="off"></div>
+      <div style="margin-bottom:16px"><label>รหัสผ่าน</label><div class="pw"><input id="p" type="password" autocomplete="current-password">
+        <button type="button" class="pw-eye" id="eye" aria-label="แสดง/ซ่อนรหัสผ่าน"><i class="fa-regular fa-eye"></i></button></div></div>
       <button class="btn" id="go">เข้าสู่ระบบ</button>
       <div class="err" id="err"></div>
+      ${demo ? `<div class="demo-acc">บัญชีทดลอง — แตะเพื่อกรอกให้อัตโนมัติ<div class="seg">${DEMO_ACCS.map(([u, t]) => `<button type="button" data-u="${u}">${t}</button>`).join('')}</div></div>` : ''}
     </div>`;
   const submit = async () => {
     $('#err').textContent = ''; const b = $('#go'); b.disabled = true;
@@ -816,6 +995,8 @@ function renderLogin() {
   };
   $('#go').onclick = submit;
   $('#p').onkeydown = e => { if (e.key === 'Enter') submit(); };
+  $('#eye').onclick = () => { const p = $('#p'), show = p.type === 'password'; p.type = show ? 'text' : 'password'; $('#eye i').className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'; };
+  document.querySelectorAll('[data-u]').forEach(b => { b.onclick = () => { $('#u').value = b.dataset.u; $('#p').value = DEMO_PW; $('#go').focus(); }; });
 }
 async function doLogout() {
   try { await api('logout'); } catch (e) {}
@@ -884,7 +1065,7 @@ function renderHome() {
 
   $('#app').innerHTML = `
     <div class="card hero">
-      <div>
+      <div class="hero-l"><div class="avatar"><i class="fa-solid fa-user"></i></div><div>
         <small>${greeting()}</small>
         <h1>${esc(u.display_name)}</h1>
         <div class="chips">
@@ -893,7 +1074,7 @@ function renderHome() {
           <span class="chip"><i class="fa-solid fa-users"></i> ${esc(u.province || 'จังหวัด')}</span>
           <span class="chip"><i class="fa-solid fa-id-badge"></i> ${esc(u.role || (has('all') ? 'แอดมินสถานี' : 'เจ้าหน้าที่'))}</span>
         </div>
-      </div>
+      </div></div>
       <div class="tools">
         ${has('dashboard') ? `<button class="pill-btn" onclick="location.hash='#dash'"><i class="fa-solid fa-chart-pie"></i> กลับแผงควบคุมสถานี</button>` : ''}
         <button class="sq" id="themeBtn" title="โหมดมืด/สว่าง"><i class="fa-solid fa-moon"></i></button>
@@ -958,7 +1139,7 @@ function renderDash() {
   $('#app').innerHTML = `${topbar('แผงควบคุมสถานี')}<div class="card" id="lcard">${rangeBar()}${rangeFields()}<div id="sum" style="margin-top:14px"></div><div class="err" id="err"></div></div>`;
   bindBack();
   const load = async () => {
-    $('#err').textContent = ''; $('#sum').innerHTML = '<div class="empty-box">กำลังโหลด...</div>';
+    $('#err').textContent = ''; $('#sum').innerHTML = skel(4);
     try {
       const d = await api('summary', { from: getPk('from'), to: getPk('to') });
       const keys = Object.keys(d).filter(k => MODULES[k] && k !== 'other' || (k === 'other' && d[k].total));
@@ -971,7 +1152,7 @@ function renderDash() {
 
 function renderHistory() {
   $('#app').className = 'narrow';
-  $('#app').innerHTML = `${topbar('ประวัติของฉัน')}<div class="card"><div id="hist"><div class="empty-box">กำลังโหลด...</div></div><div class="err" id="err"></div></div>`;
+  $('#app').innerHTML = `${topbar('ประวัติของฉัน')}<div class="card"><div id="hist">${skel(4)}</div><div class="err" id="err"></div></div>`;
   bindBack();
   const load = async () => {
     try {
@@ -999,7 +1180,7 @@ function renderTools() {
   $('#tOut').onclick = doLogout;
   $('#tDraft').onclick = async () => {
     const list = draftList(); if (!list.length) return notify('ไม่มีแบบร่าง', 'ไม่มีแบบร่างที่ค้างอยู่ในเครื่องนี้', 'info');
-    if (await ask('ล้างแบบร่างทั้งหมด?', `<p>จะลบแบบร่างที่ค้างอยู่ ${list.length} รายการ กู้คืนไม่ได้</p>`, 'ล้างแบบร่าง', 'fa-eraser', 'warn')) { list.forEach(d => store.del(d.key)); renderTools(); }
+    if (await ask('ล้างแบบร่างทั้งหมด?', `<p>จะลบแบบร่างที่ค้างอยู่ ${list.length} รายการ กู้คืนไม่ได้</p>`, 'ล้างแบบร่าง', 'fa-eraser', 'warn')) { list.forEach(d => store.del(d.key)); renderTools(); toast('ล้างแบบร่างแล้ว'); }
   };
 }
 
@@ -1009,13 +1190,18 @@ function renderTools() {
 const rq = '<b class="rq">*</b>';
 const fld = (label, inner, cls = '') => `<div class="${cls}"><label>${label}</label>${inner}</div>`;
 const inp = (name, ph = '', type = 'text', extra = '') => `<input name="${name}" type="${type}" placeholder="${esc(ph)}" ${extra}>`;
-const num = (name, extra = '') => `<input name="${name}" type="number" min="0" step="1" value="0" inputmode="numeric" ${extra}>`;
+// ช่องตัวเลขแบบมีปุ่ม + / − (กดง่ายบนมือถือ) — ถ้าใส่ readonly จะเป็นช่องคำนวณอัตโนมัติ
+const num = (name, extra = '', value = 0, ph = '') => {
+  const input = `<input name="${name}" type="number" min="0" step="1" value="${value}" placeholder="${esc(ph)}" inputmode="numeric" ${extra}>`;
+  return /readonly/.test(extra) ? `<div class="nstep ro">${input}</div>`
+    : `<div class="nstep"><button type="button" data-step="-1" aria-label="ลด">−</button>${input}<button type="button" data-step="1" aria-label="เพิ่ม">+</button></div>`;
+};
 const area = (name, ph = '', extra = '') => `<textarea name="${name}" placeholder="${esc(ph)}" ${extra}></textarea>`;
 // ช่องเลือกจากรายการสั้นๆ (เปิดเป็นหน้าต่างเลือก) — ถ้าใส่ first = มีข้อความ "-- เลือก --" และล้างค่าได้
 const sel = (name, opts, first = '', extra = '') =>
   pkHtml({ kind: 'select', name, opts, ph: first || '', value: first ? '' : (opts[0] || ''), clear: !!first, req: (extra.match(/data-req="(\w+)"/) || [])[1] || '' });
 const unitSel = (name = 'service_unit', first = '-- เลือกหน่วยบริการ --') => pkHtml({ kind: 'select', src: 'units', name, ph: first, clear: true });
-const fileFld = label => fld(label, '<input type="file" name="__files" multiple accept="image/*,application/pdf">', 'full');
+const fileFld = label => sech('fa-paperclip', 'ไฟล์แนบ') + fld(label, '<input type="file" name="__files" multiple accept="image/*,application/pdf">', 'full');
 const dtF = (name, type = 'datetime', value = '') => pkHtml({ kind: 'dt', name, dt: type, value, ph: type === 'date' ? 'เลือกวันที่' : 'เลือกวันที่และเวลา' });
 const nowBtn = (name = 'report_time') => `<button type="button" class="sq sm hist" data-now="${name}" title="ตั้งเป็นเวลาปัจจุบัน"><i class="fa-solid fa-clock-rotate-left"></i></button>`;
 const dtNow = (name = 'report_time', label = 'วันที่เวลาที่รายงาน', cls = '') => fld(label, `<div class="with-btn">${dtF(name)}${nowBtn(name)}</div>`, cls);
@@ -1070,7 +1256,7 @@ const LISTR = {
     <label><i class="fa-solid fa-camera"></i> ภาพถ่ายผู้ต้องหา (แนบไม่ครบ 4 ภาพ/ออกเอกสารได้)</label>
     <div class="photos">${SLOTS.map(([k, l]) => {
       const p = S.photos[i + ':' + k];
-      return `<div class="ph${p ? ' has' : ''}" data-ph="${i}:${k}" ${p ? `style="background-image:url(${p.prev})"` : ''}><i class="fa-solid fa-camera"></i><span>${l}</span></div>`;
+      return `<div class="ptile${p ? ' has' : ''}" data-ph="${i}:${k}" ${p ? `style="background-image:url(${p.prev})"` : ''}><i class="fa-solid fa-camera"></i><span>${l}</span></div>`;
     }).join('')}</div></div>`).join(''),
   evidence: items => items.map((e, i) => `<div class="rowx" data-lst="evidence" data-i="${i}">${cbRow('item', e.item, 'evidence', 'รายการของกลาง')}
     <input data-f="qty" value="${esc(e.qty)}" placeholder="จำนวน" style="max-width:90px"><input data-f="unit" value="${esc(e.unit)}" placeholder="หน่วย" style="max-width:90px">${rmBtn('evidence', i)}</div>`).join('')
@@ -1105,6 +1291,8 @@ function collectVals() {
 function saveDraft() {
   if (!S.key || !$('#dform')) return;
   store.set(dkey(S.key), JSON.stringify({ v: collectVals(), lists: S.lists, grouped: S.grouped, open: S.open, t: Date.now() }));
+  const si = $('#saveInd');
+  if (si) { const n = new Date(); si.classList.add('ok'); si.querySelector('span').textContent = `บันทึกแบบร่างแล้ว ${pad(n.getHours())}:${pad(n.getMinutes())}`; }
 }
 function queueSave() { clearTimeout(S.timer); S.timer = setTimeout(() => { S.timer = null; saveDraft(); }, 300); }
 function flushSave() { if (S.timer) { clearTimeout(S.timer); S.timer = null; saveDraft(); } }
@@ -1127,6 +1315,7 @@ function mountForm(o) {
   $('#app').innerHTML = `${topbar(o.topTitle, o.back)}${o.tabs || ''}
     <div class="card${o.accent ? ' acc' : ''}" id="dform"${o.accent ? ` style="--acc:${o.accent}"` : ''}>
       <div class="hint" id="draftBanner" hidden></div>
+      <div class="save-ind" id="saveInd"><i class="fa-solid fa-cloud"></i> <span>แบบร่างจะบันทึกอัตโนมัติ</span></div>
       ${o.title ? `<p class="form-title">${esc(o.title)}</p>` : ''}
       <div class="grid">${o.body}</div>
       <input type="file" id="phFile" accept="image/*" hidden>
@@ -1185,8 +1374,13 @@ function onFChange(e) {
   markNeed(); if (S.sync) S.sync(); queueSave();
 }
 function onFClick(e) {
-  const b = e.target.closest('button, .ph'); if (!b || b.classList.contains('pkbtn')) return;
-  if (b.dataset.now !== undefined) { S.set(b.dataset.now || 'report_time', nowLocal()); refreshPk(); }
+  const b = e.target.closest('button, .ptile'); if (!b || b.classList.contains('pkbtn')) return;
+  if (b.dataset.step !== undefined) {
+    const i = b.parentNode.querySelector('input');
+    i.value = Math.max(0, (parseFloat(i.value) || 0) + +b.dataset.step);
+    i.dispatchEvent(new Event('input', { bubbles: true })); i.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  else if (b.dataset.now !== undefined) { S.set(b.dataset.now || 'report_time', nowLocal()); refreshPk(); }
   else if (b.dataset.ladd) {
     const L = b.dataset.ladd; S.lists[L].push(LDEF[L]()); drawList(L);
     if (L === 'suspects') { const sc = document.querySelector('#dform [name="suspect_count"]'); if (sc && +sc.value < S.lists.suspects.length) sc.value = S.lists.suspects.length; }
@@ -1197,7 +1391,7 @@ function onFClick(e) {
   else if (b.id === 'clearDraft') { store.del(dkey(S.key)); S.key = ''; S.remount(); return; }
   else if (b.dataset.geo) geoFill(b);
   else if (b.dataset.pin) pinMap(b);
-  else if (b.classList.contains('ph')) { S.phTarget = b.dataset.ph; $('#phFile').click(); }
+  else if (b.classList.contains('ptile')) { S.phTarget = b.dataset.ph; $('#phFile').click(); }
   else return;
   markNeed(); if (S.sync) S.sync(); queueSave();
 }
@@ -1290,7 +1484,7 @@ async function handlePhoto(inputEl) {
     const o = await compressImg(f, 1200);
     o.prev = 'data:image/jpeg;base64,' + o.data;
     S.photos[S.phTarget] = o;
-    const tile = document.querySelector(`.ph[data-ph="${S.phTarget}"]`);
+    const tile = document.querySelector(`.ptile[data-ph="${S.phTarget}"]`);
     if (tile) { tile.classList.add('has'); tile.style.backgroundImage = `url(${o.prev})`; }
   } catch (e) { notify('แนบรูปไม่ได้', e.message, 'err'); }
   inputEl.value = '';
@@ -1352,8 +1546,10 @@ async function sendReport(mod, payload, rows, extra = []) {
     const files = (await readFiles(fl ? fl.files : [])).concat(extra);
     await api('submit', { module: mod, payload, files });
     clearTimeout(S.timer); S.timer = null; store.del(dkey(S.key)); S.key = '';
-    await notify('บันทึกเรียบร้อย', 'ส่งรายงานเข้าระบบแล้ว', 'ok');
-    location.hash = '#list/' + mod;
+    const again = S.remount;
+    const v = await modal({ icon: 'fa-circle-check', tone: 'ok', title: 'ส่งรายงานเรียบร้อย', body: '<p>ระบบบันทึกรายงานของคุณแล้ว<br>จะทำอะไรต่อดี?</p>',
+      actions: [{ l: 'กรอกรายงานใหม่', v: 'new', c: 'ghost' }, { l: 'ดูรายการ', v: 'list', c: 'ghost' }, { l: 'กลับหน้าหลัก', v: 'home' }] });
+    if (v === 'new' && again) again(); else location.hash = v === 'list' ? '#list/' + mod : '#home';
   } catch (e) { $('#err').textContent = e.message; btn.disabled = false; btn.innerHTML = old; }
 }
 
@@ -1397,15 +1593,17 @@ const DAILY_TABS = [
   { name: 'เวรสืบเวร', icon: 'fa-truck-field', title: '3. รายงานประจำวันสืบเวร' },
   { name: 'ว.4 อื่นๆ', icon: 'fa-car-side', title: '4. รายงาน ว.4 อื่นๆ' }
 ];
-const bodyworn = title => `<div class="full"><span class="badge cyan">${title}</span></div>
+const bodyworn = title => `${sech('fa-video', title)}
   <div class="full g3">${fld('ทั้งหมด', num('bw_total'))}${fld('พร้อมใช้', num('bw_ready'))}${fld('เสีย', num('bw_broken'))}</div>`;
 const dateFlds = () => fld('ปฏิบัติหน้าที่ตั้งแต่ (ว/ด/ป)', dtF('duty_from', 'date')) + fld('ถึงวันที่ (ว/ด/ป)', dtF('duty_to', 'date'));
 
 function dailyBody(t) {
   if (t === 0) return `
+    ${sech('fa-calendar-check', 'ข้อมูลการรายงาน')}
     ${dtNow()}${fld('หน่วยบริการ', unitSel())}
-    <hr class="divider">
+    ${sech('fa-user-shield', 'เจ้าหน้าที่ประจำหน่วย')}
     ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย', cbF('chief', 'officers'))}${fld('เบอร์โทรศัพท์', inp('chief_phone', '08x-xxxxxxx', 'tel'))}
+    ${sech('fa-car-side', 'รถวิทยุและเจ้าหน้าที่ในรถ')}
     ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เลขรถ'), 'full')}
     <div class="stack">${fld('พลขับ', cbF('driver', 'officers'))}${inp('driver_phone', 'เบอร์โทรพลขับ', 'tel')}</div>
     <div class="stack">${fld('พนักงานวิทยุ', cbF('radio_op', 'officers'))}${inp('radio_op_phone', 'เบอร์โทรพงว.', 'tel')}</div>
@@ -1414,13 +1612,15 @@ function dailyBody(t) {
         <button type="button" class="mini" data-ladd="co"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
       <div id="L-co"></div>
     </div>
+    ${sech('fa-calendar-days', 'ช่วงเวลาปฏิบัติหน้าที่')}
     ${dateFlds()}
     ${bodyworn('กล้อง Bodyworn')}
     ${fileFld('แนบไฟล์หลักฐาน')}`;
 
   if (t === 1) return `
+    ${sech('fa-calendar-check', 'ข้อมูลการรายงาน')}
     ${fld('หน่วยบริการ', unitSel())}${dtNow()}
-    <hr class="divider">
+    ${sech('fa-chart-column', 'ยอดผลการปฏิบัติ', 'แตะ + / − เพื่อปรับตัวเลข')}
     <div class="full g4">
       ${fld('ว.43 (ครั้ง)', num('cnt_w43'))}${fld('บริการ (ครั้ง)', num('cnt_service'))}${fld('ว.42 (ครั้ง)', num('cnt_w42'))}
       <div><label style="color:#c2570c">ว.20 (ครั้ง)</label>${num('cnt_w20', 'readonly')}<div class="note-s">รวมจากรายการข้อหาอัตโนมัติ</div></div>
@@ -1440,9 +1640,8 @@ function dailyBody(t) {
         <div class="sb-sub" id="arrSum">รวมแยกประเภท 0 / ยอด ว.20 ทั้งหมด 0</div>
       </div>
     </div>
-    <hr class="divider">
     ${bodyworn('รายงานกล้อง Bodyworn')}
-    <hr class="divider">
+    ${sech('fa-clipboard-check', 'งานตรวจพิเศษ', 'แตะเพื่อเปิด-ปิด')}
     <!-- 🔧 PLACEHOLDER: ฟิลด์ใน 2 แผงนี้ผมเดาจากชื่อหัวข้อ (ภาพไม่เห็นเนื้อหาข้างใน) แก้ชื่อ/เพิ่มลดได้ -->
     <button type="button" class="tog full" data-tog="pol"><i class="fa-solid fa-smog"></i> การตรวจมลพิษ/ควันดำ + เผาป่า/โรงงาน (กดเพื่อเปิด-ปิด)</button>
     <div class="panel full" id="p-pol" hidden><div class="g4">
@@ -1456,21 +1655,24 @@ function dailyBody(t) {
     ${fileFld('แนบไฟล์หลักฐาน')}`;
 
   if (t === 2) return `
+    ${sech('fa-calendar-check', 'ข้อมูลการรายงาน')}
     ${dtNow('report_time', 'วันที่เวลาที่รายงาน', 'full')}
-    <hr class="divider">
+    ${sech('fa-user-shield', 'เจ้าหน้าที่สืบเวร')}
     ${[['duty_officer', 'ร้อยเวรฯ'], ['detective', 'สืบเวร'], ['radio_op', 'พนักงานวิทยุ']].map(([n, l]) =>
       `<div class="full g-2f">${fld(l, cbF(n, 'officers'))}${fld('เบอร์โทรศัพท์', inp(n + '_phone', '', 'tel'))}</div>`).join('')}
-    <hr class="divider">
+    ${sech('fa-calendar-days', 'ช่วงเวลาปฏิบัติหน้าที่')}
     ${dateFlds()}`;
 
   return `
+    ${sech('fa-calendar-check', 'ข้อมูลการรายงาน')}
     ${dtNow()}${fld('หน่วยบริการ', unitSel())}
-    <hr class="divider">
+    ${sech('fa-user-group', 'เจ้าหน้าที่ผู้ปฏิบัติ')}
     <div class="full subbox">
       <div class="sb-head"><b>รายชื่อเจ้าหน้าที่ผู้ปฏิบัติ</b>
         <button type="button" class="mini" data-ladd="co"><i class="fa-solid fa-user-plus"></i> เพิ่มเจ้าหน้าที่</button></div>
       <div id="L-co"></div>
     </div>
+    ${sech('fa-clipboard-list', 'รายละเอียดการปฏิบัติ')}
     ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เช่น 51xx'), 'full')}
     ${fld('การปฏิบัติ', pkHtml({ kind: 'select', src: 'actions', name: 'action', ph: '-- เลือก --', clear: true }))}
     ${fld('การดำเนินการ', area('detail', 'รายละเอียด...'))}
@@ -1506,16 +1708,16 @@ function renderDailyForm(tab = 0) {
 
 async function submitDaily() {
   $('#err').textContent = ''; flushSave();
-  const t = S.tab, p = collectPayload(), n = k => +p[k] || 0, errs = [];
-  if (t !== 2 && !p.service_unit) errs.push('กรุณาเลือกหน่วยบริการ');
-  if (!p.report_time) errs.push('กรุณาระบุวันที่เวลาที่รายงาน');
-  if ((t === 0 || t === 2) && p.duty_from && p.duty_to && p.duty_from > p.duty_to) errs.push('วันที่ "ถึงวันที่" ต้องไม่ก่อนวันที่เริ่มปฏิบัติหน้าที่');
-  if ((t === 0 || t === 1) && n('bw_ready') + n('bw_broken') > n('bw_total')) errs.push('กล้อง Bodyworn: พร้อมใช้ + เสีย ต้องไม่เกินจำนวนทั้งหมด');
+  const t = S.tab, p = collectPayload(), n = k => +p[k] || 0, E = makeErrs();
+  if (t !== 2 && !p.service_unit) E.add('กรุณาเลือกหน่วยบริการ', 'service_unit');
+  if (!p.report_time) E.add('กรุณาระบุวันที่เวลาที่รายงาน', 'report_time');
+  if ((t === 0 || t === 2) && p.duty_from && p.duty_to && p.duty_from > p.duty_to) E.add('วันที่ "ถึงวันที่" ต้องไม่ก่อนวันที่เริ่มปฏิบัติหน้าที่', 'duty_to');
+  if ((t === 0 || t === 1) && n('bw_ready') + n('bw_broken') > n('bw_total')) E.add('กล้อง Bodyworn: พร้อมใช้ + เสีย ต้องไม่เกินจำนวนทั้งหมด', 'bw_total');
   if (t === 1) {
-    if (n('arrest_warrant') + n('arrest_flagrante') > n('cnt_w20')) errs.push('ยอดแยกประเภทการจับกุมเกินยอด ว.20 ทั้งหมด');
-    if (S.lists.charges.some(c => (+c.n || 0) > 0 && !c.charge.trim())) errs.push('มีรายการข้อหาที่ระบุจำนวนแล้วแต่ยังไม่ได้ใส่ชื่อข้อหา');
+    if (n('arrest_warrant') + n('arrest_flagrante') > n('cnt_w20')) E.add('ยอดแยกประเภทการจับกุมเกินยอด ว.20 ทั้งหมด', 'arrest_warrant');
+    if (S.lists.charges.some(c => (+c.n || 0) > 0 && !c.charge.trim())) E.add('มีรายการข้อหาที่ระบุจำนวนแล้วแต่ยังไม่ได้ใส่ชื่อข้อหา', `#L-charges [data-lst="charges"][data-i="${S.lists.charges.findIndex(c => (+c.n || 0) > 0 && !c.charge.trim())}"] .pk[data-src="charges"] .pkbtn`);
   }
-  if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+  if (E.n) return E.show();
 
   const payload = Object.assign({ type: DAILY_TABS[t].name }, p);
   const co = (S.lists.co || []).filter(c => c.name.trim());
@@ -1532,17 +1734,17 @@ async function submitDaily() {
 /* ---------- รายงานด่าน จุดตรวจ จุดสกัด ---------- */
 function renderCheckpointForm() {
   const body = `
+    ${sech('fa-calendar-check', 'ข้อมูลการรายงาน')}
     ${dtNow()}${fld('หน่วยบริการ ' + rq, unitSel())}
-    <hr class="divider">
+    ${sech('fa-user-shield', 'ผู้ปฏิบัติและรถวิทยุ')}
     ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย (ยศ ชื่อ สกุล ตำแหน่ง) ' + rq, cbF('officer', 'officers'))}
-    ${fld('จำนวนผู้ปฏิบัติรวม (นาย) ' + rq, inp('officer_count', 'รวมผู้รายงาน', 'number', 'min="0" step="1" inputmode="numeric"'))}
+    ${fld('จำนวนผู้ปฏิบัติรวม (นาย) ' + rq, num('officer_count', '', '', 'รวมผู้รายงาน'))}
     ${fld('รถวิทยุตรวจเขต ' + rq, inp('radio_car', 'ระบุเลขรถวิทยุ'), 'full')}
-    ${fld('สถานที่ตั้งด่าน ' + rq, pkHtml({ kind: 'select', src: 'places', name: 'checkpoint_name', ph: '-- เลือกสถานที่ --', clear: true }))}<div></div>
-    <hr class="divider">
-    <div class="full"><span class="badge cyan"><i class="fa-solid fa-clock"></i> ช่วงเวลาที่ตั้งด่าน</span>
-      <div class="sb-sub" style="margin-top:4px">หน้าภาพรวมของ ผบก.ทล. จะแสดงหมุดสีเขียวเฉพาะด่านที่ยังอยู่ในช่วงเวลานี้</div></div>
+    ${sech('fa-road-barrier', 'สถานที่และช่วงเวลาตั้งด่าน')}
+    ${fld('สถานที่ตั้งด่าน ' + rq, pkHtml({ kind: 'select', src: 'places', name: 'checkpoint_name', ph: '-- เลือกสถานที่ --', clear: true }), 'full')}
+    <div class="full sb-sub" style="margin:-4px 0 0">หน้าภาพรวมของ ผบก.ทล. จะแสดงหมุดสีเขียวเฉพาะด่านที่ยังอยู่ในช่วงเวลานี้</div>
     ${fld('เริ่มตั้งด่าน ' + rq, dtF('start_time'))}${fld('เลิกด่าน ' + rq, dtF('end_time'))}
-    <hr class="divider">
+    ${sech('fa-location-dot', 'พิกัดด่าน', 'เลือกสถานที่แล้วระบบเติมพิกัดให้ (ถ้ามี)')}
     <div class="full coord">
       ${fld('ละติจูด ' + rq, inp('lat', 'เช่น 16.8765', 'text', 'inputmode="decimal"'))}
       ${fld('ลองจิจูด ' + rq, inp('lng', 'เช่น 98.5432', 'text', 'inputmode="decimal"'))}
@@ -1564,15 +1766,17 @@ function renderCheckpointForm() {
     },
     submit: () => {
       $('#err').textContent = ''; flushSave();
-      const p = collectPayload(), errs = [];
-      const req = { service_unit: 'หน่วยบริการ', officer: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', radio_car: 'รถวิทยุตรวจเขต', checkpoint_name: 'สถานที่ตั้งด่าน', start_time: 'เริ่มตั้งด่าน', end_time: 'เลิกด่าน', lat: 'ละติจูด', lng: 'ลองจิจูด' };
-      Object.keys(req).forEach(k => { if (!String(p[k] || '').trim()) errs.push('กรุณากรอก ' + req[k]); });
-      if (!(+p.officer_count > 0)) errs.push('กรุณากรอกจำนวนผู้ปฏิบัติรวม (นาย)');
-      if (p.start_time && p.end_time && p.end_time <= p.start_time) errs.push('เวลาเลิกด่านต้องหลังเวลาเริ่มตั้งด่าน');
+      const p = collectPayload(), E = makeErrs();
+      const req = { service_unit: 'หน่วยบริการ', officer: 'ผู้ปฏิบัติหน้าที่ประจำหน่วย', officer_count: 'จำนวนผู้ปฏิบัติรวม (นาย)', radio_car: 'รถวิทยุตรวจเขต', checkpoint_name: 'สถานที่ตั้งด่าน', start_time: 'เริ่มตั้งด่าน', end_time: 'เลิกด่าน', lat: 'ละติจูด', lng: 'ลองจิจูด' };
+      Object.keys(req).forEach(k => {
+        const empty = k === 'officer_count' ? !(+p[k] > 0) : !String(p[k] || '').trim();
+        if (empty) E.add('กรุณากรอก ' + req[k], k);
+      });
+      if (p.start_time && p.end_time && p.end_time <= p.start_time) E.add('เวลาเลิกด่านต้องหลังเวลาเริ่มตั้งด่าน', 'end_time');
       const la = parseFloat(p.lat), ln = parseFloat(p.lng);
-      if (p.lat && (!isFinite(la) || la < -90 || la > 90)) errs.push('ละติจูดไม่ถูกต้อง');
-      if (p.lng && (!isFinite(ln) || ln < -180 || ln > 180)) errs.push('ลองจิจูดไม่ถูกต้อง');
-      if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+      if (p.lat && (!isFinite(la) || la < -90 || la > 90)) E.add('ละติจูดไม่ถูกต้อง', 'lat');
+      if (p.lng && (!isFinite(ln) || ln < -180 || ln > 180)) E.add('ลองจิจูดไม่ถูกต้อง', 'lng');
+      if (E.n) return E.show();
       sendReport('checkpoint', p, rowsFrom(p));
     }
   });
@@ -1581,14 +1785,17 @@ function renderCheckpointForm() {
 /* ---------- รายงานการจับกุม ---------- */
 function renderArrestForm() {
   const body = `
+    ${sech('fa-handcuffs', 'ข้อมูลการจับกุม')}
     ${dtNow()}${fld('หัวข้อการจับกุม', pkHtml({ kind: 'select', src: 'topics', name: 'topic', ph: '-- เลือกหัวข้อ --', clear: true, req: 'red' }))}
+    ${sech('fa-gavel', 'ข้อหา')}
     <div class="full subbox">
-      <div class="sb-head"><b><i class="fa-solid fa-gavel"></i> ข้อหาหลัก / ข้อหาที่จับกุม</b>
+      <div class="sb-head"><b>ข้อหาหลัก / ข้อหาที่จับกุม</b>
         <span style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="mini" id="grpBtn"><i class="fa-solid fa-layer-group"></i> จัดกลุ่มตาม พ.ร.บ.</button>
         <button type="button" class="mini" data-ladd="acharges"><i class="fa-solid fa-plus"></i> เพิ่มข้อหา</button></span></div>
       <div id="L-acharges"></div>
       <div class="note-s">ข้อหาแรกคือข้อหาหลัก · เลือกจากรายการ หรือเลือก "อื่นๆ" เพื่อพิมพ์ข้อหาเอง</div>
     </div>
+    ${sech('fa-clipboard-list', 'รายละเอียดการจับกุม')}
     <!-- 🔧 PLACEHOLDER: ตัวเลือกของ 4 ช่องนี้ภาพไม่เห็นรายการข้างใน แก้ตามระเบียบจริงได้ -->
     <div class="full g4">
       ${fld('จับโดย', sel('arrested_by', ['จับเอง', 'ร่วมกับหน่วยอื่น', 'รับตัวจากหน่วยอื่น']))}
@@ -1601,16 +1808,18 @@ function renderArrestForm() {
       ${fld('การตรวจค้น/แจ้งข้อกล่าวหา (ถ้ามี)', sel('search_notice', ['มีการตรวจค้น', 'มีการแจ้งข้อกล่าวหา', 'ตรวจค้นและแจ้งข้อกล่าวหา'], '— ไม่มี —'))}
       ${fld('เลขคดี (ถ้ามี)', inp('case_no', 'เช่น 123/2569 (เว้นว่างได้)'))}
     </div>
+    ${sech('fa-people-group', 'ชุดจับกุมและผู้ต้องหา')}
     <div class="full subbox">
       <div class="sb-head"><b>ชุดจับกุม</b><button type="button" class="mini dark" data-ladd="team"><i class="fa-solid fa-plus"></i> เพิ่มนายตำรวจ</button></div>
       <div id="L-team"></div>
     </div>
-    ${fld('จำนวนผู้ต้องหา (คน)', '<input name="suspect_count" type="number" min="0" step="1" value="1" inputmode="numeric">')}<div></div>
+    ${fld('จำนวนผู้ต้องหา (คน)', num('suspect_count', '', 1))}<div></div>
     <div class="full subbox">
-      <div class="sb-head"><b><i class="fa-solid fa-people-group"></i> ข้อมูลผู้ต้องหา</b>
+      <div class="sb-head"><b>ข้อมูลผู้ต้องหา</b>
         <button type="button" class="mini" data-ladd="suspects"><i class="fa-solid fa-user-plus"></i> เพิ่มผู้ต้องหา</button></div>
       <div id="L-suspects"></div>
     </div>
+    ${sech('fa-location-dot', 'สถานที่จับกุม/เกิดเหตุ')}
     ${fld('สถานที่จับกุม/เกิดเหตุ', inp('place', ''), 'full')}
     <div class="full coord">
       ${fld('ละติจูด (Latitude)', inp('lat', '', 'text', 'inputmode="decimal"'))}
@@ -1618,8 +1827,9 @@ function renderArrestForm() {
       <button type="button" class="mini green" data-geo="lat,lng"><i class="fa-solid fa-location-crosshairs"></i> ระบุพิกัด</button>
       <button type="button" class="mini" data-pin="lat,lng"><i class="fa-solid fa-map-location-dot"></i> ปักหมุด</button>
     </div>
+    ${sech('fa-box-open', 'ของกลางและรายละเอียดคดี')}
     <div class="full subbox">
-      <div class="sb-head"><b><i class="fa-solid fa-box-open"></i> รายการของกลาง</b>
+      <div class="sb-head"><b>รายการของกลาง</b>
         <button type="button" class="mini" data-ladd="evidence"><i class="fa-solid fa-plus"></i> เพิ่มของกลาง</button></div>
       <div class="sb-sub">ไม่มีของกลาง = ไม่ต้องเพิ่มรายการ · ระบบจะสรุปข้อความลงช่อง "ของกลาง (ข้อความ)" ให้อัตโนมัติ</div>
       <div id="L-evidence"></div>
@@ -1632,9 +1842,8 @@ function renderArrestForm() {
     ${fld('พฤติการณ์', area('behavior', 'ระบุพฤติการณ์การจับกุม...'), 'full')}
     ${fld('การดำเนินการส่งต่อ', inp('forward_action', 'เช่น ส่ง พงส.สภ.เมืองตาก ดำเนินคดีตามกฎหมาย'), 'full')}
     ${fileFld('แนบภาพประกอบ/บันทึกจับกุม (เลือกได้หลายไฟล์)')}
+    ${sech('fa-file-lines', 'ข้อมูลสำหรับเอกสารจับกุม', 'ใช้ตอนคัดลอกเอกสารเท่านั้น ไม่ได้บันทึกลงรายงาน')}
     <div class="full subbox">
-      <div class="sb-head"><b><i class="fa-solid fa-file-lines"></i> ข้อมูลสำหรับเอกสารจับกุม</b>
-        <span class="note-s" style="margin:0">ใช้ตอนคัดลอกเอกสารเท่านั้น ไม่ได้บันทึกลงรายงาน</span></div>
       <div class="grid">
         ${fld('ผู้บังคับบัญชา', inp('commander', 'เว้นว่าง = ใช้ข้อความ "ผู้บังคับบัญชาตามลำดับชั้น"'))}
         ${fld('รายงานสำนักงานอัยการจังหวัด', inp('ag_office', 'เช่น ตาก (เว้นว่างได้)'))}
@@ -1664,13 +1873,13 @@ function renderArrestForm() {
     after: () => { $('#docBtn').onclick = () => soon('เอกสารจับกุม (ม.22-23)'); },   // 🔧 PLACEHOLDER: ต่อกับการสร้างเอกสารจับกุมจริง
     submit: () => {
       $('#err').textContent = ''; flushSave();
-      const p = collectPayload(), errs = [];
+      const p = collectPayload(), E = makeErrs();
       const ch = S.lists.acharges.map(c => (c.charge === 'อื่นๆ' ? (c.other || '').trim() : c.charge)).filter(Boolean);
-      if (!p.topic) errs.push('กรุณาเลือกหัวข้อการจับกุม');
-      if (!ch.length) errs.push('กรุณาเลือกข้อหาหลัก');
-      if (!p.event_time) errs.push('กรุณาระบุเวลาเกิดเหตุ');
-      if ((p.lat && !p.lng) || (!p.lat && p.lng)) errs.push('กรุณากรอกพิกัดให้ครบทั้งละติจูดและลองจิจูด');
-      if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+      if (!p.topic) E.add('กรุณาเลือกหัวข้อการจับกุม', 'topic');
+      if (!ch.length) E.add('กรุณาเลือกข้อหาหลัก', '#L-acharges .pkbtn');
+      if (!p.event_time) E.add('กรุณาระบุเวลาเกิดเหตุ', 'event_time');
+      if ((p.lat && !p.lng) || (!p.lat && p.lng)) E.add('กรุณากรอกพิกัดให้ครบทั้งละติจูดและลองจิจูด', p.lat ? 'lng' : 'lat');
+      if (E.n) return E.show();
 
       const sus = S.lists.suspects.filter(s => s.name.trim());
       const team = S.lists.team.filter(c => c.name.trim()).map(c => c.name);
@@ -1695,26 +1904,36 @@ function renderArrestForm() {
 }
 
 /* ---------- รายงานอุบัติเหตุ ---------- */
+// แสดงยอดรวมเปอร์เซ็นต์สาเหตุแบบสด (ต้องได้ 100)
+function syncPct() {
+  const el = $('#pctSum'); if (!el) return;
+  const cs = ['cause_human', 'cause_vehicle', 'cause_road', 'cause_env'].map(k => parseFloat((document.querySelector(`#dform [name="${k}"]`) || {}).value)).filter(isFinite);
+  if (!cs.length) { el.textContent = 'กรอกเป็นตัวเลข รวมกันต้องได้ 100'; el.className = 'full sb-sub'; return; }
+  const t = cs.reduce((a, b) => a + b, 0), good = Math.round(t) === 100;
+  el.textContent = `รวม ${t}% ${good ? '✓ ครบ 100' : '(ต้องได้ 100)'}`; el.className = 'full sb-sub ' + (good ? 'ok' : 'bad');
+}
 function renderAccidentForm() {
   const pct = (n, l) => fld(l, `<input name="${n}" class="ctr" placeholder="-" inputmode="numeric">`);
   const body = `
+    ${sech('fa-calendar-check', 'ข้อมูลทั่วไป')}
     ${dtNow('accident_time', 'วันที่เวลาที่เกิดเหตุ')}${fld('หน่วยรายงาน ' + rq, unitSel('report_unit', '-- เลือกหน่วยรายงาน --'))}
-    <hr class="divider"><div class="sec-h">3. สถานที่เกิดเหตุ</div>
+    ${sech('fa-location-dot', '3. สถานที่เกิดเหตุ')}
     <div class="full g4">
       ${fld('ทล.', inp('road', 'เช่น 1'))}${fld('กม.', inp('km', 'เช่น 580+400'))}
       ${fld('ทิศทาง', sel('direction', ['ขาเข้า', 'ขาออก']))}${fld('ต. / อ. / จว.', inp('location_area', 'ต.วังจันทร์ อ.สามเงา จ.ตาก'))}
     </div>
-    <hr class="divider"><div class="sec-h">4. ผู้เสียชีวิต / ผู้ได้รับบาดเจ็บ</div>
+    ${sech('fa-truck-medical', '4. ผู้เสียชีวิต / ผู้ได้รับบาดเจ็บ')}
     <div class="full g3">
       ${fld('เสียชีวิต (ราย)', inp('deaths', 'ระบุจำนวน หรือใส่ -'))}${fld('ได้รับบาดเจ็บ (ราย)', inp('injuries', 'ระบุจำนวน หรือใส่ -'))}
       ${fld('นำตัวส่ง รพ.', inp('hospital', 'ระบุชื่อ รพ. หรือใส่ -'))}
     </div>
-    <hr class="divider"><div class="sec-h">5. รถที่เกิดเหตุ</div>
+    ${sech('fa-car-burst', '5. รถที่เกิดเหตุ')}
     ${fld('รถหลัก (ประเภทและทะเบียน)', inp('main_vehicle', 'เช่น รถบรรทุก 10 ล้อ ทะเบียน 70-8717 ลำปาง'))}
-    ${fld('คู่กรณี (ประเภทและทะเบียน)', inp('other_party', 'ระบุคู่กรณี หรือ พิมพ์ "ไม่มีคู่กรณี"', 'text', 'data-req="red"'))}
-    <hr class="divider"><div class="sec-h">6. สรุปสาเหตุ (%)</div>
+    ${fld('คู่กรณี (ประเภทและทะเบียน) ' + rq, inp('other_party', 'ระบุคู่กรณี หรือ พิมพ์ "ไม่มีคู่กรณี"', 'text', 'data-req="red"'))}
+    ${sech('fa-chart-pie', '6. สรุปสาเหตุ (%)')}
     <div class="full g4">${pct('cause_human', 'พฤติกรรมคน (%)')}${pct('cause_vehicle', 'สภาพรถ (%)')}${pct('cause_road', 'สภาพถนน (%)')}${pct('cause_env', 'สภาพแวดล้อม (%)')}</div>
-    <hr class="divider">
+    <div class="full sb-sub" id="pctSum">กรอกเป็นตัวเลข รวมกันต้องได้ 100</div>
+    ${sech('fa-screwdriver-wrench', 'แนวทางแก้ไขและความเสียหาย')}
     ${fld('7. แนวทางแก้ไข (ใส่ขีด - ขึ้นบรรทัดใหม่ตามต้องการ)', area('fixes', '- กวดขันวินัยการจราจร\n- ติดตั้งป้ายสัญญาณจราจร...'), 'full')}
     ${fld('8. ความเสียหาย', inp('damage', 'ไม่มี หรือ มี (ระบุรายละเอียดและราคา)'))}${fld('8.1 มูลค่าทรัพย์สินเสียหายรวม (บาท)', inp('damage_value', 'เช่น 50000', 'text', 'inputmode="decimal"'))}
     ${fld('9. รถวิทยุตำรวจทางหลวงที่ ว.4', inp('v4_car', 'เช่น 5115'))}<div></div>
@@ -1722,18 +1941,18 @@ function renderAccidentForm() {
     ${fld('รายละเอียดอุบัติเหตุ (พฤติการณ์)', area('summary', ''), 'full')}
     ${fileFld('แนบภาพประกอบ')}`;
   mountForm({
-    key: 'accident', topTitle: 'รายงานอุบัติเหตุ', title: '', body, accent: '#f5b301', remount: renderAccidentForm,
+    key: 'accident', topTitle: 'รายงานอุบัติเหตุ', title: '', body, accent: '#f5b301', remount: renderAccidentForm, sync: syncPct,
     saveLabel: '<i class="fa-solid fa-paper-plane"></i> ส่งรายงาน',
     defaults: set => { set('accident_time', nowLocal()); if (session.user.unit && OPT.units.includes(session.user.unit)) set('report_unit', session.user.unit); },
     submit: () => {
       $('#err').textContent = ''; flushSave();
-      const p = collectPayload(), errs = [];
-      if (!p.report_unit) errs.push('กรุณาเลือกหน่วยรายงาน');
-      if (!p.accident_time) errs.push('กรุณาระบุวันที่เวลาที่เกิดเหตุ');
-      if (!String(p.other_party || '').trim()) errs.push('กรุณาระบุคู่กรณี (หรือพิมพ์ "ไม่มีคู่กรณี")');
+      const p = collectPayload(), E = makeErrs();
+      if (!p.report_unit) E.add('กรุณาเลือกหน่วยรายงาน', 'report_unit');
+      if (!p.accident_time) E.add('กรุณาระบุวันที่เวลาที่เกิดเหตุ', 'accident_time');
+      if (!String(p.other_party || '').trim()) E.add('กรุณาระบุคู่กรณี (หรือพิมพ์ "ไม่มีคู่กรณี")', 'other_party');
       const cs = ['cause_human', 'cause_vehicle', 'cause_road', 'cause_env'].map(k => parseFloat(p[k])).filter(isFinite);
-      if (cs.length && Math.round(cs.reduce((a, b) => a + b, 0)) !== 100) errs.push('สรุปสาเหตุ (%) รวมกันต้องได้ 100');
-      if (errs.length) return listModal('ตรวจสอบข้อมูลอีกครั้ง', errs);
+      if (cs.length && Math.round(cs.reduce((a, b) => a + b, 0)) !== 100) E.add('สรุปสาเหตุ (%) รวมกันต้องได้ 100', 'cause_human');
+      if (E.n) return E.show();
       sendReport('accident', p, rowsFrom(p));
     }
   });
@@ -1779,9 +1998,9 @@ async function showRecord(mod, r, onChange) {
   if (canApprove) actions.push({ l: 'อนุมัติ', v: 'ok' });
   const v = await modal({ icon: m.icon, tone: 'info', title: m.label, body: recordHtml(mod, r), actions, wide: true });
   try {
-    if (v === 'ok') { await api('approve', { module: mod, id: r.id }); if (onChange) onChange(); }
+    if (v === 'ok') { await api('approve', { module: mod, id: r.id }); toast('อนุมัติรายการแล้ว'); if (onChange) onChange(); }
     if (v === 'del' && await ask('ลบรายการนี้?', '<p>ลบแล้วกู้คืนไม่ได้ (ลบได้เฉพาะรายการที่ยังรอตรวจ)</p>', 'ลบรายการ', 'fa-trash', 'err')) {
-      await api('delete', { module: mod, id: r.id }); if (onChange) onChange();
+      await api('delete', { module: mod, id: r.id }); toast('ลบรายการแล้ว'); if (onChange) onChange();
     }
   } catch (e) { notify('ทำรายการไม่สำเร็จ', e.message, 'err'); }
 }
@@ -1806,7 +2025,7 @@ function renderList(mod) {
       : '<div class="empty-box"><i class="fa-regular fa-folder-open" style="font-size:28px"></i><br>ไม่มีรายการ</div>';
   };
   const load = async () => {
-    $('#err').textContent = ''; $('#tbl').innerHTML = '<div class="empty-box">กำลังโหลด...</div>';
+    $('#err').textContent = ''; $('#tbl').innerHTML = skel(4);
     try {
       ROWS = (await api('list', { module: mod, filter: { from: getPk('from'), to: getPk('to') } }))
         .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
@@ -1830,6 +2049,10 @@ function renderList(mod) {
     catch (e) { session = null; sessionStorage.removeItem('session'); }
   }
   render();
+  const before = ENV_OK;
+  await probeEnv();
+  $('#banner').hidden = ENV !== 'demo';
+  if (!session && !before && ENV_OK && ENV === 'demo' && !($('#u') && $('#u').value)) renderLogin();
 })();
 </script>
 </body>
