@@ -611,6 +611,10 @@ body.inform #bnav,body.noauth #bnav{display:none!important}
   .tiles{grid-template-columns:repeat(2,1fr)}
 }
 
+/* ===== หน้าตั้งค่า ===== */
+.st-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.st-head b{font-size:16px}
+.st-head .btn{width:auto}
 /* ===== ภาพเคลื่อนไหว ===== */
 .flash{animation:flash 1.4s ease}
 @keyframes flash{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--danger) 0%,transparent)}30%{box-shadow:0 0 0 7px color-mix(in srgb,var(--danger) 35%,transparent)}}
@@ -1004,6 +1008,7 @@ function pkSource(w) {
   const row = w.closest('[data-lst]');
   switch (w.dataset.src) {
     case 'units': return { items: OPT.units };
+    case 'vehicles': return { items: (OPT.vehicles || []).map(v => v.car_no) };
     case 'officers': return { items: OPT.officers.map(o => o.name) };
     case 'evidence': return { items: OPT.evidence };
     case 'places': return { items: OPT.places.map(p => p.place) };
@@ -1046,6 +1051,9 @@ document.addEventListener('click', e => { const b = e.target.closest('.pkbtn'); 
    ============================================================ */
 // 🔧 PLACEHOLDER: ข้อมูลสมมติ ใช้เมื่อหลังบ้านยังไม่มีข้อมูลในชีตตัวเลือก (แก้จริงในชีต Units/Officers/Charges ฯลฯ)
 const DEMO_OPT = {
+  vehicles: [
+    { car_no: '5115', driver: 'ด.ต. ตัวอย่าง สอง', driver_phone: '081-000-0002', radio_op: 'จ.ส.ต. ตัวอย่าง สาม', radio_op_phone: '081-000-0003' },
+    { car_no: '5116', driver: 'ร.ต.อ. ตัวอย่าง หนึ่ง', driver_phone: '081-000-0001', radio_op: 'ส.ต.อ. ตัวอย่าง สี่', radio_op_phone: '081-000-0004' }],
   units: ['โคกสำโรง', 'ลพบุรี', 'พัฒนานิคม'],
   officers: [
     { name: 'ร.ต.อ. ตัวอย่าง หนึ่ง', phone: '081-000-0001' },
@@ -1094,6 +1102,7 @@ function renderNav(a) {
     + lnk('#home', 'fa-house', 'หน้าหลัก', 'home') + lnk('#history', 'fa-clock-rotate-left', 'ประวัติ', 'history')
     + `<button type="button" class="plus" id="navPlus" aria-label="เริ่มรายงานใหม่" title="เริ่มรายงานใหม่"><i class="fa-solid fa-plus"></i></button>`
     + (has('dashboard') ? lnk('#dash', 'fa-chart-pie', 'แผงควบคุม', 'dash') : `<button type="button" class="nb" id="navLaw" title="กฎหมาย"><i class="fa-solid fa-scale-balanced"></i><span>กฎหมาย</span></button>`)
+    + (has('all') ? lnk('#settings', 'fa-sliders', 'ตั้งค่า', 'settings') : '')
     + lnk('#tools', 'fa-toolbox', 'เครื่องมือ', 'tools')
     + `<div class="sb-user"><span class="sb-av"><i class="fa-solid fa-user"></i></span><div><b>${esc(u.display_name)}</b><small>${esc(u.unit || '')}</small></div></div>`;
   $('#navPlus').onclick = newSheet;
@@ -1127,6 +1136,7 @@ function route() {
   if (a === 'form' && MODULES[b]) return renderForm(b, c);
   if (a === 'dash') return renderDash();
   if (a === 'history') return renderHistory();
+  if (a === 'settings') return renderSettings(b || 'vehicles');
   if (a === 'tools') return renderTools();
   return renderHome();
 }
@@ -1391,6 +1401,7 @@ const nowBtn = (name = 'report_time') => `<button type="button" class="sq sm his
 const dtNow = (name = 'report_time', label = 'วันที่เวลาที่รายงาน', cls = '') => fld(label, `<div class="with-btn">${dtF(name)}${nowBtn(name)}</div>`, cls);
 const CB_PH = 'พิมพ์ค้นหา หรือกดเลือกจากรายการ';
 const cbF = (name, src, ph = CB_PH) => pkHtml({ kind: 'combo', src, name, ph, cb: src === 'officers' ? 'officers' : '', clear: true });
+const carF = (label, cls = 'full') => fld(label, pkHtml({ kind: 'combo', src: 'vehicles', name: 'radio_car', ph: 'เลือกหรือพิมพ์เลขรถ', clear: true }), cls);
 const cbRow = (field, value, src, ph = CB_PH) => pkHtml({ kind: 'combo', src, f: field, value, ph, cb: src, clear: true });
 
 /* ---------- state ของฟอร์มที่เปิดอยู่ ---------- */
@@ -1617,11 +1628,22 @@ function onFChange(e) {
     S.lists[L][+row.dataset.i][f] = lv(t);
     if ((L === 'charges' && (f === 'act' || (f === 'n' && S.grouped))) || (L === 'acharges' && f === 'charge')) drawList(L);
   }
-  // เลือกชื่อเจ้าหน้าที่แล้วเติมเบอร์โทรให้อัตโนมัติ (ถ้าช่องเบอร์ยังว่าง)
-  if (t.dataset.cb === 'officers' && t.name) {
-    const o = OPT.officers.find(x => x.name === t.value);
+  // ผู้ปฏิบัติ: เลือกชื่อ -> เติมเบอร์ให้ / ล้างชื่อ -> ล้างเบอร์ด้วย (ไม่ค้างเบอร์ไว้)
+  if (t.name && t.dataset.cb === 'officers') {
     const ph = document.querySelector(`#dform [name="${t.name}_phone"]`);
-    if (o && o.phone && ph && !ph.value) ph.value = o.phone;
+    if (ph) {
+      const o = OPT.officers.find(x => x.name === t.value);
+      if (!t.value) ph.value = ''; else if (o && o.phone) ph.value = o.phone;
+    }
+  }
+  // รถวิทยุ: เลือกเลขรถ -> เติมพลขับและพนักงานวิทยุของรถคันนั้น / ล้างเลขรถ -> ล้างคนในรถด้วย
+  if (t.name === 'radio_car') {
+    const v = (OPT.vehicles || []).find(x => x.car_no === t.value);
+    if (!t.value || v) {
+      const c = v || { driver: '', driver_phone: '', radio_op: '', radio_op_phone: '' };
+      ['driver', 'driver_phone', 'radio_op', 'radio_op_phone'].forEach(k => { const el = document.querySelector(`#dform [name="${k}"]`); if (el) el.value = c[k] || ''; });
+    }
+    refreshPk();
   }
   if (t.id === 'phFile') handlePhoto(t);
   if (S.onChange) S.onChange(t);
@@ -1860,7 +1882,7 @@ function dailyBody(t) {
     ${sech('fa-user-shield', 'เจ้าหน้าที่ประจำหน่วย')}
     ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย', cbF('chief', 'officers'))}${fld('เบอร์โทรศัพท์', inp('chief_phone', '08x-xxxxxxx', 'tel'))}
     ${sech('fa-car-side', 'รถวิทยุและเจ้าหน้าที่ในรถ')}
-    ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เลขรถ'), 'full')}
+    ${carF('รถวิทยุตรวจเขต')}
     <div class="stack">${fld('พลขับ', cbF('driver', 'officers'))}${inp('driver_phone', 'เบอร์โทรพลขับ', 'tel')}</div>
     <div class="stack">${fld('พนักงานวิทยุ', cbF('radio_op', 'officers'))}${inp('radio_op_phone', 'เบอร์โทรพงว.', 'tel')}</div>
     <div class="full subbox">
@@ -1929,7 +1951,7 @@ function dailyBody(t) {
       <div id="L-co"></div>
     </div>
     ${sech('fa-clipboard-list', 'รายละเอียดการปฏิบัติ')}
-    ${fld('รถวิทยุตรวจเขต', inp('radio_car', 'เช่น 51xx'), 'full')}
+    ${carF('รถวิทยุตรวจเขต')}
     ${fld('การปฏิบัติ', pkHtml({ kind: 'select', src: 'actions', name: 'action', ph: '-- เลือก --', clear: true }))}
     ${fld('การดำเนินการ', area('detail', 'รายละเอียด...'))}
     ${fld('สถานที่', inp('place', 'สถานที่ปฏิบัติงาน'), 'full')}
@@ -1998,7 +2020,7 @@ function renderCheckpointForm() {
     ${sech('fa-user-shield', 'ผู้ปฏิบัติและรถวิทยุ')}
     ${fld('ผู้ปฏิบัติหน้าที่ประจำหน่วย (ยศ ชื่อ สกุล ตำแหน่ง) ' + rq, cbF('officer', 'officers'))}
     ${fld('จำนวนผู้ปฏิบัติรวม (นาย) ' + rq, num('officer_count', '', '', 'รวมผู้รายงาน'))}
-    ${fld('รถวิทยุตรวจเขต ' + rq, inp('radio_car', 'ระบุเลขรถวิทยุ'), 'full')}
+    ${carF('รถวิทยุตรวจเขต ' + rq)}
     ${sech('fa-road-barrier', 'สถานที่และช่วงเวลาตั้งด่าน')}
     ${fld('สถานที่ตั้งด่าน ' + rq, pkHtml({ kind: 'select', src: 'places', name: 'checkpoint_name', ph: '-- เลือกสถานที่ --', clear: true }), 'full')}
     <div class="full sb-sub" style="margin:-4px 0 0">หน้าภาพรวมของ ผบก.ทล. จะแสดงหมุดสีเขียวเฉพาะด่านที่ยังอยู่ในช่วงเวลานี้</div>
@@ -2262,6 +2284,92 @@ async function showRecord(mod, r, onChange) {
       await api('delete', { module: mod, id: r.id }); toast('ลบรายการแล้ว'); if (onChange) onChange();
     }
   } catch (e) { notify('ทำรายการไม่สำเร็จ', e.message, 'err'); }
+}
+
+/* ============================================================
+   หน้าตั้งค่า (ผู้ดูแลระบบ): ข้อมูลรถวิทยุ และ เจ้าหน้าที่
+   ============================================================ */
+const ST = { vehicles: { label: 'รถวิทยุ', icon: 'fa-car-side', tone: 't-blue', key: 'car_no', keyLabel: 'เลขรถวิทยุตรวจเขต' },
+  officers: { label: 'เจ้าหน้าที่', icon: 'fa-user-shield', tone: 't-green', key: 'name', keyLabel: 'ยศ ชื่อ สกุล' } };
+async function renderSettings(tab) {
+  if (!has('all')) return denied();
+  if (!ST[tab]) tab = 'vehicles';
+  $('#app').className = 'narrow';
+  $('#app').innerHTML = `${topbar('ตั้งค่า · ผู้ดูแลระบบ')}
+    <div class="tabs">${Object.keys(ST).map(k => `<button class="${k === tab ? 'on' : ''}" data-stab="${k}"><i class="fa-solid ${ST[k].icon}"></i> ${ST[k].label}</button>`).join('')}</div>
+    <div class="card">
+      <div class="st-head"><div><b>${ST[tab].label}ทั้งหมด</b><div class="note-s">แตะรายการเพื่อแก้ไข · ค่าที่บันทึกจะขึ้นในฟอร์มทันที</div></div>
+        <button class="btn" id="stAdd" style="width:auto;min-height:44px"><i class="fa-solid fa-plus"></i> เพิ่ม${ST[tab].label}</button></div>
+      <input id="stq" placeholder="ค้นหา..." style="margin:14px 0">
+      <div id="stList">${skel(3)}</div><div class="err" id="err"></div>
+    </div>`;
+  bindBack();
+  document.querySelectorAll('[data-stab]').forEach(b => { b.onclick = () => { location.hash = '#settings/' + b.dataset.stab; }; });
+  let DATA = [];
+  const sub = r => tab === 'vehicles'
+    ? `พลขับ: ${r.driver || '–'} · พงว.: ${r.radio_op || '–'}`
+    : `${r.phone || 'ไม่มีเบอร์'}${r.unit ? ' · ' + r.unit : ''}`;
+  const draw = () => {
+    const q = ($('#stq').value || '').trim().toLowerCase();
+    const rows = DATA.filter(r => !q || Object.values(r).join(' ').toLowerCase().includes(q));
+    $('#stList').innerHTML = rows.length ? rows.map((r, i) => `<div class="rec" data-i="${i}">
+        <div class="ibox sm ${ST[tab].tone}"><i class="fa-solid ${ST[tab].icon}"></i></div>
+        <div class="rec-main"><b>${esc(r[ST[tab].key])}</b><span>${esc(sub(r))}</span></div>
+        <i class="fa-solid fa-pen chev"></i></div>`).join('')
+      : `<div class="empty-box"><i class="fa-regular fa-folder-open" style="font-size:28px"></i><br>${DATA.length ? 'ไม่พบรายการที่ค้นหา' : 'ยังไม่มีข้อมูล กดปุ่ม "เพิ่ม" เพื่อเริ่ม'}</div>`;
+    $('#stList').onclick = e => { const c = e.target.closest('.rec'); if (c) editor(rows[+c.dataset.i]); };
+  };
+  const load = async () => {
+    $('#err').textContent = '';
+    try { const d = await api('refs_list'); DATA = d[tab] || []; draw(); }
+    catch (e) { $('#stList').innerHTML = ''; $('#err').textContent = e.message; }
+  };
+  $('#stq').addEventListener('input', draw);
+  $('#stAdd').onclick = () => editor(null);
+
+  // หน้าต่างแก้ไข/เพิ่ม (ใช้หน้าต่างล่างบนมือถือ กล่องกลางบนคอม)
+  function editor(row) {
+    const isNew = !row, r = row || (tab === 'vehicles' ? { car_no: '', driver: '', driver_phone: '', radio_op: '', radio_op_phone: '' } : { name: '', phone: '', unit: '' });
+    const names = OPT.officers.map(o => o.name);
+    const fieldsHtml = tab === 'vehicles' ? `
+      <label>${ST.vehicles.keyLabel} ${rq}</label><input data-k="car_no" value="${esc(r.car_no)}" placeholder="เช่น 5115">
+      <label>พลขับ</label><input data-k="driver" value="${esc(r.driver)}" list="stOff" placeholder="พิมพ์หรือเลือกจากรายชื่อ">
+      <label>เบอร์โทรพลขับ</label><input data-k="driver_phone" value="${esc(r.driver_phone)}" inputmode="tel">
+      <label>พนักงานวิทยุ</label><input data-k="radio_op" value="${esc(r.radio_op)}" list="stOff" placeholder="พิมพ์หรือเลือกจากรายชื่อ">
+      <label>เบอร์โทรพนักงานวิทยุ</label><input data-k="radio_op_phone" value="${esc(r.radio_op_phone)}" inputmode="tel">`
+      : `<label>${ST.officers.keyLabel} ${rq}</label><input data-k="name" value="${esc(r.name)}" placeholder="เช่น ร.ต.อ. ชื่อ นามสกุล">
+      <label>เบอร์โทรศัพท์</label><input data-k="phone" value="${esc(r.phone)}" inputmode="tel" placeholder="08x-xxxxxxx">
+      <label>หน่วย</label><input data-k="unit" value="${esc(r.unit)}" list="stUnit" placeholder="เช่น โคกสำโรง">`;
+    const ov = sheetShell(`<div class="sh-head"><b>${isNew ? 'เพิ่ม' : 'แก้ไข'}${ST[tab].label}</b><button type="button" class="sh-x" data-x aria-label="ปิด"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="sh-body">${fieldsHtml}
+        <datalist id="stOff">${names.map(n => `<option value="${esc(n)}">`).join('')}</datalist>
+        <datalist id="stUnit">${OPT.units.map(u => `<option value="${esc(u)}">`).join('')}</datalist>
+        <div class="err" id="sterr"></div>
+        <div class="cal-act" style="padding:14px 0 0">${isNew ? '' : '<button type="button" class="btn danger" id="stDel">ลบ</button>'}
+          <button type="button" class="btn ghost" data-x>ยกเลิก</button><button type="button" class="btn" id="stSave">บันทึก</button></div></div>`);
+    const close = () => sheetClose(ov, onKey), onKey = e => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    const val = () => { const o = {}; ov.querySelectorAll('[data-k]').forEach(i => o[i.dataset.k] = i.value.trim()); return o; };
+    ov.addEventListener('click', async e => {
+      if (e.target === ov || e.target.closest('[data-x]')) return close();
+      if (e.target.closest('#stSave')) {
+        const b = e.target.closest('#stSave'), o = val();
+        if (!o[ST[tab].key]) { ov.querySelector('#sterr').textContent = 'กรุณากรอก ' + ST[tab].keyLabel; return; }
+        b.disabled = true;
+        try {
+          await api('ref_save', { table: tab, key: isNew ? '' : r[ST[tab].key], row: o });
+          close(); await loadOptions(); toast('บันทึกแล้ว'); load();
+        } catch (err) { ov.querySelector('#sterr').textContent = err.message; b.disabled = false; }
+      }
+      if (e.target.closest('#stDel')) {
+        if (!(await ask('ลบ' + ST[tab].label + '?', `<p>ลบ ${esc(r[ST[tab].key])} ออกจากรายการ (รายงานเดิมไม่หาย)</p>`, 'ลบ', 'fa-trash', 'err'))) return;
+        try { await api('ref_delete', { table: tab, key: r[ST[tab].key] }); close(); await loadOptions(); toast('ลบแล้ว'); load(); }
+        catch (err) { notify('ลบไม่สำเร็จ', err.message, 'err'); }
+      }
+    });
+    setTimeout(() => { const f = ov.querySelector('input'); if (f && !isTouch()) f.focus(); }, 60);
+  }
+  load();
 }
 
 function renderList(mod) {
