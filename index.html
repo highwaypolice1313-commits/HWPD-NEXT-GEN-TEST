@@ -624,6 +624,49 @@ body.inform #bnav,body.noauth #bnav{display:none!important}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes shim{0%{background-position:100% 0}100%{background-position:0 0}}
 
+
+/* ===== อนิเมชันตอบสนองการใช้งาน ===== */
+button,a{transition:transform .14s ease,background-color .2s ease,color .2s ease,border-color .2s ease,box-shadow .25s ease,filter .2s ease,opacity .2s ease}
+.btn:active,.sq:active,.sq-w:active,.icb:active,.mini:active,.qc:active,.tile:active,.rec:active,.item:active,.qcard:active,.dcard:active,.more:active,.sh-it:active,.dc:active,.tog:active,.todo-it:active,.copy-card:active,.seg button:active,.tabs button:active{transform:scale(.97)}
+.sq:hover,.sq-w:hover,.icb:hover,.back:hover{transform:translateY(-1px)}
+.mini:hover,.seg button:hover,.tabs button:hover,.tog:hover,.pkbtn:hover{filter:brightness(1.05)}
+.pkbtn:hover{border-color:color-mix(in srgb,var(--c2) 45%,transparent)}
+.rec,.tile,.qc,.dcard,.item,.more,.qcard,.todo-it,.as-h,.sh-it,.copy-card{cursor:pointer}
+.rec:hover,.tile:hover,.qc:hover,.more:hover,.dcard:hover,.qcard:hover{transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(21,101,168,.35)}
+.item:hover{transform:translateX(3px)}
+.item .chev,.more>i,.rec .chev,.todo-it .chev{transition:transform .2s ease}
+.item:hover .chev,.more:hover>i,.rec:hover .chev,.todo-it:hover .chev{transform:translateX(3px)}
+:focus-visible{outline:2px solid var(--c2);outline-offset:2px}
+div:focus-within>label{color:var(--c)}
+.rip{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:color-mix(in srgb,currentColor 22%,transparent);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.spin{display:inline-block;width:18px;height:18px;border:2.5px solid color-mix(in srgb,currentColor 30%,transparent);border-top-color:currentColor;border-radius:50%;vertical-align:-4px;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn.is-busy{opacity:.85;cursor:progress}
+#topload{position:fixed;left:0;right:0;top:0;height:3px;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;overflow:hidden}
+#topload.on{opacity:1}
+#topload i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,var(--c2),var(--c),transparent);animation:loadbar 1.1s ease-in-out infinite}
+@keyframes loadbar{from{transform:translateX(-100%)}to{transform:translateX(260%)}}
+.overlay.out{opacity:0;transition:opacity .17s ease}
+.overlay.out .modal{opacity:0;transform:scale(.96);transition:opacity .17s ease,transform .17s ease}
+.overlay.out .sheet{opacity:0;transform:translateY(36px);transition:opacity .17s ease,transform .17s ease}
+.m-ico i{animation:icopop .5s cubic-bezier(.3,1.5,.5,1) both .08s}
+@keyframes icopop{from{transform:scale(.2) rotate(-25deg);opacity:0}to{transform:none;opacity:1}}
+#bnav a.on{transform:translateY(-1px)}
+#bnav a:not(.on):hover{transform:translateY(-2px)}
+#recent>.rec,#tbl>.rec,#hist>.rec,#stList>.rec,#copyBox>.copy-card,.asec .as-b>*{animation:rise .34s cubic-bezier(.2,.8,.2,1) both}
+#tbl>.rec:nth-child(2),#hist>.rec:nth-child(2),#stList>.rec:nth-child(2),#recent>.rec:nth-child(2){animation-delay:.04s}
+#tbl>.rec:nth-child(3),#hist>.rec:nth-child(3),#stList>.rec:nth-child(3),#recent>.rec:nth-child(3){animation-delay:.08s}
+#tbl>.rec:nth-child(4),#hist>.rec:nth-child(4),#stList>.rec:nth-child(4){animation-delay:.12s}
+#tbl>.rec:nth-child(n+5),#hist>.rec:nth-child(n+5),#stList>.rec:nth-child(n+5){animation-delay:.16s}
+.asec.open .as-b{animation:drop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes drop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.tabs button.on{animation:pop2 .3s cubic-bezier(.3,1.4,.5,1)}
+@keyframes pop2{from{transform:scale(.94)}to{transform:none}}
+.skel{animation:shim 1.2s ease-in-out infinite}
+.toast{animation:toastin .35s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes toastin{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -632,6 +675,7 @@ body.inform #bnav,body.noauth #bnav{display:none!important}
 <main id="app"></main>
 <nav id="bnav" hidden></nav>
 <div id="toasts"></div>
+<div id="topload"><i></i></div>
 
 <script>
 /* ============================================================
@@ -774,7 +818,10 @@ document.addEventListener('click', e => {
   if (t) setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 });
 
-async function api(action, body = {}) {
+const NET = { n: 0 };
+function loadBar(d) { NET.n += d; const el = document.getElementById('topload'); if (el) el.classList.toggle('on', NET.n > 0); }
+async function api(action, body = {}) { loadBar(1); try { return await apiRaw(action, body); } finally { loadBar(-1); } }
+async function apiRaw(action, body = {}) {
   let res, j;
   try {
     res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -814,7 +861,7 @@ function modal({ icon = '', tone = 'info', title = '', body = '', ok = 'ตก�
       <h3>${esc(title)}</h3><div class="m-body">${body}</div>
       <div class="m-act">${btns.map(b => `<button class="btn ${b.c || ''}" data-r="${esc(b.v)}">${esc(b.l)}</button>`).join('')}</div></div>`;
     const onKey = e => { if (e.key === 'Escape') close(actions ? '' : '0'); };
-    const close = v => { lockScroll(false); ov.remove(); document.removeEventListener('keydown', onKey); resolve(actions ? v : v === '1'); };
+    const close = v => { lockScroll(false); outRemove(ov); document.removeEventListener('keydown', onKey); resolve(actions ? v : v === '1'); };
     ov.addEventListener('click', e => {
       if (e.target === ov) return close(actions ? '' : '0');
       const b = e.target.closest('[data-r]');
@@ -849,6 +896,31 @@ const sumHtml = rows => `<div class="sum">${rows.map(([k, v]) => `<div><span>${e
 // 🔧 PLACEHOLDER: ฟีเจอร์ที่ยังไม่เปิดในโหมดทดลอง — เมื่อทำจริงให้แทนที่การเรียก soon()
 const soon = name => notify(name, 'ฟีเจอร์นี้ยังไม่เปิดให้ใช้งานในโหมดทดลอง', 'info');
 // แจ้งเตือนเล็กๆ ที่หายเอง (ไม่ขวางการใช้งาน)
+// ปุ่มกำลังทำงาน: แสดงวงหมุนพร้อมข้อความ แล้วคืนค่าเดิมเมื่อจบ
+function busy(b, on, label) {
+  if (!b) return;
+  if (on) {
+    if (!b.dataset.html) b.dataset.html = b.innerHTML;
+    b.disabled = true; b.classList.add('is-busy');
+    b.innerHTML = `<span class="spin"></span> ${esc(label || 'กำลังทำงาน...')}`;
+  } else {
+    b.disabled = false; b.classList.remove('is-busy');
+    if (b.dataset.html) { b.innerHTML = b.dataset.html; delete b.dataset.html; }
+    if (label) b.textContent = label;
+  }
+}
+// เอฟเฟกต์คลื่นเมื่อกดองค์ประกอบที่กดได้ทุกจุด (ตอบสนองทันที)
+document.addEventListener('pointerdown', e => {
+  const t = e.target.closest && e.target.closest('.btn,.qc,.tile,.rec,.item,.qcard,.dcard,.sq,.sq-w,.icb,.mini,.pkbtn,.sh-it,.dc,.tog,.more,.as-h,.todo-it,.copy-card,.tabs button,.seg button,#bnav a,#bnav .nb,#bnav .plus,.back');
+  if (!t || t.disabled || t.classList.contains('is-busy')) return;
+  const r = t.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2, s = document.createElement('span');
+  s.className = 'ripple';
+  s.style.width = s.style.height = d + 'px';
+  s.style.left = (e.clientX - r.left - d / 2) + 'px';
+  s.style.top = (e.clientY - r.top - d / 2) + 'px';
+  t.classList.add('rip'); t.appendChild(s);
+  setTimeout(() => s.remove(), 650);
+}, true);
 function toast(msg, tone = 'ok') {
   const box = $('#toasts'); if (!box) return;
   const t = document.createElement('div'); t.className = 'toast ' + tone;
@@ -872,7 +944,8 @@ function sheetShell(html) {
   document.body.appendChild(ov);
   return ov;
 }
-const sheetClose = (ov, onKey) => { lockScroll(false); ov.remove(); if (onKey) document.removeEventListener('keydown', onKey); };
+const outRemove = ov => { ov.classList.add('out'); setTimeout(() => ov.remove(), 170); };
+const sheetClose = (ov, onKey) => { lockScroll(false); outRemove(ov); if (onKey) document.removeEventListener('keydown', onKey); };
 const isTouch = () => !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
 
 // เลือกจากรายการ (ค้นหาได้) — คืน {v:ค่า} หรือ null ถ้ายกเลิก; custom=true พิมพ์ค่าเองได้
@@ -1164,13 +1237,13 @@ function renderLogin() {
       ${demo ? `<div class="demo-acc">บัญชีทดลอง — แตะเพื่อกรอกให้อัตโนมัติ<div class="seg">${DEMO_ACCS.map(([u, t]) => `<button type="button" data-u="${u}">${t}</button>`).join('')}</div></div>` : ''}
     </div>`;
   const submit = async () => {
-    $('#err').textContent = ''; const b = $('#go'); b.disabled = true;
+    $('#err').textContent = ''; const b = $('#go'); busy(b, true, 'กำลังเข้าสู่ระบบ');
     try {
       session = await api('login', { username: $('#u').value.trim(), password: $('#p').value });
       sessionStorage.setItem('session', JSON.stringify(session));
       location.hash = '#home';
       render();
-    } catch (e) { $('#err').textContent = e.message; b.disabled = false; }
+    } catch (e) { $('#err').textContent = e.message; busy(b, false); }
   };
   $('#go').onclick = submit;
   $('#p').onkeydown = e => { if (e.key === 'Enter') submit(); };
@@ -1198,9 +1271,9 @@ function pwModal() {
     if (!o || !n) return er.textContent = 'กรุณากรอกรหัสผ่านให้ครบ';
     if (n.length < 8) return er.textContent = 'รหัสผ่านใหม่ต้องยาวอย่างน้อย 8 ตัวอักษร';
     if (n !== c) return er.textContent = 'รหัสผ่านใหม่และช่องยืนยันไม่ตรงกัน';
-    const b = ov.querySelector('#pwok'); b.disabled = true;
+    const b = ov.querySelector('#pwok'); busy(b, true, 'กำลังบันทึก...');
     try { await api('change_password', { old_password: o, new_password: n }); close(); notify('เปลี่ยนรหัสผ่านเรียบร้อย', 'ใช้รหัสผ่านใหม่ในการเข้าสู่ระบบครั้งถัดไป', 'ok'); }
-    catch (e) { er.textContent = e.message; b.disabled = false; }
+    catch (e) { er.textContent = e.message; busy(b, false); }
   };
 }
 
@@ -1819,7 +1892,7 @@ async function sendReport(mod, payload, rows, extra = []) {
   const n = (fl ? fl.files.length : 0) + extra.length;
   if (n) rows.push(['ไฟล์แนบ', n + ' ไฟล์']);
   if (!(await ask('ตรวจสอบข้อมูลก่อนส่ง', sumHtml(rows)))) return;
-  const btn = $('#save'), old = btn.innerHTML; btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+  const btn = $('#save'); busy(btn, true, 'กำลังส่งรายงาน...');
   try {
     const files = (await readFiles(fl ? fl.files : [])).concat(extra);
     await api('submit', { module: mod, payload, files });
@@ -1828,7 +1901,7 @@ async function sendReport(mod, payload, rows, extra = []) {
     const v = await modal({ icon: 'fa-circle-check', tone: 'ok', title: 'ส่งรายงานเรียบร้อย', body: '<p>ระบบบันทึกรายงานของคุณแล้ว<br>จะทำอะไรต่อดี?</p>',
       actions: [{ l: 'กรอกรายงานใหม่', v: 'new', c: 'ghost' }, { l: 'ดูรายการ', v: 'list', c: 'ghost' }, { l: 'กลับหน้าหลัก', v: 'home' }] });
     if (v === 'new' && again) again(); else location.hash = v === 'list' ? '#list/' + mod : '#home';
-  } catch (e) { $('#err').textContent = e.message; btn.disabled = false; btn.innerHTML = old; }
+  } catch (e) { $('#err').textContent = e.message; busy(btn, false); }
 }
 
 /* ============================================================
@@ -2355,11 +2428,11 @@ async function renderSettings(tab) {
       if (e.target.closest('#stSave')) {
         const b = e.target.closest('#stSave'), o = val();
         if (!o[ST[tab].key]) { ov.querySelector('#sterr').textContent = 'กรุณากรอก ' + ST[tab].keyLabel; return; }
-        b.disabled = true;
+        busy(b, true, 'กำลังบันทึก...');
         try {
           await api('ref_save', { table: tab, key: isNew ? '' : r[ST[tab].key], row: o });
           close(); await loadOptions(); toast('บันทึกแล้ว'); load();
-        } catch (err) { ov.querySelector('#sterr').textContent = err.message; b.disabled = false; }
+        } catch (err) { ov.querySelector('#sterr').textContent = err.message; busy(b, false); }
       }
       if (e.target.closest('#stDel')) {
         if (!(await ask('ลบ' + ST[tab].label + '?', `<p>ลบ ${esc(r[ST[tab].key])} ออกจากรายการ (รายงานเดิมไม่หาย)</p>`, 'ลบ', 'fa-trash', 'err'))) return;
